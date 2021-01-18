@@ -1,10 +1,11 @@
 package formation.java.tp.model;
 
 import formation.java.tp.interfaces.ICollection;
+import formation.java.tp.interfaces.IDisplayable;
 
 import java.util.Vector;
 
-public class Library implements ICollection<Library>
+public class Library implements ICollection<Library>, IDisplayable
 {
     public Vector<CD>       mCDLibrary ;
     public Vector<DVD>      mDVDLibrary ;
@@ -16,12 +17,35 @@ public class Library implements ICollection<Library>
     @Override
     public void Borrow()
     {
-
+        //TODO CRUD delete request
     }
 
     @Override
     public void Return(Library pToReturn)
     {
+        //TODO CRUD insert request
+    }
 
+    @Override
+    public String Stringify()
+    {
+        String lToReturn = "" ;
+        for (byte i = 0; i < mCDLibrary.size(); ++i)
+        {
+            lToReturn += mCDLibrary.elementAt(i).Stringify() ;
+        }
+        for (byte i = 0; i < mDVDLibrary.size(); ++i)
+        {
+            lToReturn += mDVDLibrary.elementAt(i).Stringify() ;
+        }
+        for (byte i = 0; i < mBookLibrary.size(); ++i)
+        {
+            lToReturn += mBookLibrary.elementAt(i).Stringify() ;
+        }
+        for (byte i = 0; i < mMagazineLibrary.size(); ++i)
+        {
+            lToReturn += mMagazineLibrary.elementAt(i).Stringify() ;
+        }
+        return lToReturn;
     }
 }

@@ -13,6 +13,13 @@ public class Magazine extends ACollectible implements IDisplayable
     public ePublishmentFrequency mFrequency;
 
     public Magazine (){}
+    public Magazine ( int pNumberOfPage, String pAuthor, eMagazineType pMagazineType, ePublishmentFrequency pFrequency )
+    {
+        mNumberOfPage = pNumberOfPage ;
+        mAuthor       = pAuthor ;
+        mMagType      = pMagazineType ;
+        mFrequency    = pFrequency ;
+    }
 
     @Override
     public String Stringify()

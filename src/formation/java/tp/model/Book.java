@@ -12,6 +12,13 @@ public class Book extends ACollectible implements IDisplayable
     public boolean   mIsTraduct;
 
     public Book(){}
+    public Book(int pNumberOfPage, String pAuthor, eBookType pBookType, boolean pIsTraduct)
+    {
+        mNumberOfPages = pNumberOfPage ;
+        mAuthor        = pAuthor ;
+        mBookType      = pBookType ;
+        mIsTraduct     = pIsTraduct ;
+    }
 
     @Override
     public String Stringify()

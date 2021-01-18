@@ -11,6 +11,12 @@ public class DVD extends ACollectible implements IDisplayable
     public boolean  mIsAudioDescriptible;
 
     public DVD (){}
+    public DVD(float pLength, eDVDType pDVDType, boolean pIsAudioDescriptible)
+    {
+        mLength              = pLength ;
+        mDVDType             = pDVDType ;
+        mIsAudioDescriptible = pIsAudioDescriptible ;
+    }
 
     @Override
     public String Stringify()
