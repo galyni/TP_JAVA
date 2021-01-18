@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args)
     {
         // SQL Server avec précision de l'instance et du port d'écoute
-        String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
+        String url = "jdbc:sqlserver://localhost;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
         // SQL Server avec instance et port d'écoute par défaut
         //String url = "jdbc:sqlserver://localhost;databaseName=structures";
 //        String user = "user";
