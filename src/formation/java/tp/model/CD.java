@@ -23,13 +23,13 @@ public class CD extends ACollectible implements IDisplayable
         this.mCDType      = pCDType ;
     }
 
-    public Date getPublishDate()         {return this.mPublishDate ;}
-    public boolean isBorrowed()          {return this.mBorrowed ;}
-    public void borrowDVD()              {this.mBorrowed = true ;}
-    public Editor getEditor()            {return this.mEditor ;}
-    public String getTitle()             {return this.mTitle ;}
-    public float getDVDLength()          {return this.mLength ;}
-    public eCDType getCDType()           {return this.mCDType ;}
+    public Date getPublishDate() {return this.mPublishDate ;}
+    public boolean isBorrowed()  {return this.mBorrowed ;}
+    public void borrowDVD()      {this.mBorrowed = true ;}
+    public Editor getEditor()    {return this.mEditor ;}
+    public String getTitle()     {return this.mTitle ;}
+    public float getDVDLength()  {return this.mLength ;}
+    public eCDType getCDType()   {return this.mCDType ;}
 
     @Override
     public String Stringify()

@@ -9,13 +9,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class Serializer extends AFileWriter
+public class Serializer<T> extends AFileWriter
 {//TODO check all class implementation
     ObjectOutputStream mOutput ;
-    Library            mLibraryToSerialize ;
+    T                  mLibraryToSerialize ;
 
     public Serializer(){}
-    public Serializer(String pFilepath, Library pLibrary)
+    public Serializer(String pFilepath, T pLibrary)
     {
         this.mFilePath      = pFilepath ;
         mLibraryToSerialize = pLibrary ;
