@@ -1,6 +1,7 @@
 package formation.java.tp.fileClasses;
 
 import formation.java.tp.abstracts.AFileReader;
+import formation.java.tp.model.Library;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +14,7 @@ public class Deserializer<T> extends AFileReader
 {
     private T                 mWaitedObject ;
     private ObjectInputStream inputStream ;
-    private Vector<T> mObjects ;
+    private Vector<T>         mObjects ;
 
     public Deserializer() {}
     public Deserializer(String pFilepath, T pWaitedObject)
@@ -57,14 +58,13 @@ public class Deserializer<T> extends AFileReader
             e.printStackTrace();
         }
     }
-    /* TODO implement one method per object ( CD, DVD, Book, Magazine(, Library?) )
     public void DisplayContent()
     {
-        if( this.mWaitedObject instanceof AFigure)
+        if( this.mWaitedObject instanceof Library)
         {
-            for (T figure : this.mObjects)
+            for (T library : this.mObjects)
             {
-                System.out.println( ( (AFigure)figure ).Stringify() );
+                System.out.println( ( (Library)library ).Stringify() );
             }
         }
         else
@@ -72,5 +72,4 @@ public class Deserializer<T> extends AFileReader
             System.out.println("Unable to know if stringify() method exist");
         }
     }
-    */
 }
