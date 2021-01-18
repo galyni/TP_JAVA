@@ -9,9 +9,9 @@ import java.util.Date;
 
 public class DVD extends ACollectible implements IDisplayable
 {
-    protected float    mLength;
-    protected eDVDType mDVDType;
-    protected boolean  mIsAudioDescriptible;
+    private float    mLength;
+    private eDVDType mDVDType;
+    private boolean  mIsAudioDescriptible;
 
     public DVD (){}
     public DVD( String pTitle, Editor pEditor, Date pPublishDate, float pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
