@@ -30,7 +30,7 @@ public class Magazine extends ACollectible implements IDisplayable
 
     public Date getPublishDate()           {return this.mPublishDate ;}
     public boolean isBorrowed()            {return this.mBorrowed ;}
-    public void borrowBook()               {this.mBorrowed = true ;}
+    public void borrowMagazine()           {this.mBorrowed = true ;}
     public Editor getEditor()              {return this.mEditor ;}
     public String getTitle()               {return this.mTitle ;}
     public int getNumberOfPages()          {return this.mNumberOfPages ;}
