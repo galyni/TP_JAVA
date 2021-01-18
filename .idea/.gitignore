@@ -4,7 +4,12 @@
 # Datasource local storage ignored files
 /../../../../../:\Code\Java\TP_JAVA\.idea/dataSources/
 /dataSources.local.xml
+/dataSources/*
 # Editor-based HTTP Client requests
 /httpRequests/
 uiDesigner.xml
 codeStyleConfig.xml
+dataSources.xml
+misc.xml
+mssql_jdbc_8_4_1_jre14.xml
+out/
