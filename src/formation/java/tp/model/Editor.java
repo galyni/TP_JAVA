@@ -2,7 +2,9 @@ package formation.java.tp.model;
 
 import formation.java.tp.interfaces.IDisplayable;
 
-public class Editor implements IDisplayable
+import java.io.Serializable;
+
+public class Editor implements IDisplayable, Serializable
 {
     private String mStreet;
     private String mCity;
@@ -29,6 +31,7 @@ public class Editor implements IDisplayable
     public void setEditorCity(String pCity)       {this.mCity = pCity ;}
     public void setEditorCountry(String pCountry) {this.mCountry = pCountry ;}
     public void setSiegeStreet(String pStreet)    {this.mStreet = pStreet ;}
+    public void setEditorName(String pName)    {this.mName = pName ;}
 
     @Override
     public String Stringify()
