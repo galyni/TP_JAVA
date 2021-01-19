@@ -12,7 +12,13 @@ public class Library implements ICollection<Library>, IDisplayable
     public Vector<Book>     mBookLibrary ;
     public Vector<Magazine> mMagazineLibrary ;
 
-    public Library(){}
+    public Library()
+    {
+        this.mCDLibrary       = new Vector<CD>() ;
+        this.mDVDLibrary      = new Vector<DVD>() ;
+        this.mMagazineLibrary = new Vector<Magazine>() ;
+        this.mBookLibrary     = new Vector<Book>() ;
+    }
 
     @Override
     public void Borrow()
