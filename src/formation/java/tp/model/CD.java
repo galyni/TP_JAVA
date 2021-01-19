@@ -34,7 +34,7 @@ public class CD extends ACollectible implements IDisplayable
     @Override
     public String Stringify()
     {
-        return ( super.Stringify() +
+        return ( "\n" + super.Stringify() +
                  "cette article est un CD : " + this.mCDType.name() +
                  "\n\td'une durée de " + this.mLength + "min") ;
     }

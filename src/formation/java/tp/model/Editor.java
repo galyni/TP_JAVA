@@ -33,7 +33,7 @@ public class Editor implements IDisplayable
     @Override
     public String Stringify()
     {
-        return ( this.mName + " : " +
+        return ( "\n" + this.mName + " : " +
                  "\n\tVille : " + this.mCity +
                  "\n\tRue : " + this.mStreet +
                  "\n\tPays : " + this.mCountry +

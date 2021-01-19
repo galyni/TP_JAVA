@@ -1,11 +1,14 @@
 package formation.java.tp;
 
+import formation.java.tp.model.Library;
+import formation.java.tp.utils.LibraryInitializer;
+
 import java.sql.*;
 
 public class Main {
 
     public static void main(String[] args)
-    {
+    {/*
         // SQL Server avec précision de l'instance et du port d'écoute
         String url = "jdbc:sqlserver://localhost;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
         // SQL Server avec instance et port d'écoute par défaut
@@ -42,6 +45,9 @@ public class Main {
                 e.printStackTrace();
             }
         }
-
+*/
+        Library lLibrary = new Library();
+        new LibraryInitializer().initializeCollection(lLibrary);
+        System.out.println( lLibrary.Stringify() );
     }
 }

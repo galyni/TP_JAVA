@@ -38,7 +38,7 @@ public class DVD extends ACollectible implements IDisplayable
     @Override
     public String Stringify()
     {
-        String lToReturn = ( super.Stringify() +
+        String lToReturn = ( "\n" + super.Stringify() +
                              "cette article est un CD : " + this.mDVDType.name() +
                              "\n\td'une durée de " + this.mLength + "min" +
                              "\n\t" + ( this.mIsAudioDescriptible ? "disponible pour les malentendants" : "indisponible pour les malentendants" ) ) ;

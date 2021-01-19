@@ -40,7 +40,7 @@ public class Magazine extends ACollectible implements IDisplayable
     @Override
     public String Stringify()
     {
-        return ( super.Stringify() +
+        return ( "\n" + super.Stringify() +
                  "cette article est un magazine " + this.mFrequency +" sur " + this.mMagType.name() + " de " + this.mNumberOfPages + " pages, " + " écrit par " + this.mAuthor) ;
     }
 }

@@ -40,7 +40,7 @@ public class Book extends ACollectible implements IDisplayable
     @Override
     public String Stringify()
     {
-        return ( super.Stringify() +
+        return ( "\n" + super.Stringify() +
                  "cette article est un livre de " + this.mBookType.name() + " de " + this.mNumberOfPages + " pages, " + " écrit par " + this.mAuthor +
                  "\n\t" + ( this.mIsTraduct ? "traduit en français" : "non traduit en français" ) ) ;
     }
