@@ -1,16 +1,13 @@
 package formation.java.tp.utils;
 
-import formation.java.tp.model.Book;
-import formation.java.tp.model.Editor;
-import formation.java.tp.model.Library;
-import formation.java.tp.model.Magazine;
+import formation.java.tp.model.*;
 
 import java.util.Date;
 import java.util.Vector;
 
 public class LibraryInitializer
 {
-    public void initializeCollection(Vector<Library> pLibrary)
+    public void initializeCollection(Library pLibrary)
     {
         Book lBooks[] = new Book[]
         {
@@ -43,7 +40,7 @@ public class LibraryInitializer
                         , eBookType.Novel
                         , true)
         } ;
-        Magazine lMagazine[] = new Magazine[]
+        Magazine lMagazines[] = new Magazine[]
                 {
                         new Magazine("Auto moto"
                                      , new Editor("rue du vroum", "Monaco", "France", "AutoMoto&Co", "1547926875")
@@ -72,7 +69,64 @@ public class LibraryInitializer
                                      , 36
                                      , "Journal du musée"
                                      , eMagazineType.History
-                                     , ePublishmentFrequency.Annual),
+                                     , ePublishmentFrequency.Annual)
                 } ;
+        CD lCDs[] = new CD[]
+                {
+                        new CD("Adibou à l'école"
+                               , new Editor("impasse élémentaire", "Dusseldorf", "Allemagne", "Adibou Ausgaben", "6751398542")
+                               , new Date()
+                               , 117.6
+                               , eCDType.Course),
+                        new CD("Photoshop"
+                                , new Editor("85 show pimp street", "Miami", "USA", "Silicon Valley", "9780230145")
+                                , new Date()
+                                , 0
+                                , eCDType.Software),
+                        new CD("The Offspring - Americana"
+                                , new Editor("somewhere on Punk avenue", "Los Angeles", "USA", "destroy everything editions", "00245896314")
+                                , new Date()
+                                , 58.2
+                                , eCDType.Music),
+                        new CD("Forest ambiance"
+                                , new Editor("ruelle de la sérénité", "Utopia", "Heaven", "Deus edition", "9999999999")
+                                , new Date()
+                                , 999
+                                , eCDType.Ambiance)
+                } ;
+        DVD lDVDs[] = new DVD[]
+                {
+                        new DVD("Matrix"
+                                , new Editor("proche du centre de la Terre", "Zion", "unknown", "last survivor editions", "0000000000")
+                                , new Date()
+                                , 137.5
+                                , eDVDType.Film
+                                , true),
+                        new DVD("Witcher"
+                                , new Editor("dans un garage", "Wroclaw", "Pologne", "CD projekts", "9543186542")
+                                , new Date()
+                                , 6000
+                                , eDVDType.Software
+                                , false),
+                        new DVD("La marche des empereurs"
+                                , new Editor("pôle Sud", "panguoria", "extreme South", "le manchot pas droit", "9831546785")
+                                , new Date()
+                                , 115.9
+                                , eDVDType.Documentary
+                                , true),
+                        new DVD("Deftones - Live in Sydney"
+                                , new Editor("9 rue du skate park", "Portland", "USA", "skaterzz", "9012864856")
+                                , new Date()
+                                , 198.7
+                                , eDVDType.Concert
+                                , true)
+                } ;
+        for (byte i = 0; i < 4; ++i)
+        {
+            pLibrary.mBookLibrary.add(lBooks[i]) ;
+            pLibrary.mMagazineLibrary.add(lMagazines[i]) ;
+            pLibrary.mCDLibrary.add(lCDs[i]) ;
+            pLibrary.mDVDLibrary.add(lDVDs[i]) ;
+        }
     }
 }
