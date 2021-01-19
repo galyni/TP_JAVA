@@ -9,12 +9,12 @@ import java.util.Date;
 
 public class DVD extends ACollectible implements IDisplayable
 {
-    private float    mLength;
+    private double   mLength;
     private eDVDType mDVDType;
     private boolean  mIsAudioDescriptible;
 
     public DVD (){}
-    public DVD( String pTitle, Editor pEditor, Date pPublishDate, float pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
+    public DVD( String pTitle, Editor pEditor, Date pPublishDate, double pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
     {
         this.mPublishDate         = pPublishDate ;
         this.mBorrowed            = false ;
@@ -31,7 +31,7 @@ public class DVD extends ACollectible implements IDisplayable
     public void borrowDVD()              {this.mBorrowed = true ;}
     public Editor getEditor()            {return this.mEditor ;}
     public String getTitle()             {return this.mTitle ;}
-    public float getDVDLength()          {return this.mLength ;}
+    public double getDVDLength()         {return this.mLength ;}
     public eDVDType getDVDType()         {return this.mDVDType ;}
     public boolean isAudioDescriptible() {return this.mIsAudioDescriptible ;}
 
