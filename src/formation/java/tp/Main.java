@@ -23,6 +23,7 @@ import java.util.Map;
 public class Main {
 //Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
     public static void main(String[] args) {
+        //TODO don't forget to add LogWriter to every logic classes, to allow them to log their operations and errors into logFile
         int operation = 0;
         if (args.length != 4){
             Usage();
@@ -36,6 +37,9 @@ public class Main {
             }
         }
 
+
+
+/*
         String url = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
@@ -175,19 +179,6 @@ public class Main {
 //        }
 //    }
 
-        /* ----- serialization/deserialization example ----- */
-/*
-        String lObjFilePath = "resources/serializedObj.txt" ;
-        Library lLibrary    = new Library() ;
-        Library lLibrary2 ;
-        Deserializer<Library> lDeserializer = new Deserializer<Library>(lObjFilePath) ;
-        new LibraryInitializer().initializeCollection(lLibrary) ;
-        Serializer<Library> lSerializer = new Serializer<Library>(lObjFilePath, lLibrary ) ;
-        lSerializer.Serialize() ;
-        lLibrary2 = lDeserializer.Deserialize() ;
-        System.out.println( lLibrary2.Stringify() ) ;
-*/
-        /* ----- end serialization/deserialization example ----- */
         /* ----- JSONify ----- */
 /*
         Library lLibrary = new Library() ;
@@ -249,7 +240,7 @@ public class Main {
         }
         catch (NumberFormatException e)
         {
-            System.out.println("Unknown operation requested...") ;
+            System.out.println("invalid operation format...") ;
             Usage() ;
             return -1 ;
         }
@@ -285,7 +276,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( !pArgs[3].endsWith(".txt") )
         {
-            System.out.println("Wrong log file extensions...");
+            System.out.println("invalid log file extensions...");
             Usage() ;
             return -1 ;
         }//at this point all args are ok
