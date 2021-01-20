@@ -16,25 +16,35 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) {
-        //TODO : connection string dans un fichier .properties
-        // Pour Nico : ajouter \SQLEXPRESS
         String url = null;
-        String filenameProperties = "resources/.properties";
+        String filenameProperties = args[0];
         String fileName = "test.txt";
+        BufferedReader br = null;
 
         try{
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
             JSONObject jso = new JSONObject(br.readLine());
             url = jso.getString("connectionString");
 
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
 
         Connection connexion = null;
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
+
+
 
         try {
             connexion = DriverManager.getConnection(url);
