@@ -18,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         String url = null;
         String filenameProperties = args[0];
-        String fileName = "test.txt";
+        String filenameDatabaseJSON = args[1];
         BufferedReader br = null;
 
         try{
@@ -44,8 +44,6 @@ public class Main {
         PreparedStatement ps =  null;
         ResultSet result = null;
 
-
-
         try {
             connexion = DriverManager.getConnection(url);
             state = connexion.createStatement();
@@ -58,7 +56,7 @@ public class Main {
 
 
             // Ecriture du JSON dans un fichier
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName)));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
             bw.write(jsonArray.toString());
             bw.close();
             result.close();
