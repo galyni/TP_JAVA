@@ -16,6 +16,8 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) {
+
+
         String url = null;
         String filenameProperties = args[0];
         String filenameDatabaseJSON = args[1];
@@ -43,38 +45,44 @@ public class Main {
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
-
-        try {
-            connexion = DriverManager.getConnection(url);
-            state = connexion.createStatement();
-            result = state.executeQuery("select * from Editors");
-
-
-            // Sérialisation de la table Editeurs
-            DBSerializer dbSerializer = new DBSerializer();
-            JSONArray jsonArray = dbSerializer.SerialiseDatabase( result);
+        switch (args[2]) {
+            case "1":
+                try {
+                    connexion = DriverManager.getConnection(url);
+                    state = connexion.createStatement();
+                    result = state.executeQuery("select * from Editors");
 
 
-            // Ecriture du JSON dans un fichier
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
-            bw.write(jsonArray.toString());
-            bw.close();
-            result.close();
+                    // Sérialisation de la table Editeurs
+                    DBSerializer dbSerializer = new DBSerializer();
+                    JSONArray jsonArray = dbSerializer.SerialiseDatabase( result);
 
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (result != null)
+
+                    // Ecriture du JSON dans un fichier
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
+                    bw.write(jsonArray.toString());
+                    bw.close();
                     result.close();
-                if (state != null)
-                    state.close();
-                if (connexion != null)
-                    connexion.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                } finally {
+                    try {
+                        if (result != null)
+                            result.close();
+                        if (state != null)
+                            state.close();
+                        if (connexion != null)
+                            connexion.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case "2":
+                break;
         }
+
 
 //        try {
 //            // Lecture fichier vers un objet
