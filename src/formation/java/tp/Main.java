@@ -16,43 +16,42 @@ import java.sql.*;
 public class Main {
 //Args 0 : path \ Args 1 : filename \ Args 2 : 1
     public static void main(String[] args) {
-
+        int operation;
         if (args.length != 4){
             Usage();
             return;
         }
         else{
-            int test;
+
             try {
-                test = Integer.parseInt(args[2]);
+                operation = Integer.parseInt(args[0]);
             }catch (NumberFormatException e){
                 Usage();
                 return;
             }
-
-            if(test < 1 || test >= 5){ //Todo : Adapter les tests en fonction des arguments
+            if(operation < 1 || operation >= 5){ //Todo : Adapter les tests en fonction des arguments
                 Usage();
                 return;
 
             }
-            if(!args[0].endsWith(".properties")){
+            if(!args[1].endsWith(".properties")){
                 Usage();
                 return;
             }
-            if(args[1] == null){
+            if(args[2] == null){
                 Usage();
                 return;
             }
             //Todo : Il faudra checker toutes les extensions à vérifier
-            if(!args[0].endsWith(".json") ){
+            if(!args[2].endsWith(".json") ){
                 Usage();
                 return;
             }
 
         }
         String url = null;
-        String filenameProperties = args[2];
-        String filenameDatabaseJSON = args[1];
+        String filenameProperties = args[1];
+        String filenameDatabaseJSON = args[2];
         BufferedReader br = null;
 
         try{
@@ -77,8 +76,9 @@ public class Main {
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
-        switch (args[0]) {
-            case "1":
+
+        switch (operation) {
+            case 4:
                 try {
                     connexion = DriverManager.getConnection(url);
                     state = connexion.createStatement();
@@ -111,8 +111,8 @@ public class Main {
                     }
                 }
                 break;
-            case "2":
-                break;
+//            case eOperation.jsonFileToDatabase.value:
+//                break;
         }
 
 
@@ -207,16 +207,16 @@ public class Main {
                 "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
     }
 
-    private enum eOperation{
-        objectFileToDatabase(1),
-        databaseToObjectFile(2),
-        jsonFileToDatabase(3),
-        databaseToJsonFile(4);
+//    private enum eOperation{ //Todo vérifier si on peut s'en servir
+//        objectFileToDatabase(1),
+//        databaseToObjectFile(2),
+//        jsonFileToDatabase(3),
+//        databaseToJsonFile(4);
+//
+//        private int value;
+//        private  eOperation(int value){
+//        this.value = value;
+//        }
+//    }
 
-        private int value;
-        private  eOperation(int value){
-        this.value = value;
-        }
-    }
-
-    }
+}
