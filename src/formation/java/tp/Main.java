@@ -208,10 +208,15 @@ public class Main {
     }
 
     private enum eOperation{
-        objectFileToDatabase,
-        databaseToObjectFile,
-        jsonFileToDatabase,
-        databaseToJsonFile
+        objectFileToDatabase(1),
+        databaseToObjectFile(2),
+        jsonFileToDatabase(3),
+        databaseToJsonFile(4);
+
+        private int value;
+        private  eOperation(int value){
+        this.value = value;
+        }
+    }
 
     }
-}
