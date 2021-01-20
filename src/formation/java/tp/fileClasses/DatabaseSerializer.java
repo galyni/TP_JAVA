@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DBSerializer {
+public class DatabaseSerializer {
 
     Table[] tables = { new Table("Editors", new String[] {"ID", "Name", "SIRET", "Country", "Street", "Zipcode", "City"}),
             new Table("Books", new String[] {"ID", "Title", "EditorsID", "PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Translated", "Author" }),
@@ -16,15 +16,20 @@ public class DBSerializer {
 
     };
 
+    public DatabaseSerializer() {
+    }
+
+    public DatabaseSerializer(Table[] tables) {
+        this.tables = tables;
+    }
+
     // TODO : gestion d'exceptions
-    public JSONArray SerialiseDatabase(ResultSet result) throws SQLException {
-        JSONArray dbSerialized = new JSONArray();
+    public JSONObject SerialiseDatabase(ResultSet result) throws SQLException {
+        JSONObject dbSerialized = new JSONObject();
         for (Table table : tables
              ) {
-            JSONObject tableJson = new JSONObject();
-            tableJson.put(table.Name, SerialiseTable(table, result));
-//            dbSerialized.put(SerialiseTable(table, result));
-            dbSerialized.put(tableJson);
+            JSONArray tableJson = SerialiseTable(table, result);
+            dbSerialized.put(table.Name, tableJson);
         }
         return dbSerialized;
     }
