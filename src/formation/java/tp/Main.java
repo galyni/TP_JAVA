@@ -4,6 +4,7 @@ import formation.java.tp.fileClasses.DBSerializer;
 import formation.java.tp.model.Editor;
 import formation.java.tp.model.Library;
 import formation.java.tp.utils.LibraryInitializer;
+import formation.java.tp.utils.LogWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -18,6 +19,7 @@ public class Main {
     public static void main(String[] args) {
         //TODO : connection string dans un fichier .properties
         // Pour Nico : ajouter \SQLEXPRESS
+
         String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
 
         String fileName = "test.txt";
@@ -133,5 +135,7 @@ public class Main {
 //        Library lLibrary = new Library();
 //        new LibraryInitializer().initializeCollection(lLibrary);
 //        System.out.println( lLibrary.Stringify() );
+        LogWriter lLogWriter = new LogWriter( "./resources/Log.txt" ) ;
+        lLogWriter.ErrorLog("patapouf");
     }
 }
