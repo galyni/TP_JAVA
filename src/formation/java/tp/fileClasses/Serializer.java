@@ -12,13 +12,13 @@ import java.nio.file.StandardOpenOption;
 public class Serializer<T> extends AFileWriter
 {//TODO check all class implementation
     ObjectOutputStream mOutput ;
-    T                  mLibraryToSerialize ;
+    T                  mObjectToSerialize ;
 
     public Serializer(){}
-    public Serializer(String pFilepath, T pLibrary)
+    public Serializer(String pFilepath, T pObject)
     {
-        this.mFilePath      = pFilepath ;
-        mLibraryToSerialize = pLibrary ;
+        this.mFilePath     = pFilepath ;
+        mObjectToSerialize = pObject ;
     }
 
     public void Serialize()
@@ -34,7 +34,7 @@ public class Serializer<T> extends AFileWriter
         }
         try
         {
-            this.mOutput.writeObject(this.mLibraryToSerialize);
+            this.mOutput.writeObject(this.mObjectToSerialize);
             this.mOutput.close();
         }
         catch (IOException e)
