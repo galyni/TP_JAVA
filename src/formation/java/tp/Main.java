@@ -12,6 +12,8 @@ import org.json.JSONWriter;
 
 import java.io.*;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
 //Args 0 : path \ Args 1 : filename \ Args 2 : 1
@@ -22,33 +24,35 @@ public class Main {
             return;
         }
         else{
-
+            int test;
             try {
-                operation = Integer.parseInt(args[0]);
+                test = Integer.parseInt(args[2]);
             }catch (NumberFormatException e){
                 Usage();
                 return;
             }
-            if(operation < 1 || operation >= 5){ //Todo : Adapter les tests en fonction des arguments
+
+            if(test < 1 || test >= 5){ //Todo : Adapter les tests en fonction des arguments
                 Usage();
                 return;
 
             }
-            if(!args[1].endsWith(".properties")){
+            if(!args[0].endsWith(".properties")){
                 Usage();
                 return;
             }
-            if(args[2] == null){
+            if(args[1] == null){
                 Usage();
                 return;
             }
             //Todo : Il faudra checker toutes les extensions à vérifier
-            if(!args[2].endsWith(".json") ){
+            if(!args[0].endsWith(".json") ){
                 Usage();
                 return;
             }
 
         }
+
         String url = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
@@ -187,9 +191,41 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //    }
-//        Library lLibrary = new Library();
-//        new LibraryInitializer().initializeCollection(lLibrary);
-//        System.out.println( lLibrary.Stringify() );
+        /* ----- JSONify ----- */
+/*
+        Library lLibrary = new Library() ;
+        new LibraryInitializer().initializeCollection(lLibrary) ;
+        JSONObject lJsonRoot = new JSONObject( ) ;
+
+        JSONArray lJsonArray = new JSONArray(lLibrary.mBookLibrary.toArray());
+        lJsonArray.put(lLibrary.mMagazineLibrary);
+        lJsonArray.put(lLibrary.mCDLibrary);
+        lJsonArray.put(lLibrary.mDVDLibrary);
+        lJsonRoot.put("Magazines", lLibrary.mMagazineLibrary) ;
+        lJsonRoot.put("Books", lLibrary.mBookLibrary) ;
+        lJsonRoot.put("CDs", lLibrary.mCDLibrary) ;
+        lJsonRoot.put("DVDs", lLibrary.mDVDLibrary) ;
+
+        System.out.println(lJsonRoot.toString());
+*/      //TODO David, finish this, create library property to contains all arrays, write it into file, and create an object to contains this logic
+        /* ----- end JSONify ----- */
+
+        /* ----- object serialization/deserialization example ----- */
+/*
+        String lObjFilePath                 = "resources/serializedObj.txt" ;
+        Library lLibrary                    = new Library() ;
+        Deserializer<Library> lDeserializer = new Deserializer<Library>(lObjFilePath) ;
+        Library lLibrary2 ;
+
+        new LibraryInitializer().initializeCollection(lLibrary) ;
+
+        Serializer<Library> lSerializer = new Serializer<Library>(lObjFilePath, lLibrary ) ;
+        lSerializer.Serialize() ;
+
+        lLibrary2 = lDeserializer.Deserialize() ;
+        System.out.println( lLibrary2.Stringify() ) ;
+*/
+        /* ----- end serialization/deserialization example ----- */
     }
     //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
@@ -201,22 +237,93 @@ public class Main {
                 "\t\t[2] to serialize database into file\n" +
                 "\t\t[3] to import JSON file into database\n" +
                 "\t\t[4] to serialize database into JSON file\n" +
-                "\targ2 : path to file to read/write\n" +
-                "\targ3 : path to properties file for database connection\n" +
-                "\targ4 : path to logs file\n" +
+                "\targ2 : \".txt\" or \".json\" path to file to read/write\n" +
+                "\targ3 : \".properties\" path to properties file for database connection\n" +
+                "\targ4 : \".txt\" path to logs file\n" +
                 "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
     }
 
-//    private enum eOperation{ //Todo vérifier si on peut s'en servir
-//        objectFileToDatabase(1),
-//        databaseToObjectFile(2),
-//        jsonFileToDatabase(3),
-//        databaseToJsonFile(4);
-//
-//        private int value;
-//        private  eOperation(int value){
-//        this.value = value;
-//        }
-//    }
+    private static int CheckArgs(String[] pArgs)
+    {
+        int lCheckArg3;
+        try {
+            lCheckArg3 = Integer.parseInt(pArgs[2]);
+        }catch (NumberFormatException e){
+            Usage();
+            return -1;
+        }
 
+        if(lCheckArg3 < 1 || lCheckArg3 >= 5){ //Todo : Adapter les tests en fonction des arguments
+            Usage();
+            return -1;
+        }//at this point args[2] seem to be ok
+        if(!pArgs[0].endsWith(".properties")){
+            Usage();
+            return -1;
+        }//at this point args[0] seem to be ok
+        if(pArgs[1] == null){
+            Usage();
+            return -1;
+        }
+        //Todo : Il faudra checker toutes les extensions à vérifier
+        if(lCheckArg3 == eOperation.objectFileToDatabase.getValue() || lCheckArg3 == eOperation.databaseToObjectFile.getValue() )
+        {
+            if( !pArgs[1].endsWith(".txt") )
+            {
+                System.out.println("Wrong file extensions...");
+                Usage() ;
+                return -1 ;
+            }
+        }
+        else
+        {
+            if( !pArgs[1].endsWith(".json") )
+            {
+                System.out.println("Wrong file extensions...");
+                Usage() ;
+                return -1 ;
+            }
+        }//at this point args[1] seem to be ok
+        if( !pArgs[3].endsWith(".txt") )
+        {
+            System.out.println("Wrong log file extensions...");
+            Usage() ;
+            return -1 ;
+        }//at this point all args are ok
+        return 0 ;
+    }
+
+    private enum eOperation
+    {
+        objectFileToDatabase(1),
+        databaseToObjectFile(2),
+        jsonFileToDatabase(3),
+        databaseToJsonFile(4);
+
+        private int        value ;
+        private static Map map = new HashMap<>() ;
+
+        private eOperation(int value)
+        {
+            this.value = value ;
+        }
+
+        static
+        {
+            for ( eOperation pageType : eOperation.values() )
+            {
+                map.put(pageType.value, pageType) ;
+            }
+        }
+
+        public static eOperation valueOf(int pageType)
+        {
+            return (eOperation) map.get(pageType) ;
+        }
+
+        public int getValue()
+        {
+            return value ;
+        }
+    }
 }
