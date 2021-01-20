@@ -159,4 +159,19 @@ public class Main {
 //        new LibraryInitializer().initializeCollection(lLibrary);
 //        System.out.println( lLibrary.Stringify() );
     }
+
+    private static void Usage()
+    {
+        System.out.println( "Usage : \n" +
+                "AppName need 4 args : \n" +
+                "\targ1 : \n" +
+                "\t\t[1] to import file with serialized Objects into database \n" +
+                "\t\t[2] to serialize database into file\n" +
+                "\t\t[3] to import JSON file into database\n" +
+                "\t\t[4] to serialize database into JSON file\n" +
+                "\targ2 : path to file to read/write\n" +
+                "\targ3 : path to properties file for database connection\n" +
+                "\targ4 : path to logs file\n" +
+                "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
+    }
 }
