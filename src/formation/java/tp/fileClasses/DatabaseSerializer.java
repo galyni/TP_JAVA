@@ -3,8 +3,10 @@ package formation.java.tp.fileClasses;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DatabaseSerializer {
 
@@ -24,10 +26,15 @@ public class DatabaseSerializer {
     }
 
     // TODO : gestion d'exceptions
-    public JSONObject SerialiseDatabase(ResultSet result) throws SQLException {
+    public JSONObject SerialiseDatabase(Connection connection) throws SQLException {
+
         JSONObject dbSerialized = new JSONObject();
+        Statement state;
+        ResultSet result;
         for (Table table : tables
              ) {
+            state = connection.createStatement();
+            result = state.executeQuery("select * from " + table.Name);
             JSONArray tableJson = SerialiseTable(table, result);
             dbSerialized.put(table.Name, tableJson);
         }

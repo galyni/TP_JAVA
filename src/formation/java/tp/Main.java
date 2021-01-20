@@ -54,21 +54,15 @@ public class Main {
             case "4":
                 try {
                     connexion = DriverManager.getConnection(url);
-                    state = connexion.createStatement();
-                    result = state.executeQuery("select * from Editors");
-
 
                     // Sérialisation de la base
                     DatabaseSerializer dbSerializer = new DatabaseSerializer();
-                    JSONObject serializedDB = dbSerializer.SerialiseDatabase( result);
-
+                    JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
 
                     // Ecriture du JSON dans un fichier
                     bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
                     bw.write(serializedDB.toString());
                     bw.close();
-                    result.close();
-
                 } catch(Exception e) {
                     System.out.println(e.getMessage());
                 } finally {
