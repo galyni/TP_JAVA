@@ -14,12 +14,44 @@ import java.io.*;
 import java.sql.*;
 
 public class Main {
-
+//Args 0 : path \ Args 1 : filename \ Args 2 : 1
     public static void main(String[] args) {
 
+        if (args.length != 4){
+            Usage();
+            return;
+        }
+        else{
+            int test;
+            try {
+                test = Integer.parseInt(args[2]);
+            }catch (NumberFormatException e){
+                Usage();
+                return;
+            }
 
+            if(test < 1 || test >= 5){ //Todo : Adapter les tests en fonction des arguments
+                Usage();
+                return;
+
+            }
+            if(!args[0].endsWith(".properties")){
+                Usage();
+                return;
+            }
+            if(args[1] == null){
+                Usage();
+                return;
+            }
+            //Todo : Il faudra checker toutes les extensions à vérifier
+            if(!args[0].endsWith(".json") ){
+                Usage();
+                return;
+            }
+
+        }
         String url = null;
-        String filenameProperties = args[0];
+        String filenameProperties = args[2];
         String filenameDatabaseJSON = args[1];
         BufferedReader br = null;
 
@@ -45,7 +77,7 @@ public class Main {
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
-        switch (args[2]) {
+        switch (args[0]) {
             case "1":
                 try {
                     connexion = DriverManager.getConnection(url);
@@ -159,7 +191,7 @@ public class Main {
 //        new LibraryInitializer().initializeCollection(lLibrary);
 //        System.out.println( lLibrary.Stringify() );
     }
-
+    //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
     {
         System.out.println( "Usage : \n" +
@@ -173,5 +205,13 @@ public class Main {
                 "\targ3 : path to properties file for database connection\n" +
                 "\targ4 : path to logs file\n" +
                 "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
+    }
+
+    private enum eOperation{
+        objectFileToDatabase,
+        databaseToObjectFile,
+        jsonFileToDatabase,
+        databaseToJsonFile
+
     }
 }
