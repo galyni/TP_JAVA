@@ -18,9 +18,18 @@ public class Main {
     public static void main(String[] args) {
         //TODO : connection string dans un fichier .properties
         // Pour Nico : ajouter \SQLEXPRESS
-        String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
-
+        String url = null;
+        String filenameProperties = "resources/.properties";
         String fileName = "test.txt";
+
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
+            JSONObject jso = new JSONObject(br.readLine());
+            url = jso.getString("connectionString");
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
 
         Connection connexion = null;
         Statement state = null;
