@@ -4,7 +4,6 @@ import formation.java.tp.fileClasses.DBSerializer;
 import formation.java.tp.model.Editor;
 import formation.java.tp.model.Library;
 import formation.java.tp.utils.LibraryInitializer;
-import formation.java.tp.utils.LogWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -17,17 +16,35 @@ import java.sql.*;
 public class Main {
 
     public static void main(String[] args) {
-        //TODO : connection string dans un fichier .properties
-        // Pour Nico : ajouter \SQLEXPRESS
-
-        String url = "jdbc:sqlserver://localhost\\SQLEXPRESS;database=Librairie;integratedSecurity=true;authenticationScheme=nativeAuthentication;";
-
+        String url = null;
+        String filenameProperties = args[0];
         String fileName = "test.txt";
+        BufferedReader br = null;
+
+        try{
+            br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
+            JSONObject jso = new JSONObject(br.readLine());
+            url = jso.getString("connectionString");
+
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
 
         Connection connexion = null;
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
+
+
 
         try {
             connexion = DriverManager.getConnection(url);
@@ -135,7 +152,5 @@ public class Main {
 //        Library lLibrary = new Library();
 //        new LibraryInitializer().initializeCollection(lLibrary);
 //        System.out.println( lLibrary.Stringify() );
-        LogWriter lLogWriter = new LogWriter( "./resources/Log.txt" ) ;
-        lLogWriter.ErrorLog("patapouf");
     }
 }
