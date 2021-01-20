@@ -12,18 +12,16 @@ import java.util.Vector;
 
 public class Deserializer<T> extends AFileReader
 {
-    private T                 mWaitedObject ;
     private ObjectInputStream inputStream ;
-    private Vector<T>         mObjects ;
+    private T                 mObjects ;
 
     public Deserializer() {}
-    public Deserializer(String pFilepath, T pWaitedObject)
+    public Deserializer(String pFilepath)
     {
         this.mFilePath     = pFilepath ;
-        this.mWaitedObject = pWaitedObject ;
     }
 
-    public void Deserialize()
+    public T Deserialize()
     {
         try
         {
@@ -36,11 +34,11 @@ public class Deserializer<T> extends AFileReader
         }
         try
         {
-            this.mObjects = (Vector)inputStream.readObject() ;
+            this.mObjects = (T)inputStream.readObject() ;
         }
         catch (IOException e)
         {
-            System.out.println("Problem during file reading... " + e.getMessage());
+            System.out.println("invalid cast conversion during reading... " + e.getMessage());
             e.printStackTrace();
         }
         catch(ClassNotFoundException e)
@@ -57,19 +55,6 @@ public class Deserializer<T> extends AFileReader
             System.out.println("Unable to close file... " + e.getMessage());
             e.printStackTrace();
         }
-    }
-    public void DisplayContent()
-    {
-        if( this.mWaitedObject instanceof Library)
-        {
-            for (T library : this.mObjects)
-            {
-                System.out.println( ( (Library)library ).Stringify() );
-            }
-        }
-        else
-        {
-            System.out.println("Unable to know if stringify() method exist");
-        }
+        return mObjects ;
     }
 }
