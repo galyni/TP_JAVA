@@ -1,5 +1,7 @@
 package formation.java.tp.utils;
 
+import formation.java.tp.fileClasses.DataWriter;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +13,9 @@ import java.util.Date;
 
 
 
-public class LogWriter
+public class LogWriter extends DataWriter
 {
-    private String     mFilePath ;
-    private Date       mDate ;
-    private FileWriter mWriter ;
+    private Date mDate ;
 
     private enum eLogType
     {
@@ -32,33 +32,6 @@ public class LogWriter
         this.mFilePath = pFilePath ;
     }
 
-    public void SetFilePath( String pFilePath ){this.mFilePath = pFilePath ;}
-    public String GetFilePath()                {return this.mFilePath ;}
-
-    private void WriteLog(String pLogLine)
-    {
-        try
-        {
-            this.mWriter = new FileWriter( this.mFilePath, true ) ;
-                    //Files.newOutputStream( Paths.get( this.mFilePath ), StandardOpenOption.APPEND ) ;
-        }
-        catch (IOException e)
-        {
-            System.out.println("Unable to open file.." + e.getMessage());
-            e.printStackTrace();
-        }
-        try
-        {
-            pLogLine += "\n" ;
-            this.mWriter.write( pLogLine ) ;
-            this.mWriter.close() ;
-        }
-        catch (IOException e)
-        {
-            System.out.println("Unable to write into file.." + e.getMessage());
-            e.printStackTrace();
-        }
-    }
     private void FormatLog(String pLogMessage, eLogType pLogType)
     {
         this.mDate = new Date() ;
@@ -66,7 +39,7 @@ public class LogWriter
 
         lFormatedLog = this.mDate + " : " + pLogType.name() + " : " + pLogMessage ;
 
-        WriteLog( lFormatedLog ) ;
+        WriteFile( lFormatedLog, true ) ;
     }
     public void ErrorLog        ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.error ) ;}
     public void DbConnectionLog ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.dbConnection ) ;}
