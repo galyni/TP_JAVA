@@ -36,7 +36,7 @@ public class JsonConverter<T>
         }
         else
         {
-            throw new ExecutionControl.NotImplementedException("Method can only Jsonify Library objects for now") ;
+            throw new ExecutionControl.NotImplementedException("Method can only convert Library objects into Json for now") ;
         }
         return lJsonifiedObject ;
     }
