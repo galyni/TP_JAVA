@@ -1,9 +1,13 @@
 package formation.java.tp;
 
 import formation.java.tp.fileClasses.DBSerializer;
+import formation.java.tp.fileClasses.Deserializer;
+import formation.java.tp.fileClasses.Serializer;
+import formation.java.tp.model.Book;
 import formation.java.tp.model.Editor;
 import formation.java.tp.model.Library;
 import formation.java.tp.utils.LibraryInitializer;
+import formation.java.tp.utils.eBookType;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -12,45 +16,24 @@ import org.json.JSONWriter;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-//Args 0 : path \ Args 1 : filename \ Args 2 : 1
+//Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
     public static void main(String[] args) {
-        int operation;
+        int operation = 0;
         if (args.length != 4){
             Usage();
             return;
         }
-        else{
-            int test;
-            try {
-                test = Integer.parseInt(args[2]);
-            }catch (NumberFormatException e){
-                Usage();
-                return;
+        else
+        {
+            if( CheckArgs( args ) == -1 )
+            {
+                return ;
             }
-
-            if(test < 1 || test >= 5){ //Todo : Adapter les tests en fonction des arguments
-                Usage();
-                return;
-
-            }
-            if(!args[0].endsWith(".properties")){
-                Usage();
-                return;
-            }
-            if(args[1] == null){
-                Usage();
-                return;
-            }
-            //Todo : Il faudra checker toutes les extensions à vérifier
-            if(!args[0].endsWith(".json") ){
-                Usage();
-                return;
-            }
-
         }
 
         String url = null;
@@ -191,6 +174,20 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //    }
+
+        /* ----- serialization/deserialization example ----- */
+/*
+        String lObjFilePath = "resources/serializedObj.txt" ;
+        Library lLibrary    = new Library() ;
+        Library lLibrary2 ;
+        Deserializer<Library> lDeserializer = new Deserializer<Library>(lObjFilePath) ;
+        new LibraryInitializer().initializeCollection(lLibrary) ;
+        Serializer<Library> lSerializer = new Serializer<Library>(lObjFilePath, lLibrary ) ;
+        lSerializer.Serialize() ;
+        lLibrary2 = lDeserializer.Deserialize() ;
+        System.out.println( lLibrary2.Stringify() ) ;
+*/
+        /* ----- end serialization/deserialization example ----- */
         /* ----- JSONify ----- */
 /*
         Library lLibrary = new Library() ;
@@ -245,32 +242,28 @@ public class Main {
 
     private static int CheckArgs(String[] pArgs)
     {
-        int lCheckArg3;
-        try {
-            lCheckArg3 = Integer.parseInt(pArgs[2]);
-        }catch (NumberFormatException e){
-            Usage();
-            return -1;
+        int lCheckArg0 ;
+        try
+        {
+            lCheckArg0 = Integer.parseInt( pArgs[0] ) ;
         }
-
-        if(lCheckArg3 < 1 || lCheckArg3 >= 5){ //Todo : Adapter les tests en fonction des arguments
-            Usage();
-            return -1;
-        }//at this point args[2] seem to be ok
-        if(!pArgs[0].endsWith(".properties")){
-            Usage();
-            return -1;
+        catch (NumberFormatException e)
+        {
+            System.out.println("Unknown operation requested...") ;
+            Usage() ;
+            return -1 ;
+        }
+        if(lCheckArg0 < 1 || lCheckArg0 >= 5)
+        {
+            System.out.println("Unknown operation requested...") ;
+            Usage() ;
+            return -1 ;
         }//at this point args[0] seem to be ok
-        if(pArgs[1] == null){
-            Usage();
-            return -1;
-        }
-        //Todo : Il faudra checker toutes les extensions à vérifier
-        if(lCheckArg3 == eOperation.objectFileToDatabase.getValue() || lCheckArg3 == eOperation.databaseToObjectFile.getValue() )
+        if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
             if( !pArgs[1].endsWith(".txt") )
             {
-                System.out.println("Wrong file extensions...");
+                System.out.println("invalid file extensions...");
                 Usage() ;
                 return -1 ;
             }
@@ -279,11 +272,17 @@ public class Main {
         {
             if( !pArgs[1].endsWith(".json") )
             {
-                System.out.println("Wrong file extensions...");
+                System.out.println("invalid file extensions...");
                 Usage() ;
                 return -1 ;
             }
         }//at this point args[1] seem to be ok
+        if( !pArgs[2].endsWith(".properties") )
+        {
+            System.out.println("invalid propertie file...") ;
+            Usage();
+            return -1 ;
+        }//at this point args[0] seem to be ok
         if( !pArgs[3].endsWith(".txt") )
         {
             System.out.println("Wrong log file extensions...");

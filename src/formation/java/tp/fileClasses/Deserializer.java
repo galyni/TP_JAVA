@@ -18,7 +18,7 @@ public class Deserializer<T> extends AFileReader
     public Deserializer() {}
     public Deserializer(String pFilepath)
     {
-        this.mFilePath     = pFilepath ;
+        this.mFilePath = pFilepath ;
     }
 
     public T Deserialize()
