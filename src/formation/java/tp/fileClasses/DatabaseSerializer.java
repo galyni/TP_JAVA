@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+//TODO : stockage d'une Library dans un fichier en binaire
 public class DatabaseSerializer {
 
     Table[] tables = { new Table("Editors", new String[] {"ID", "Name", "SIRET", "Country", "Street", "Zipcode", "City"}),

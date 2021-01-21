@@ -36,7 +36,7 @@ public class Main {
 
 
 
-/*
+
         String url = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
@@ -76,6 +76,7 @@ public class Main {
                     // Sérialisation de la base
                     DatabaseSerializer dbSerializer = new DatabaseSerializer();
                     JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
+                    // TODO : renvoyer un objet librairie à la place du JSON
 
                     // Ecriture du JSON dans un fichier
                     bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
@@ -178,7 +179,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
-            if( !pArgs[1].endsWith(".txt") )
+            if( !pArgs[2].endsWith(".txt") )
             {
                 System.out.println("invalid file extensions...");
                 Usage() ;
@@ -187,14 +188,14 @@ public class Main {
         }
         else
         {
-            if( !pArgs[1].endsWith(".json") )
+            if( !pArgs[2].endsWith(".json") )
             {
                 System.out.println("invalid file extensions...");
                 Usage() ;
                 return -1 ;
             }
         }//at this point args[1] seem to be ok
-        if( !pArgs[2].endsWith(".properties") )
+        if( !pArgs[1].endsWith(".properties") )
         {
             System.out.println("invalid propertie file...") ;
             Usage();
