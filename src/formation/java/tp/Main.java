@@ -111,12 +111,11 @@ public class Main {
                     }
                     br.close();
                     JSONObject databaseObject = new JSONObject(sb.toString());
-                    JSONArray editors = databaseObject.getJSONArray("Editors");
 
                     connexion = DriverManager.getConnection(url);
 
                     DatabaseDeserializer databaseDeserializer = new DatabaseDeserializer();
-                    databaseDeserializer.DeserializeEditorsTable(connexion, editors);
+                    databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
 
 
                 } catch (Exception e) {
