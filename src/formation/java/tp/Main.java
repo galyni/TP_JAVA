@@ -1,18 +1,15 @@
 package formation.java.tp;
 
-import formation.java.tp.fileClasses.DBSerializer;
-import formation.java.tp.fileClasses.Deserializer;
-import formation.java.tp.fileClasses.Serializer;
-import formation.java.tp.model.Book;
+import formation.java.tp.fileClasses.DatabaseDeserializer;
+import formation.java.tp.fileClasses.DatabaseSerializer;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import formation.java.tp.model.Editor;
 import formation.java.tp.model.Library;
 import formation.java.tp.utils.LibraryInitializer;
 import formation.java.tp.utils.eBookType;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.json.JSONStringer;
 import org.json.JSONWriter;
-
 
 import java.io.*;
 import java.sql.*;
@@ -39,10 +36,11 @@ public class Main {
 
 
 
-/*
+
         String url = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
+        String logsFilename = args[3];
         BufferedReader br = null;
 
         try{
@@ -67,26 +65,23 @@ public class Main {
         Statement state = null;
         PreparedStatement ps =  null;
         ResultSet result = null;
+        BufferedWriter bw = null;
 
-        switch (operation) {
-            case 4:
+
+        switch (args[0]) {
+            case "4":
                 try {
                     connexion = DriverManager.getConnection(url);
-                    state = connexion.createStatement();
-                    result = state.executeQuery("select * from Editors");
 
-
-                    // Sérialisation de la table Editeurs
-                    DBSerializer dbSerializer = new DBSerializer();
-                    JSONArray jsonArray = dbSerializer.SerialiseDatabase( result);
-
+                    // Sérialisation de la base
+                    DatabaseSerializer dbSerializer = new DatabaseSerializer();
+                    JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
+                    // TODO : renvoyer un objet librairie à la place du JSON
 
                     // Ecriture du JSON dans un fichier
-                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
-                    bw.write(jsonArray.toString());
+                    bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
+                    bw.write(serializedDB.toString());
                     bw.close();
-                    result.close();
-
                 } catch(Exception e) {
                     System.out.println(e.getMessage());
                 } finally {
@@ -97,123 +92,55 @@ public class Main {
                             state.close();
                         if (connexion != null)
                             connexion.close();
-                    } catch (SQLException e) {
+                        if (bw != null)
+                            bw.close();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 break;
-//            case eOperation.jsonFileToDatabase.value:
-//                break;
+            case "3":
+                try {
+
+                    //Lecture fichier vers base
+                    br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameDatabaseJSON)));
+
+                    StringBuilder sb = new StringBuilder();
+                    while(br.ready()){
+                        sb.append(br.readLine());
+                    }
+                    br.close();
+                    JSONObject databaseObject = new JSONObject(sb.toString());
+                    JSONArray editors = databaseObject.getJSONArray("Editors");
+
+                    connexion = DriverManager.getConnection(url);
+
+                    DatabaseDeserializer databaseDeserializer = new DatabaseDeserializer();
+                    databaseDeserializer.DeserializeEditorsTable(connexion, editors);
+
+
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }  finally {
+                    try {
+                        if (connexion != null)
+                            connexion.close();
+                        if (ps != null)
+                            ps.close();
+                        if (br != null)
+                            br.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
 
 
-//        try {
-//            // Lecture fichier vers un objet
-////            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-////            Editor e1 = (Editor)in.readObject();
-////            System.out.println(e1.Stringify());
-//
-//            //Lecture fichier vers base
-//            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)));
-//
-//            StringBuilder sb = new StringBuilder();
-//            while(br.ready()){
-//                sb.append(br.readLine());
-//            }
-//            JSONArray editors = new JSONArray(sb.toString());
-//            JSONObject editor;
-//
-//            connexion = DriverManager.getConnection(url);
-//            state = connexion.createStatement();
-//
-//            String Name = null;
-//            String SIRET = null;
-//            String Country = null;
-//            String Street = null;
-//            String Zipcode = null;
-//            String City = null;
-//
-//            for(int i = 0; i < editors.length(); i++){
-//                editor = editors.getJSONObject(i);
-//
-//                // TODO : check if null for nullable fields and only those
-//                Name = editor.getString("Name");
-//                if(editor.has("SIRET"))
-//                    SIRET = editor.getString("SIRET");
-//                else
-//                    SIRET = null;
-//                if(editor.has("Country"))
-//                    Country = editor.getString("Country");
-//                else
-//                    Country = null;
-//                Street = editor.getString("Street");
-//                Zipcode = editor.getString("Zipcode");
-//                City = editor.getString("City");
-//
-//                ps = connexion.prepareStatement(
-//                        "INSERT INTO EDITORS(SIRET, NAME, STREET, ZIPCODE, CITY, COUNTRY)" +
-//                                "VALUES(?, ?, ?, ?, ?, ?)");
-//                ps.setString(1, SIRET);
-//                ps.setString(2, Name);
-//                ps.setString(3, Street);
-//                ps.setString(4, Zipcode);
-//                ps.setString(5, City);
-//                ps.setString(6, Country);
-//
-//                int nbRows = ps.executeUpdate();
-//                System.out.println("Nombre de lignes insérées : " + nbRows);
-//
-//            }
-//
-//
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }  finally {
-//        try {
-//            if (connexion != null)
-//                connexion.close();
-//            if (ps != null)
-//                ps.close();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
-        /* ----- JSONify ----- */
-/*
-        Library lLibrary = new Library() ;
-        new LibraryInitializer().initializeCollection(lLibrary) ;
-        JSONObject lJsonRoot = new JSONObject( ) ;
-
-        JSONArray lJsonArray = new JSONArray(lLibrary.mBookLibrary.toArray());
-        lJsonArray.put(lLibrary.mMagazineLibrary);
-        lJsonArray.put(lLibrary.mCDLibrary);
-        lJsonArray.put(lLibrary.mDVDLibrary);
-        lJsonRoot.put("Magazines", lLibrary.mMagazineLibrary) ;
-        lJsonRoot.put("Books", lLibrary.mBookLibrary) ;
-        lJsonRoot.put("CDs", lLibrary.mCDLibrary) ;
-        lJsonRoot.put("DVDs", lLibrary.mDVDLibrary) ;
-
-        System.out.println(lJsonRoot.toString());
-*/      //TODO David, finish this, create library property to contains all arrays, write it into file, and create an object to contains this logic
-        /* ----- end JSONify ----- */
-
-        /* ----- object serialization/deserialization example ----- */
-/*
-        String lObjFilePath                 = "resources/serializedObj.txt" ;
-        Library lLibrary                    = new Library() ;
-        Deserializer<Library> lDeserializer = new Deserializer<Library>(lObjFilePath) ;
-        Library lLibrary2 ;
-
-        new LibraryInitializer().initializeCollection(lLibrary) ;
-
-        Serializer<Library> lSerializer = new Serializer<Library>(lObjFilePath, lLibrary ) ;
-        lSerializer.Serialize() ;
-
-        lLibrary2 = lDeserializer.Deserialize() ;
-        System.out.println( lLibrary2.Stringify() ) ;
-*/
-        /* ----- end serialization/deserialization example ----- */
+//        Library lLibrary = new Library();
+//        new LibraryInitializer().initializeCollection(lLibrary);
+//        System.out.println( lLibrary.Stringify() );
     }
     //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
@@ -252,7 +179,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
-            if( !pArgs[1].endsWith(".txt") )
+            if( !pArgs[2].endsWith(".txt") )
             {
                 System.out.println("invalid file extensions...");
                 Usage() ;
@@ -261,14 +188,14 @@ public class Main {
         }
         else
         {
-            if( !pArgs[1].endsWith(".json") )
+            if( !pArgs[2].endsWith(".json") )
             {
                 System.out.println("invalid file extensions...");
                 Usage() ;
                 return -1 ;
             }
         }//at this point args[1] seem to be ok
-        if( !pArgs[2].endsWith(".properties") )
+        if( !pArgs[1].endsWith(".properties") )
         {
             System.out.println("invalid propertie file...") ;
             Usage();
