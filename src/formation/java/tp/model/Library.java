@@ -3,9 +3,10 @@ package formation.java.tp.model;
 import formation.java.tp.interfaces.ICollection;
 import formation.java.tp.interfaces.IDisplayable;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Library implements ICollection<Library>, IDisplayable
+public class Library implements ICollection<Library>, IDisplayable, Serializable
 {
     public Vector<CD>       mCDLibrary ;
     public Vector<DVD>      mDVDLibrary ;

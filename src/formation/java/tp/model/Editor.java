@@ -31,7 +31,7 @@ public class Editor implements IDisplayable, Serializable
     public void setEditorCity(String pCity)       {this.mCity = pCity ;}
     public void setEditorCountry(String pCountry) {this.mCountry = pCountry ;}
     public void setSiegeStreet(String pStreet)    {this.mStreet = pStreet ;}
-    public void setEditorName(String pName)    {this.mName = pName ;}
+    public void setEditorName(String pName)       {this.mName = pName ;}
 
     @Override
     public String Stringify()

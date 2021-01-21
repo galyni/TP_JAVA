@@ -4,21 +4,39 @@ import formation.java.tp.fileClasses.DatabaseDeserializer;
 import formation.java.tp.fileClasses.DatabaseSerializer;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import formation.java.tp.model.Editor;
+import formation.java.tp.model.Library;
+import formation.java.tp.utils.LibraryInitializer;
+import formation.java.tp.utils.eBookType;
+import org.json.JSONStringer;
+import org.json.JSONWriter;
 
 import java.io.*;
 import java.sql.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
-//Args 0 : path \ Args 1 : filename \ Args 2 : 1
+//Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
     public static void main(String[] args) {
-
-
-        if(!ValidArgs(args)) {
+        //TODO don't forget to add LogWriter to every logic classes, to allow them to log their operations and errors into logFile
+        int operation = 0;
+        if (args.length != 4){
             Usage();
             return;
         }
+        else
+        {
+            if( CheckArgs( args ) == -1 )
+            {
+                return ;
+            }
+        }
 
+
+
+/*
         String url = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
@@ -133,49 +151,95 @@ public class Main {
                 "\t\t[2] to serialize database into file\n" +
                 "\t\t[3] to import JSON file into database\n" +
                 "\t\t[4] to serialize database into JSON file\n" +
-                "\targ2 : path to file to read/write\n" +
-                "\targ3 : path to properties file for database connection\n" +
-                "\targ4 : path to logs file\n" +
+                "\targ2 : \".txt\" or \".json\" path to file to read/write\n" +
+                "\targ3 : \".properties\" path to properties file for database connection\n" +
+                "\targ4 : \".txt\" path to logs file\n" +
                 "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
     }
 
-    private static boolean ValidArgs(String args[]) {
-        int operation;
-        if (args.length != 4) {
-            return false;
-        } else {
-            try {
-                operation = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                return false;
-            }
-            if (operation < 1 || operation >= 5) { //Todo : Adapter les tests en fonction des arguments
-                return false;
-            }
-            if (!args[1].endsWith(".properties")) {
-                return false;
-            }
-            //Todo : Il faudra checker toutes les extensions à vérifier
-            if (!(args[2].length() > 0) || !args[2].endsWith(".json")) {
-                return false;
-            }
-            if (!(args[3].length() > 0) || !args[3].endsWith(".txt"))
-                return false;
+    private static int CheckArgs(String[] pArgs)
+    {
+        int lCheckArg0 ;
+        try
+        {
+            lCheckArg0 = Integer.parseInt( pArgs[0] ) ;
         }
-        return true;
+        catch (NumberFormatException e)
+        {
+            System.out.println("invalid operation format...") ;
+            Usage() ;
+            return -1 ;
+        }
+        if(lCheckArg0 < 1 || lCheckArg0 >= 5)
+        {
+            System.out.println("Unknown operation requested...") ;
+            Usage() ;
+            return -1 ;
+        }//at this point args[0] seem to be ok
+        if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
+        {
+            if( !pArgs[1].endsWith(".txt") )
+            {
+                System.out.println("invalid file extensions...");
+                Usage() ;
+                return -1 ;
+            }
+        }
+        else
+        {
+            if( !pArgs[1].endsWith(".json") )
+            {
+                System.out.println("invalid file extensions...");
+                Usage() ;
+                return -1 ;
+            }
+        }//at this point args[1] seem to be ok
+        if( !pArgs[2].endsWith(".properties") )
+        {
+            System.out.println("invalid propertie file...") ;
+            Usage();
+            return -1 ;
+        }//at this point args[0] seem to be ok
+        if( !pArgs[3].endsWith(".txt") )
+        {
+            System.out.println("invalid log file extensions...");
+            Usage() ;
+            return -1 ;
+        }//at this point all args are ok
+        return 0 ;
     }
 
+    private enum eOperation
+    {
+        objectFileToDatabase(1),
+        databaseToObjectFile(2),
+        jsonFileToDatabase(3),
+        databaseToJsonFile(4);
 
-//    private enum eOperation{ //Todo vérifier si on peut s'en servir
-//        objectFileToDatabase(1),
-//        databaseToObjectFile(2),
-//        jsonFileToDatabase(3),
-//        databaseToJsonFile(4);
-//
-//        private int value;
-//        private  eOperation(int value){
-//        this.value = value;
-//        }
-//    }
+        private int        value ;
+        private static Map map = new HashMap<>() ;
 
+        private eOperation(int value)
+        {
+            this.value = value ;
+        }
+
+        static
+        {
+            for ( eOperation pageType : eOperation.values() )
+            {
+                map.put(pageType.value, pageType) ;
+            }
+        }
+
+        public static eOperation valueOf(int pageType)
+        {
+            return (eOperation) map.get(pageType) ;
+        }
+
+        public int getValue()
+        {
+            return value ;
+        }
+    }
 }
