@@ -60,14 +60,6 @@ public class DatabaseSerializer {
         return tableSerialized;
     }
 
-    class Table{
-        String Name;
-        String[] Columns;
 
-        Table (String name, String[] columns){
-            Name = name;
-            Columns = columns;
-        }
-    }
 
 }
