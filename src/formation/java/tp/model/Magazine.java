@@ -5,6 +5,7 @@ import formation.java.tp.interfaces.IDisplayable;
 import formation.java.tp.utils.eMagazineType;
 import formation.java.tp.utils.ePublishmentFrequency;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Magazine extends ACollectible implements IDisplayable
@@ -15,7 +16,7 @@ public class Magazine extends ACollectible implements IDisplayable
     private ePublishmentFrequency mFrequency;
 
     public Magazine (){}
-    public Magazine ( String pTitle, Editor pEditor, Date pPublishDate, int pNumberOfPages, String pAuthor, eMagazineType pMagazineType, ePublishmentFrequency pFrequency )
+    public Magazine (String pTitle, Editor pEditor, LocalDateTime pPublishDate, int pNumberOfPages, String pAuthor, eMagazineType pMagazineType, ePublishmentFrequency pFrequency )
     {
         this.mPublishDate   = pPublishDate ;
         this.mBorrowed      = false ;
@@ -28,7 +29,7 @@ public class Magazine extends ACollectible implements IDisplayable
         this.mFrequency     = pFrequency ;
     }
 
-    public Date getPublishDate()           {return this.mPublishDate ;}
+    public LocalDateTime getPublishDate()  {return this.mPublishDate ;}
     public boolean isBorrowed()            {return this.mBorrowed ;}
     public void borrowMagazine()           {this.mBorrowed = true ;}
     public Editor getEditor()              {return this.mEditor ;}

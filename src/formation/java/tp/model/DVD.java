@@ -5,6 +5,7 @@ import formation.java.tp.interfaces.IDisplayable;
 import formation.java.tp.utils.eBookType;
 import formation.java.tp.utils.eDVDType;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class DVD extends ACollectible implements IDisplayable
@@ -14,7 +15,7 @@ public class DVD extends ACollectible implements IDisplayable
     private boolean  mIsAudioDescriptible;
 
     public DVD (){}
-    public DVD( String pTitle, Editor pEditor, Date pPublishDate, double pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
+    public DVD(String pTitle, Editor pEditor, LocalDateTime pPublishDate, double pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
     {
         this.mPublishDate         = pPublishDate ;
         this.mBorrowed            = false ;
@@ -26,14 +27,14 @@ public class DVD extends ACollectible implements IDisplayable
         this.mIsAudioDescriptible = pIsAudioDescriptible ;
     }
 
-    public Date getPublishDate()         {return this.mPublishDate ;}
-    public boolean isBorrowed()          {return this.mBorrowed ;}
-    public void borrowDVD()              {this.mBorrowed = true ;}
-    public Editor getEditor()            {return this.mEditor ;}
-    public String getTitle()             {return this.mTitle ;}
-    public double getDVDLength()         {return this.mLength ;}
-    public eDVDType getDVDType()         {return this.mDVDType ;}
-    public boolean isAudioDescriptible() {return this.mIsAudioDescriptible ;}
+    public LocalDateTime getPublishDate() {return this.mPublishDate ;}
+    public boolean isBorrowed()           {return this.mBorrowed ;}
+    public void borrowDVD()               {this.mBorrowed = true ;}
+    public Editor getEditor()             {return this.mEditor ;}
+    public String getTitle()              {return this.mTitle ;}
+    public double getDVDLength()          {return this.mLength ;}
+    public eDVDType getDVDType()          {return this.mDVDType ;}
+    public boolean isAudioDescriptible()  {return this.mIsAudioDescriptible ;}
 
     @Override
     public String Stringify()

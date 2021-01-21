@@ -4,15 +4,16 @@ import formation.java.tp.interfaces.IDisplayable;
 import formation.java.tp.model.Editor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public abstract class ACollectible implements IDisplayable, Serializable
 {
-    protected boolean mBorrowable ;
-    protected boolean mBorrowed ;
-    protected String  mTitle ;
-    protected Editor  mEditor ;
-    protected Date    mPublishDate ;
+    protected boolean       mBorrowable ;
+    protected boolean       mBorrowed ;
+    protected String        mTitle ;
+    protected Editor        mEditor ;
+    protected LocalDateTime mPublishDate ;
 
     @Override
     public String Stringify()
