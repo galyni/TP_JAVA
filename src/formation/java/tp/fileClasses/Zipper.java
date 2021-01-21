@@ -42,16 +42,15 @@ public class Zipper
     public void ZipFiles() throws IOException, FileNotFoundException
     {
         BufferedOutputStream lBufferedOutputStream = null ;
-        FileOutputStream lFileOutputStream         = new FileOutputStream(this.mOutputFilePath);
-        ZipOutputStream lZipOutputStream           = new ZipOutputStream(lFileOutputStream); ;
+        ZipOutputStream lZipOutputStream           = new ZipOutputStream(new FileOutputStream(this.mOutputFilePath)); ;
 
         for (int i = 0; i < this.mFilesPath.size(); ++i)
         {
             //this.mDataReader = new DataReader( this.mFilesPath.get(i) ) ;
             //byte[] lByteFileContent = this.mDataReader.ReadAsByte() ;
 
-            File lFile                 = new File( this.mFilesPath.get(i) ) ;
-            FileInputStream lInputFile = new FileInputStream(lFile);
+            //File lFile                 = new File( this.mFilesPath.get(i) ) ;
+            FileInputStream lInputFile = new FileInputStream(this.mFilesPath.get(i));
             ZipEntry zipEntry          = new ZipEntry( this.mFilesPath.get(i) ) ;
             lZipOutputStream.putNextEntry(zipEntry);
 
@@ -66,7 +65,7 @@ public class Zipper
             lInputFile.close() ;
         }
 
-        lFileOutputStream.close();
         lZipOutputStream.close();
+
     }
 }

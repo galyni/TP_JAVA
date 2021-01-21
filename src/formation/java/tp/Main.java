@@ -2,6 +2,7 @@ package formation.java.tp;
 
 import formation.java.tp.fileClasses.DatabaseDeserializer;
 import formation.java.tp.fileClasses.DatabaseSerializer;
+import formation.java.tp.fileClasses.Zipper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import formation.java.tp.model.Editor;
@@ -133,13 +134,21 @@ public class Main {
                     }
                 }
                 break;
+            // TODO: 21/01/2021 temporaire, pour test le zipper
+            case "2":
+                try {
+                    String database = "resources/database.json";
+                    String nomFichier = "patate.zip";
+                    Zipper zipper = new Zipper(nomFichier, database, "resources/Log.txt");
+                    zipper.ZipFiles();
+                    break;
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
         }
 
 
 
-//        Library lLibrary = new Library();
-//        new LibraryInitializer().initializeCollection(lLibrary);
-//        System.out.println( lLibrary.Stringify() );
     }
     //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
