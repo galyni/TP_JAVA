@@ -6,7 +6,6 @@ import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -133,11 +132,10 @@ public class JsonConverter<T>
                     lJsonMagazine.get("author").toString(),
                     lJsonMagazine.getEnum( eMagazineType.class,"magazineType"),
                     ePublishmentFrequency.Daily
-                    //lJsonMagazine.getEnum( ePublishmentFrequency.class,"magazineType"),//TODO da fuck?! JSON didn't serialize this?!
+                    //lJsonMagazine.getEnum( ePublishmentFrequency.class,"magazineType")
             ) ;
             lLibrary.mMagazineLibrary.add(lMagazine) ;
         }
-        System.out.println(lLibrary.Stringify());
         return lLibrary ;
     }
 }

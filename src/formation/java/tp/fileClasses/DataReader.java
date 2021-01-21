@@ -2,10 +2,7 @@ package formation.java.tp.fileClasses;
 
 import formation.java.tp.abstracts.AFileReader;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.Scanner;
 
 public class DataReader extends AFileReader
@@ -93,5 +90,27 @@ public class DataReader extends AFileReader
             throw new FileNotFoundException("Unable to open file to read") ;
         }
         return null ;
+    }
+    public byte[] ReadAsByte() throws IOException
+    {
+        FileInputStream lFileInputStream = new FileInputStream(this.mFilePath) ;
+        DataInputStream lDataInputStream = new DataInputStream(lFileInputStream) ;
+
+        int lContentSize = 0 ;
+        try
+        {
+            lContentSize = lDataInputStream.available() ;
+        } catch (IOException e)
+        {
+            e.printStackTrace() ;
+            throw new IOException("unable to find input file to zip") ;
+        }
+        byte lFileData [] = new byte[lContentSize] ;
+        lDataInputStream.read(lFileData) ;
+
+        lFileInputStream.close() ;
+        lDataInputStream.close() ;
+
+        return lFileData ;
     }
 }
