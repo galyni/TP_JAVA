@@ -18,6 +18,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: 22/01/2021 Liste de points qui restent à voir :
+/*
+1 - Les objets ont sans doute besoin d'un champ EditeurID, car nous n'avons pas d'ORM pour gérer pour nous le lien entre les objets.
+Pour les conversions Objets <-> Json, cela ne pose pas problème, mais pour les liens avec la base oui.
+Possibilité : convertisseur sans stockage de l'objet editeur dans les objets, juste de son ID, et stockage des éditeurs à part, avec leurs ID.
+Le problème se pose aussi pour le DatabaseSerialzer, qui perd les relations.
+Une fois ces problème réglés, le format sera preque le même que pour le passage DB <-> Json, donc tous les sens de conversion seront possible.
+
+Seule différence : la librairie sérialisée crée un objet qui a une couche supplémentaire : { "Library" : {"Books":[...], ...}}
+alors que la Base donne tout simplement {"Books":[...], ...}
+
+2 - Ajouter le logger dans toutes les classes
+
+
+ */
+
 public class Main {
 //Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
     public static void main(String[] args) {

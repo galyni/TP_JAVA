@@ -1,4 +1,7 @@
 out/
 /test.txt
 /database.json
+resources/.properties
 *.zip
+*.json
+*.txt
