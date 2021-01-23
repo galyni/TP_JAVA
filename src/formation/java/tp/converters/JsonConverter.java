@@ -23,13 +23,13 @@ public class JsonConverter<T>
         if(pObjectToConvert instanceof Library)
         {
             JSONObject lJsonRoot    = new JSONObject() ;
-            JSONObject lLibraryRoot = new JSONObject() ;
+//            JSONObject lLibraryRoot = new JSONObject() ;
 
-            lLibraryRoot.put("Magazines", ( (Library) pObjectToConvert ).mMagazineLibrary) ;
-            lLibraryRoot.put("Books", ( (Library) pObjectToConvert ).mBookLibrary) ;
-            lLibraryRoot.put("CDs", ( (Library) pObjectToConvert ).mCDLibrary) ;
-            lLibraryRoot.put("DVDs", ( (Library) pObjectToConvert ).mDVDLibrary) ;
-            lJsonRoot.put("Library", lLibraryRoot) ;
+            lJsonRoot.put("Magazines", ( (Library) pObjectToConvert ).mMagazineLibrary) ;
+            lJsonRoot.put("Books", ( (Library) pObjectToConvert ).mBookLibrary) ;
+            lJsonRoot.put("CDs", ( (Library) pObjectToConvert ).mCDLibrary) ;
+            lJsonRoot.put("DVDs", ( (Library) pObjectToConvert ).mDVDLibrary) ;
+//            lJsonRoot.put("Library", lLibraryRoot) ;
 
             lJsonifiedObject = lJsonRoot.toString() ;
         }

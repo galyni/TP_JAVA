@@ -1,8 +1,11 @@
 package formation.java.tp;
 
+import formation.java.tp.converters.JsonConverter;
+import formation.java.tp.fileClasses.DataWriter;
 import formation.java.tp.fileClasses.DatabaseDeserializer;
 import formation.java.tp.fileClasses.DatabaseSerializer;
 import formation.java.tp.fileClasses.Zipper;
+import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import formation.java.tp.model.Editor;
@@ -36,7 +39,7 @@ alors que la Base donne tout simplement {"Books":[...], ...}
 
 public class Main {
 //Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionControl.NotImplementedException {
         //TODO don't forget to add LogWriter to every logic classes, to allow them to log their operations and errors into logFile
         int operation = 0;
         if (args.length != 4){
@@ -152,13 +155,28 @@ public class Main {
                 break;
             // TODO: 21/01/2021 temporaire, pour test le zipper
             case "2":
+//                try {
+//                    String database = "resources/database.json";
+//                    String nomFichier = "patate.zip";
+//                    Zipper zipper = new Zipper(nomFichier, database, "resources/Log.txt");
+//                    zipper.ZipFiles();
+//                    break;
+//                } catch (IOException e){
+//                    e.printStackTrace();
+//                }
                 try {
-                    String database = "resources/database.json";
-                    String nomFichier = "patate.zip";
-                    Zipper zipper = new Zipper(nomFichier, database, "resources/Log.txt");
-                    zipper.ZipFiles();
-                    break;
-                } catch (IOException e){
+                    Library librairie = new Library();
+                    new LibraryInitializer().initializeCollection(librairie);
+                    JsonConverter jo = new JsonConverter();
+                    String test = jo.ConvertIntoJson(librairie);
+                    System.out.println(test);
+
+                    DataWriter martine = new DataWriter("LibrairieToJSON.json");
+                    martine.WriteFile(test, false);
+
+                    System.out.println(librairie.Stringify());
+                    int i = 0;
+                }catch(ExecutionControl.NotImplementedException e){
                     e.printStackTrace();
                 }
         }

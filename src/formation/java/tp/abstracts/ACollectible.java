@@ -19,7 +19,7 @@ public abstract class ACollectible implements IDisplayable, Serializable
     public String Stringify()
     {
         return (this.mTitle +
-                " : \n\t édité par : " + this.mEditor.getEditorName() + ", le " + this.mPublishDate.toString() +
+                " : \n\t édité par : " + this.mEditor.Stringify() + this.mEditor.getEditorName() + ", le " + this.mPublishDate.toString() +
                 ".\n\t" + (this.mBorrowable ? "non empruntable, " : "empruntable, " ) + ( ( this.mBorrowable ? ( this.mBorrowed ? " déjà sorti ": "disponible à l'emprunt " ) : " " ) ) +
                 "\n\t") ;
     }
