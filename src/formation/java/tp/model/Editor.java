@@ -52,4 +52,8 @@ public class Editor implements IDisplayable, Serializable
                  "\n\tPays : " + this.mCountry +
                  "\n\tSiret : " + this.mSiret) ;
     }
+
+    public void setEditorsID(int pEditorID){
+        this.EditorID = pEditorID;
+    }
 }

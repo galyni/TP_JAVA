@@ -23,4 +23,8 @@ public abstract class ACollectible implements IDisplayable, Serializable
                 ".\n\t" + (this.mBorrowable ? "non empruntable, " : "empruntable, " ) + ( ( this.mBorrowable ? ( this.mBorrowed ? " déjà sorti ": "disponible à l'emprunt " ) : " " ) ) +
                 "\n\t") ;
     }
+
+    public void setEditorID(int pEditorID){
+        this.mEditor.setEditorID(pEditorID);
+    }
 }

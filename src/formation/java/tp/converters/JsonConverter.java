@@ -43,11 +43,11 @@ public class JsonConverter<T>
     {
         Library lLibrary             = new Library() ;
         JSONObject lJsonRoot         = new JSONObject(pJsonLibrary) ;
-        JSONObject lJsonLibrary      = new JSONObject( lJsonRoot.get("Library").toString() ) ;
-        JSONArray lJsonDVDArray      = new JSONArray( lJsonLibrary.getJSONArray("DVDs").toString() ) ;
-        JSONArray lJsonCDArray       = new JSONArray( lJsonLibrary.getJSONArray("CDs").toString() ) ;
-        JSONArray lJsonBookArray     = new JSONArray( lJsonLibrary.getJSONArray("Books").toString() ) ;
-        JSONArray lJsonMagazineArray = new JSONArray( lJsonLibrary.getJSONArray("Magazines").toString() ) ;
+//        JSONObject lJsonLibrary      = new JSONObject( lJsonRoot.get("Library").toString() ) ;
+        JSONArray lJsonDVDArray      = new JSONArray( lJsonRoot.getJSONArray("DVDs").toString() ) ;
+        JSONArray lJsonCDArray       = new JSONArray( lJsonRoot.getJSONArray("CDs").toString() ) ;
+        JSONArray lJsonBookArray     = new JSONArray( lJsonRoot.getJSONArray("Books").toString() ) ;
+        JSONArray lJsonMagazineArray = new JSONArray( lJsonRoot.getJSONArray("Magazines").toString() ) ;
         JSONObject lJsonEditor ;
 
         for(int i = 0; i < lJsonDVDArray.length(); ++i)
@@ -69,6 +69,7 @@ public class JsonConverter<T>
                     lJsonDVD.getEnum( eDVDType.class,"DVDType"),
                     lJsonDVD.getBoolean("audioDescriptible")
             ) ;
+            lDVD.setEditorID(lJsonEditor.getInt("editorID"));
             lLibrary.mDVDLibrary.add(lDVD) ;
         }
         for(int i = 0; i < lJsonCDArray.length(); ++i)
@@ -132,7 +133,7 @@ public class JsonConverter<T>
                     lJsonMagazine.get("author").toString(),
                     lJsonMagazine.getEnum( eMagazineType.class,"magazineType"),
                     ePublishmentFrequency.Daily
-                    //lJsonMagazine.getEnum( ePublishmentFrequency.class,"magazineType")
+//                    lJsonMagazine.getEnum( ePublishmentFrequency.class,"magazineType")
             ) ;
             lLibrary.mMagazineLibrary.add(lMagazine) ;
         }

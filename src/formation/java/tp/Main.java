@@ -1,10 +1,7 @@
 package formation.java.tp;
 
 import formation.java.tp.converters.JsonConverter;
-import formation.java.tp.fileClasses.DataWriter;
-import formation.java.tp.fileClasses.DatabaseDeserializer;
-import formation.java.tp.fileClasses.DatabaseSerializer;
-import formation.java.tp.fileClasses.Zipper;
+import formation.java.tp.fileClasses.*;
 import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -174,9 +171,16 @@ public class Main {
                     DataWriter martine = new DataWriter("LibrairieToJSON.json");
                     martine.WriteFile(test, false);
 
+                    DataReader martin = new DataReader("LibrairieToJSON.json");
+                    test = martin.ReadWholeFile();
                     System.out.println(librairie.Stringify());
+                    Library librairie2 = new Library();
+                    librairie2 = jo.InstanciateLibraryFromJson(test);
+
                     int i = 0;
                 }catch(ExecutionControl.NotImplementedException e){
+                    e.printStackTrace();
+                }catch(FileNotFoundException e){
                     e.printStackTrace();
                 }
         }
