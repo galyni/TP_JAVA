@@ -37,6 +37,10 @@ public class Book extends ACollectible implements IDisplayable
     public String getAuthor()             {return this.mAuthor ;}
     public eBookType getBookType()        {return this.mBookType ;}
     public boolean isTraduct()            {return this.mIsTraduct ;}
+    public boolean isBorrowable()            {return this.mBorrowable ;}
+    public int getBookTypeAsInt() {
+        return mBookType.ordinal();
+    }
 
     @Override
     public String Stringify()

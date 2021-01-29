@@ -15,27 +15,30 @@ public class Editor implements IDisplayable, Serializable
     private String mCountry;
     private String mName;
     private String mSiret;
+    private String mZipcode;
     private int EditorID;
 
     public Editor(){}
-    public Editor( String pStreet, String pCity, String pCountry, String pName, String pSiret)
+    public Editor( String pStreet, String pCity, String pCountry, String pName, String pSiret, String pZipcode)
     {
         this.mStreet   = pStreet ;
         this.mCity     = pCity ;
         this.mCountry  = pCountry ;
         this.mName     = pName ;
-        this. mSiret   = pSiret ;
+        this.mSiret   = pSiret ;
+        this.mZipcode   = pZipcode ;
         sEditorsID ++;
         this.EditorID = sEditorsID;
     }
 
-    public Editor( String pStreet, String pCity, String pCountry, String pName, String pSiret, int editorID)
+    public Editor( String pStreet, String pCity, String pCountry, String pName, String pSiret, String pZipcode, int editorID)
     {
         this.mStreet   = pStreet ;
         this.mCity     = pCity ;
         this.mCountry  = pCountry ;
         this.mName     = pName ;
-        this. mSiret   = pSiret ;
+        this.mSiret   = pSiret ;
+        this.mZipcode   = pZipcode ;
         sEditorsID ++;
         this.EditorID = editorID;
     }
@@ -45,6 +48,11 @@ public class Editor implements IDisplayable, Serializable
     public String getEditorCountry() {return this.mCountry ;}
     public String getEditorSiret()   {return this.mSiret ;}
     public String getSiegeStreet()   {return this.mStreet ;}
+
+    public String getmZipcode() {
+        return mZipcode;
+    }
+
     public int getEditorID()        {return this.EditorID;}
 
     public void setEditorCity(String pCity)       {this.mCity = pCity ;}

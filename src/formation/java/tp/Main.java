@@ -2,6 +2,7 @@ package formation.java.tp;
 
 import formation.java.tp.converters.JsonConverter;
 import formation.java.tp.fileClasses.*;
+import formation.java.tp.model.Book;
 import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,7 +55,7 @@ public class Main {
 
 
 
-        String url = null;
+        String connectionString = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
         String logsFilename = args[3];
@@ -63,7 +64,7 @@ public class Main {
         try{
             br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
             JSONObject jso = new JSONObject(br.readLine());
-            url = jso.getString("connectionString");
+            connectionString = jso.getString("connectionString");
 
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -88,7 +89,7 @@ public class Main {
         switch (args[0]) {
             case "4":
                 try {
-                    connexion = DriverManager.getConnection(url);
+                    connexion = DriverManager.getConnection(connectionString);
 
                     // Sérialisation de la base
                     DatabaseSerializer dbSerializer = new DatabaseSerializer();
@@ -129,7 +130,7 @@ public class Main {
                     br.close();
                     JSONObject databaseObject = new JSONObject(sb.toString());
 
-                    connexion = DriverManager.getConnection(url);
+                    connexion = DriverManager.getConnection(connectionString);
 
                     DatabaseDeserializer databaseDeserializer = new DatabaseDeserializer();
                     databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
@@ -183,6 +184,23 @@ public class Main {
                 }catch(FileNotFoundException e){
                     e.printStackTrace();
                 }
+                break;
+            case "1":
+                try {
+                    Library librairie = new Library();
+                    new LibraryInitializer().initializeCollection(librairie);
+
+                    //Editor editeur = librairie.mBookLibrary.firstElement().getEditor();
+                    Book livre = librairie.mBookLibrary.firstElement();
+
+                    DatabaseImporter importer = new DatabaseImporter(connectionString);
+                    //importer.InsertIntoEditors(editeur);
+
+                    importer.InsertIntoBooks(livre, 1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
         }
 
 

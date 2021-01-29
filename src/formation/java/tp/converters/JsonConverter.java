@@ -63,7 +63,8 @@ public class JsonConverter<T>
                     lJsonEditor.get("editorCountry").toString(),
                     lJsonEditor.get("editorName").toString(),
                     lJsonEditor.get("editorSiret").toString(),
-                            (int)lJsonEditor.get("editorID")
+                    lJsonEditor.get("editorZipcode").toString(),
+                    (int)lJsonEditor.get("editorID")
                     ),
                     LocalDateTime.parse( lJsonDVD.get("publishDate").toString() ),
                     lJsonDVD.getDouble("DVDLength"),
@@ -86,6 +87,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorCountry").toString(),
                             lJsonEditor.get("editorName").toString(),
                             lJsonEditor.get("editorSiret").toString(),
+                            lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
                     LocalDateTime.parse(lJsonCD.get("publishDate").toString()),
@@ -107,6 +109,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorCountry").toString(),
                             lJsonEditor.get("editorName").toString(),
                             lJsonEditor.get("editorSiret").toString(),
+                            lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
                     LocalDateTime.parse( lJsonBook.get("publishDate").toString() ),
@@ -130,6 +133,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorCountry").toString(),
                             lJsonEditor.get("editorName").toString(),
                             lJsonEditor.get("editorSiret").toString(),
+                            lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
                     LocalDateTime.parse( lJsonMagazine.get("publishDate").toString() ),
