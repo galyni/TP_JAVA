@@ -29,6 +29,17 @@ public class Editor implements IDisplayable, Serializable
         this.EditorID = sEditorsID;
     }
 
+    public Editor( String pStreet, String pCity, String pCountry, String pName, String pSiret, int editorID)
+    {
+        this.mStreet   = pStreet ;
+        this.mCity     = pCity ;
+        this.mCountry  = pCountry ;
+        this.mName     = pName ;
+        this. mSiret   = pSiret ;
+        sEditorsID ++;
+        this.EditorID = editorID;
+    }
+
     public String getEditorName()    {return this.mName ;}
     public String getEditorCity()    {return this.mCity ;}
     public String getEditorCountry() {return this.mCountry ;}
