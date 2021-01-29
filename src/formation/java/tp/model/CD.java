@@ -9,11 +9,12 @@ import java.util.Date;
 
 public class CD extends ACollectible implements IDisplayable
 {
-    private double  mLength;
+    private String  mLength;
     private eCDType mCDType;
+    private int mNumberOfTracks;
 
     public CD(){}
-    public CD(String pTitle, Editor pEditor, LocalDateTime pPublishDate, double pLength, eCDType pCDType )
+    public CD(String pTitle, Editor pEditor, LocalDateTime pPublishDate, String pLength, eCDType pCDType, int pNumberOfTracks )
     {
         this.mPublishDate = pPublishDate ;
         this.mBorrowed    = false ;
@@ -22,15 +23,24 @@ public class CD extends ACollectible implements IDisplayable
         this.mTitle       = pTitle ;
         this.mLength      = pLength ;
         this.mCDType      = pCDType ;
+        this.mNumberOfTracks = pNumberOfTracks;
     }
 
     public LocalDateTime getPublishDate() {return this.mPublishDate ;}
     public boolean isBorrowed()           {return this.mBorrowed ;}
+    public boolean isBorrowable()           {return this.mBorrowable ;}
     public void borrowDVD()               {this.mBorrowed = true ;}
     public Editor getEditor()             {return this.mEditor ;}
     public String getTitle()              {return this.mTitle ;}
-    public double getDVDLength()          {return this.mLength ;}
+    public String getDVDLength()          {return this.mLength ;}
     public eCDType getCDType()            {return this.mCDType ;}
+    public int getCDNumberOfTracks() {
+        return this.mNumberOfTracks;
+    }
+    public int getCDTypeAsInt() {
+        return this.mCDType.ordinal();
+    }
+
 
     @Override
     public String Stringify()

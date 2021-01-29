@@ -91,8 +91,9 @@ public class JsonConverter<T>
                             (int)lJsonEditor.get("editorID")
                     ),
                     LocalDateTime.parse(lJsonCD.get("publishDate").toString()),
-                    lJsonCD.getDouble("DVDLength"),
-                    lJsonCD.getEnum(eCDType.class, "CDType")
+                    lJsonCD.get("DVDLength").toString(),
+                    lJsonCD.getEnum(eCDType.class, "CDType"),
+                    lJsonCD.getInt("CDNumberOfTracks")
             );
             lLibrary.mCDLibrary.add(lCD);
         }

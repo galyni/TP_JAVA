@@ -2,12 +2,10 @@ package formation.java.tp;
 
 import formation.java.tp.converters.JsonConverter;
 import formation.java.tp.fileClasses.*;
-import formation.java.tp.model.Book;
+import formation.java.tp.model.*;
 import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import formation.java.tp.model.Editor;
-import formation.java.tp.model.Library;
 import formation.java.tp.utils.LibraryInitializer;
 import formation.java.tp.utils.eBookType;
 import org.json.JSONStringer;
@@ -15,6 +13,9 @@ import org.json.JSONWriter;
 
 import java.io.*;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,9 +38,10 @@ alors que la Base donne tout simplement {"Books":[...], ...}
 
 public class Main {
 //Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
-    public static void main(String[] args) throws ExecutionControl.NotImplementedException {
+    public static void main(String[] args) throws ExecutionControl.NotImplementedException, ParseException {
         //TODO don't forget to add LogWriter to every logic classes, to allow them to log their operations and errors into logFile
-        int operation = 0;
+
+
         if (args.length != 4){
             Usage();
             return;
@@ -190,13 +192,19 @@ public class Main {
                     Library librairie = new Library();
                     new LibraryInitializer().initializeCollection(librairie);
 
-                    //Editor editeur = librairie.mBookLibrary.firstElement().getEditor();
+                    Editor editeur = librairie.mBookLibrary.firstElement().getEditor();
                     Book livre = librairie.mBookLibrary.firstElement();
+                    Magazine magazine = librairie.mMagazineLibrary.firstElement();
+                    CD cd = librairie.mCDLibrary.firstElement();
+                    DVD dvd = librairie.mDVDLibrary.firstElement();
 
                     DatabaseImporter importer = new DatabaseImporter(connectionString);
-                    //importer.InsertIntoEditors(editeur);
+                    importer.InsertIntoEditors(editeur);
 
-                    importer.InsertIntoBooks(livre, 1);
+                    importer.InsertIntoBooks(livre, 2);
+                    importer.InsertIntoDVD(dvd, 2);
+                    importer.InsertIntoCD(cd, 1);
+                    importer.InsertIntoMagazines(magazine, 2);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -74,26 +74,26 @@ public class LibraryInitializer
                 } ;
         CD lCDs[] = new CD[]
                 {
-                        new CD("Adibou à l'école"
+                        new CD("Adibou à l''école"
                                , new Editor("impasse élémentaire", "Dusseldorf", "Allemagne", "Adibou Ausgaben", "6751398542", "38000")
                                , LocalDateTime.now()
-                               , 117.6
-                               , eCDType.Course),
+                               , "36:45"
+                               , eCDType.Course, 10),
                         new CD("Photoshop"
                                 , new Editor("85 show pimp street", "Miami", "USA", "Silicon Valley", "9780230145", "38000")
                                 , LocalDateTime.now()
-                                , 0
-                                , eCDType.Software),
+                                , "48:04"
+                                , eCDType.Software, 12),
                         new CD("The Offspring - Americana"
                                 , new Editor("somewhere on Punk avenue", "Los Angeles", "USA", "destroy everything editions", "00245896314", "38000")
                                 , LocalDateTime.now()
-                                , 58.2
-                                , eCDType.Music),
+                                , "58:02"
+                                , eCDType.Music, 15),
                         new CD("Forest ambiance"
                                 , new Editor("ruelle de la sérénité", "Utopia", "Heaven", "Deus edition", "9999999999", "38000")
                                 , LocalDateTime.now()
-                                , 999
-                                , eCDType.Ambiance)
+                                , "08:45:12"
+                                , eCDType.Ambiance, 1)
                 } ;
         DVD lDVDs[] = new DVD[]
                 {

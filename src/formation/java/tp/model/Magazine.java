@@ -37,6 +37,13 @@ public class Magazine extends ACollectible implements IDisplayable
     public int getNumberOfPages()          {return this.mNumberOfPages ;}
     public String getAuthor()              {return this.mAuthor ;}
     public eMagazineType getMagazineType() {return this.mMagType ;}
+    public boolean isBorrowable()           {return this.mBorrowable;}
+    public int getMagazineTypeAsInt() {
+        return mMagType.ordinal();
+    }
+    public int getMagazineFrequencyAsInt() {
+        return mFrequency.ordinal();
+    }
 
     @Override
     public String Stringify()

@@ -29,12 +29,17 @@ public class DVD extends ACollectible implements IDisplayable
 
     public LocalDateTime getPublishDate() {return this.mPublishDate ;}
     public boolean isBorrowed()           {return this.mBorrowed ;}
+    public boolean isBorrowable()           {return this.mBorrowable ;}
     public void borrowDVD()               {this.mBorrowed = true ;}
     public Editor getEditor()             {return this.mEditor ;}
     public String getTitle()              {return this.mTitle ;}
     public double getDVDLength()          {return this.mLength ;}
     public eDVDType getDVDType()          {return this.mDVDType ;}
     public boolean isAudioDescriptible()  {return this.mIsAudioDescriptible ;}
+    public int getDVDTypeAsInt() {
+        return this.mDVDType.ordinal();
+}
+
 
     @Override
     public String Stringify()
