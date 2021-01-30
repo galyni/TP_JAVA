@@ -83,72 +83,30 @@ public class Main {
         switch (args[0]) {
             case "1":
                 try {
-                    Library librairie = new Library();
-                    new LibraryInitializer().initializeCollection(librairie);
+// TODO: 30/01/2021 charger le fichier
+
+                    Deserializer<Library> deserializer = new Deserializer<>(args[2]);
+                    Library librairie = deserializer.Deserialize();
 
                     ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);
 
                     importer.ImportLibrary(librairie);
+
                     importer.CloseConnection();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case "2":
-//                try {
-//                    String database = "resources/database.json";
-//                    String nomFichier = "patate.zip";
-//                    Zipper zipper = new Zipper(nomFichier, database, "resources/Log.txt");
-//                    zipper.ZipFiles();
-//                    break;
-//                } catch (IOException e){
-//                    e.printStackTrace();
-//                }
-//                try {
-//                    Library librairie = new Library();
-//                    new LibraryInitializer().initializeCollection(librairie);
-//                    JsonConverter jo = new JsonConverter();
-//                    String test = jo.ConvertIntoJson(librairie);
-//                    System.out.println(test);
-//
-//                    DataWriter martine = new DataWriter("LibrairieToJSON.json");
-//                    martine.WriteFile(test, false);
-//
-//                    DataReader martin = new DataReader("LibrairieToJSON.json");
-//                    test = martin.ReadWholeFile();
-//                    System.out.println(librairie.Stringify());
-//                    Library librairie2 = new Library();
-//                    librairie2 = jo.InstanciateLibraryFromJson(test);
-//
-//                    int i = 0;
-//                }catch(ExecutionControl.NotImplementedException e){
-//                    e.printStackTrace();
-//                }catch(FileNotFoundException e){
-//                    e.printStackTrace();
-//                }
                 try{
-
-//                    Vector<Book> bookLibrary = null;
-//                    Vector<Magazine> magazineLibrary = null;
-//                    Vector<CD> CDLibrary = null;
-//                    Vector<DVD> DVDLibrary = null;
-                    Library librairie2 = null;
                     DBToObjectExporter exporter = new DBToObjectExporter(connectionString);
-//                    bookLibrary = exporter.GetBooksFromTable();
-//                    magazineLibrary = exporter.GetMagazinesFromTable();
-//                    CDLibrary = exporter.GetCDFromTable();
-//                    DVDLibrary = exporter.GetDVDFromTable();
-                    librairie2 = exporter.ExportDatabase();
+
+                    Library librairie2 = exporter.ExportDatabase();
                     exporter.CloseConnection();
 
-                    Serializer<Library> serializer = new Serializer<>("martin.txt", librairie2);
+                    Serializer<Library> serializer = new Serializer<>(args[2], librairie2);
                     serializer.Serialize();
 
-                    //TODO : test en dessous à supprimer
-                    Deserializer<Library> deserializer = new Deserializer<>("martin.txt");
-                    Library librairieDeserialisee = null;
-                    librairieDeserialisee = deserializer.Deserialize();
-                    int i = 0;
                 } catch(Exception e){
                     e.printStackTrace();
                 }

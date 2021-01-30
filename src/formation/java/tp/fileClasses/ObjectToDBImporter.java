@@ -34,26 +34,24 @@ public class ObjectToDBImporter {
     }
 
     public void InsertIntoMagazinesTable(Magazine magazine) throws SQLException {
-        var borrowed = magazine.isBorrowed() ? 1 : 0;
-        var borrowable = magazine.isBorrowable() ? 1 : 0;
 
         Editor editeur = magazine.getEditor();
         int editorID = GetEditorID(editeur);
+        String query = "INSERT INTO Magazines(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Frequency, Author) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Statement statement = connexion.createStatement();
-        String query = "INSERT INTO Magazines(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Frequency, Author) VALUES('" +
-                magazine.getTitle() + "', " +
-                editorID + ", '" +
-                magazine.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE) + "', " +
-                borrowed + ", " +
-                borrowable + ", " +
-                magazine.getNumberOfPages() + ", " +
-                magazine.getMagazineTypeAsInt() + ", " +
-                magazine.getMagazineFrequencyAsInt() + ", '" +
-                magazine.getAuthor() + "')";
-        statement.executeUpdate(query);
+        PreparedStatement ps = connexion.prepareStatement(query);
 
-        int i =0;
+        ps.setString(1, magazine.getTitle());
+        ps.setInt(2, editorID);
+        ps.setString(3, magazine.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        ps.setBoolean(4, magazine.isBorrowed());
+        ps.setBoolean(5, magazine.isBorrowable());
+        ps.setInt(6, magazine.getNumberOfPages());
+        ps.setInt(7, magazine.getMagazineTypeAsInt());
+        ps.setInt(8, magazine.getMagazineFrequencyAsInt());
+        ps.setString(9, magazine.getAuthor());
+
+        ps.executeUpdate();
 
     }
 
@@ -66,18 +64,21 @@ public class ObjectToDBImporter {
         Editor editeur = book.getEditor();
         int editorID = GetEditorID(editeur);
 
-        Statement statement = connexion.createStatement();
-        String query = "INSERT INTO Books(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Translated, Author) VALUES('" +
-                book.getTitle() + "', " +
-                editorID + ", '" +
-                book.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE) + "', " +
-                borrowed + ", " +
-                borrowable + ", " +
-                book.getNumberOfPages() + ", " +
-                book.getBookTypeAsInt() + ", " +
-                traduct + ", '" +
-                book.getAuthor() + "')";
-        statement.executeUpdate(query);
+        String query = "INSERT INTO Books(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Translated, Author) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement ps = connexion.prepareStatement(query);
+
+        ps.setString(1, book.getTitle());
+        ps.setInt(2, editorID);
+        ps.setString(3, book.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        ps.setBoolean(4, book.isBorrowed());
+        ps.setBoolean(5, book.isBorrowable());
+        ps.setInt(6, book.getNumberOfPages());
+        ps.setInt(7, book.getBookTypeAsInt());
+        ps.setBoolean(8, book.isTraduct());
+        ps.setString(9, book.getAuthor());
+
+        ps.executeUpdate();
 
         int i =0;
 
@@ -86,23 +87,24 @@ public class ObjectToDBImporter {
 
     public void InsertIntoCDTable(CD cd) throws SQLException {
 
-        var borrowed = cd.isBorrowed() ? 1 : 0;
-        var borrowable = cd.isBorrowable() ? 1 : 0;
 
         Editor editeur = cd.getEditor();
         int editorID = GetEditorID(editeur);
 
-        Statement statement = connexion.createStatement();
-        String query = "INSERT INTO CDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, NumberOfTracks) VALUES('" +
-                cd.getTitle() + "', " +
-                editorID + ", '" +
-                cd.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE) + "', " +
-                borrowed + ", " +
-                borrowable + ", '" +
-                cd.getDVDLength() + "', " +
-                cd.getCDTypeAsInt() + ", " +
-                cd.getCDNumberOfTracks() + ")";
-        statement.executeUpdate(query);
+        String query = "INSERT INTO CDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, NumberOfTracks) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement ps = connexion.prepareStatement(query);
+
+        ps.setString(1, cd.getTitle());
+        ps.setInt(2, editorID);
+        ps.setString(3, cd.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        ps.setBoolean(4, cd.isBorrowed());
+        ps.setBoolean(5, cd.isBorrowable());
+        ps.setString(6, cd.getCDLength());
+        ps.setInt(7, cd.getCDTypeAsInt());
+        ps.setInt(8, cd.getCDNumberOfTracks());
+
+        ps.executeUpdate();
     }
 
     public void InsertIntoDVDTable(DVD dvd) throws SQLException {
@@ -114,17 +116,20 @@ public class ObjectToDBImporter {
         Editor editeur = dvd.getEditor();
         int editorID = GetEditorID(editeur);
 
-        Statement statement = connexion.createStatement();
-        String query = "INSERT INTO DVDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, AudioDescription) VALUES('" +
-                dvd.getTitle() + "', " +
-                editorID + ", '" +
-                dvd.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE) + "', " +
-                borrowed + ", " +
-                borrowable + ", '" +
-                dvd.getDVDLength() + "', " +
-                dvd.getDVDTypeAsInt() + ", " +
-                AudioDescripted + ")";
-        statement.executeUpdate(query);
+        String query = "INSERT INTO DVDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, AudioDescription) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement ps = connexion.prepareStatement(query);
+
+        ps.setString(1, dvd.getTitle());
+        ps.setInt(2, editorID);
+        ps.setString(3, dvd.getPublishDate().format(DateTimeFormatter.ISO_LOCAL_DATE));
+        ps.setBoolean(4, dvd.isBorrowed());
+        ps.setBoolean(5, dvd.isBorrowable());
+        ps.setString(6, dvd.getDVDLength());
+        ps.setInt(7, dvd.getDVDTypeAsInt());
+        ps.setBoolean(8, dvd.isAudioDescriptible());
+
+        ps.executeUpdate();
     }
 
 

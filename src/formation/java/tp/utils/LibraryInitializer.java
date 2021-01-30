@@ -17,7 +17,7 @@ public class LibraryInitializer
                         , "Eric Gamma"
                         , eBookType.Course
                         , true),
-                new Book("L''art d''avoir toujours raison"
+                new Book("L'art d'avoir toujours raison"
                         , new Editor("quelque part", "dans une ville lointaine", "en Europe", "chez un editeur", "Siret", "38000")
                         , LocalDate.now()
                         , 75
@@ -25,14 +25,14 @@ public class LibraryInitializer
                         , eBookType.Philosophy
                         , true),
                 new Book("Le grands livre des robots"
-                        , new Editor("paumé", "j''en sais rien", "sur un continent", "va savoir", "qui sait?", "38000")
+                        , new Editor("paumé", "j'en sais rien", "sur un continent", "va savoir", "qui sait?", "38000")
                         , LocalDate.now()
                         , 2000
                         , "Isaac Asimov"
                         ,eBookType.ScienceFiction
                         , true),
                 new Book("Les portes de la perception"
-                        , new Editor("est ce important?", "pas d''inspiration", "USA", "hippies&Co", "nope", "38000")
+                        , new Editor("est ce important?", "pas d'inspiration", "USA", "hippies&Co", "nope", "38000")
                         , LocalDate.now()
                         , 215
                         , "Aldous Huxley"
@@ -62,7 +62,7 @@ public class LibraryInitializer
                                      , "Journal du dauphiné"
                                      , eMagazineType.Politic
                                      , ePublishmentFrequency.Daily),
-                        new Magazine("un magazine d''histoire"
+                        new Magazine("un magazine d'histoire"
                                      , new Editor("ruelle du musée", "Orléans", "France", "edition vieille", "9032105478", "38000")
                                      , LocalDate.now()
                                      , 36
@@ -72,7 +72,7 @@ public class LibraryInitializer
                 } ;
         CD lCDs[] = new CD[]
                 {
-                        new CD("Adibou à l''école"
+                        new CD("Adibou à l'école"
                                , new Editor("impasse élémentaire", "Dusseldorf", "Allemagne", "Adibou Ausgaben", "6751398542", "38000")
                                , LocalDate.now()
                                , "36:45"

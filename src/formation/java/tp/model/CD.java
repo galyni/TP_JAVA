@@ -27,12 +27,12 @@ public class CD extends ACollectible implements IDisplayable
 
     public CD(String pTitle, LocalDate pPublishDate, String pLength, eCDType pCDType, int pNumberOfTracks )
     {
-        this.mPublishDate = pPublishDate ;
-        this.mBorrowed    = false ;
-        this.mBorrowable  = true ;
-        this.mTitle       = pTitle ;
-        this.mLength      = pLength ;
-        this.mCDType      = pCDType ;
+        this.mPublishDate    = pPublishDate ;
+        this.mBorrowed       = false ;
+        this.mBorrowable     = true ;
+        this.mTitle          = pTitle ;
+        this.mLength         = pLength ;
+        this.mCDType         = pCDType ;
         this.mNumberOfTracks = pNumberOfTracks;
     }
 
@@ -42,7 +42,7 @@ public class CD extends ACollectible implements IDisplayable
     public void borrowDVD()               {this.mBorrowed = true ;}
     public Editor getEditor()             {return this.mEditor ;}
     public String getTitle()              {return this.mTitle ;}
-    public String getDVDLength()          {return this.mLength ;}
+    public String getCDLength()          {return this.mLength ;}
     public eCDType getCDType()            {return this.mCDType ;}
     public int getCDNumberOfTracks() {
         return this.mNumberOfTracks;

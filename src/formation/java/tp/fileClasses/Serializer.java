@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 
 public class Serializer<T> extends AFileWriter
 {//TODO check all class implementation
+    // TODO: 30/01/2021 passer les paramètres dans Serialize au lieu du constructeur 
     ObjectOutputStream mOutput ;
     T                  mObjectToSerialize ;
 
