@@ -1,43 +1,55 @@
 package formation.java.tp.fileClasses;
 
 import formation.java.tp.abstracts.AFileReader;
+import formation.java.tp.utils.LogWriter;
 
 import java.io.*;
 import java.util.Scanner;
 
 public class DataReader extends AFileReader
 {
-    private File mFile ;
-
+    private File      mFile ;
+    private LogWriter mLogWriter ;
 
     public DataReader(){}
     public DataReader(String pFilePath)
     {
         this.mFilePath = pFilePath ;
     }
+    public DataReader( String pFilePath, LogWriter pLogWriter )
+    {
+        this.mFilePath  = pFilePath ;
+        this.mLogWriter = pLogWriter ;
+    }
 
-    public String ReadWholeFile() throws FileNotFoundException
+    public String ReadWholeFile()
     {
         this.mFile = new File(this.mFilePath) ;
         if( this.mFile.exists() )
         {
             if( this.mFile.canRead() )
             {
-                String lData    = "" ;
-                Scanner lReader = new Scanner(this.mFile) ;
-                while( lReader.hasNextLine() )
+                String lData = "" ;
+                try
                 {
-                    lData += lReader.nextLine() ;
+                    Scanner lReader = new Scanner(this.mFile) ;
+                    while( lReader.hasNextLine() )
+                    {
+                        lData += lReader.nextLine() ;
+                    }
+                }
+                catch( FileNotFoundException e )
+                {
+                    if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file", e) ;
+                    System.out.println("Unable to open file...") ;
+                    e.printStackTrace() ;
                 }
                 return lData ;
             }
         }
-        else
-        {
-            throw new FileNotFoundException("Unable to open file to read") ;
-        }
         return null ;
     }
+    //TODO logger to both next functions
     public String ReadLastEntry() throws FileNotFoundException, NullPointerException
     {
         this.mFile = new File(this.mFilePath) ;
