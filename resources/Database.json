@@ -1,1 +1,252 @@
-{"Library":{"DVDs":[{"editor":{"editorName":"last survivor editions","siegeStreet":"proche du centre de la Terre","editorCountry":"unknown","editorCity":"Zion","editorSiret":"0000000000"},"DVDType":"Film","DVDLength":137.5,"publishDate":"2021-01-21T13:24:04.426697500","title":"Matrix","borrowed":false,"audioDescriptible":true},{"editor":{"editorName":"CD projekts","siegeStreet":"dans un garage","editorCountry":"Pologne","editorCity":"Wroclaw","editorSiret":"9543186542"},"DVDType":"Software","DVDLength":6000,"publishDate":"2021-01-21T13:24:04.426697500","title":"Witcher","borrowed":false,"audioDescriptible":false},{"editor":{"editorName":"le manchot pas droit","siegeStreet":"pôle Sud","editorCountry":"extreme South","editorCity":"panguoria","editorSiret":"9831546785"},"DVDType":"Documentary","DVDLength":115.9,"publishDate":"2021-01-21T13:24:04.426697500","title":"La marche des empereurs","borrowed":false,"audioDescriptible":true},{"editor":{"editorName":"skaterzz","siegeStreet":"9 rue du skate park","editorCountry":"USA","editorCity":"Portland","editorSiret":"9012864856"},"DVDType":"Concert","DVDLength":198.7,"publishDate":"2021-01-21T13:24:04.426697500","title":"Deftones - Live in Sydney","borrowed":false,"audioDescriptible":true}],"CDs":[{"editor":{"editorName":"Adibou Ausgaben","siegeStreet":"impasse élémentaire","editorCountry":"Allemagne","editorCity":"Dusseldorf","editorSiret":"6751398542"},"CDType":"Course","DVDLength":117.6,"publishDate":"2021-01-21T13:24:04.425699600","title":"Adibou à l'école","borrowed":false},{"editor":{"editorName":"Silicon Valley","siegeStreet":"85 show pimp street","editorCountry":"USA","editorCity":"Miami","editorSiret":"9780230145"},"CDType":"Software","DVDLength":0,"publishDate":"2021-01-21T13:24:04.426697500","title":"Photoshop","borrowed":false},{"editor":{"editorName":"destroy everything editions","siegeStreet":"somewhere on Punk avenue","editorCountry":"USA","editorCity":"Los Angeles","editorSiret":"00245896314"},"CDType":"Music","DVDLength":58.2,"publishDate":"2021-01-21T13:24:04.426697500","title":"The Offspring - Americana","borrowed":false},{"editor":{"editorName":"Deus edition","siegeStreet":"ruelle de la sérénité","editorCountry":"Heaven","editorCity":"Utopia","editorSiret":"9999999999"},"CDType":"Ambiance","DVDLength":999,"publishDate":"2021-01-21T13:24:04.426697500","title":"Forest ambiance","borrowed":false}],"Magazines":[{"editor":{"editorName":"AutoMoto&Co","siegeStreet":"rue du vroum","editorCountry":"France","editorCity":"Monaco","editorSiret":"1547926875"},"magazineType":"Auto","numberOfPages":50,"author":"Les magazines qui roulent","publishDate":"2021-01-21T13:24:04.424703400","title":"Auto moto","borrowed":false},{"editor":{"editorName":"ScienceEditor","siegeStreet":"avenue des sciences","editorCountry":"France","editorCity":"Paris","editorSiret":"5987621468"},"magazineType":"Science","numberOfPages":75,"author":"Les magazines de sciences","publishDate":"2021-01-21T13:24:04.425699600","title":"Science et vie","borrowed":false},{"editor":{"editorName":"edition Jean Moulin","siegeStreet":"boulevard de la resistance","editorCountry":"France","editorCity":"Grenoble","editorSiret":"8943201547"},"magazineType":"Politic","numberOfPages":12,"author":"Journal du dauphiné","publishDate":"2021-01-21T13:24:04.425699600","title":"Le Dauphiné libéré","borrowed":false},{"editor":{"editorName":"edition vieille","siegeStreet":"ruelle du musée","editorCountry":"France","editorCity":"Orléans","editorSiret":"9032105478"},"magazineType":"History","numberOfPages":36,"author":"Journal du musée","publishDate":"2021-01-21T13:24:04.425699600","title":"un magazine d'histoire","borrowed":false}],"Books":[{"editor":{"editorName":"un nom","siegeStreet":"une rue","editorCountry":"un pays","editorCity":"une ville","editorSiret":"un siret"},"traduct":true,"numberOfPages":300,"author":"Eric Gamma","publishDate":"2021-01-21T13:24:04.422707700","title":"Design Pattern","borrowed":false,"bookType":"Course"},{"editor":{"editorName":"chez un editeur","siegeStreet":"quelque part","editorCountry":"en Europe","editorCity":"dans une ville lointaine","editorSiret":"qui n'avait pas de Siret"},"traduct":true,"numberOfPages":75,"author":"Arthur Schöpenhauer","publishDate":"2021-01-21T13:24:04.424703400","title":"L'art d'avoir toujours raison","borrowed":false,"bookType":"Philosophy"},{"editor":{"editorName":"va savoir","siegeStreet":"paumé","editorCountry":"sur un continent","editorCity":"j'en sais rien","editorSiret":"qui sait?"},"traduct":true,"numberOfPages":2000,"author":"Isaac Asimov","publishDate":"2021-01-21T13:24:04.424703400","title":"Le grands livre des robots","borrowed":false,"bookType":"ScienceFiction"},{"editor":{"editorName":"hippies&Co","siegeStreet":"est ce important?","editorCountry":"USA","editorCity":"pas d'inspiration","editorSiret":"nope"},"traduct":true,"numberOfPages":215,"author":"Aldous Huxley","publishDate":"2021-01-21T13:24:04.424703400","title":"Les portes de la perception","borrowed":false,"bookType":"Novel"}]}}
+{
+    "Library": {
+        "DVDs": [
+            {
+                "editor": {
+                    "editorName": "last survivor editions",
+                    "siegeStreet": "proche du centre de la Terre",
+                    "editorCountry": "unknown",
+                    "editorCity": "Zion",
+                    "editorSiret": "0000000000"
+                },
+                "DVDType": "Film",
+                "DVDLength": 137.5,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "Matrix",
+                "borrowed": false,
+                "audioDescriptible": true
+            },
+            {
+                "editor": {
+                    "editorName": "CD projekts",
+                    "siegeStreet": "dans un garage",
+                    "editorCountry": "Pologne",
+                    "editorCity": "Wroclaw",
+                    "editorSiret": "9543186542"
+                },
+                "DVDType": "Software",
+                "DVDLength": 6000,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "Witcher",
+                "borrowed": false,
+                "audioDescriptible": false
+            },
+            {
+                "editor": {
+                    "editorName": "le manchot pas droit",
+                    "siegeStreet": "pôle Sud",
+                    "editorCountry": "extreme South",
+                    "editorCity": "panguoria",
+                    "editorSiret": "9831546785"
+                },
+                "DVDType": "Documentary",
+                "DVDLength": 115.9,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "La marche des empereurs",
+                "borrowed": false,
+                "audioDescriptible": true
+            },
+            {
+                "editor": {
+                    "editorName": "skaterzz",
+                    "siegeStreet": "9 rue du skate park",
+                    "editorCountry": "USA",
+                    "editorCity": "Portland",
+                    "editorSiret": "9012864856"
+                },
+                "DVDType": "Concert",
+                "DVDLength": 198.7,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "Deftones - Live in Sydney",
+                "borrowed": false,
+                "audioDescriptible": true
+            }
+        ],
+        "CDs": [
+            {
+                "editor": {
+                    "editorName": "Adibou Ausgaben",
+                    "siegeStreet": "impasse élémentaire",
+                    "editorCountry": "Allemagne",
+                    "editorCity": "Dusseldorf",
+                    "editorSiret": "6751398542"
+                },
+                "CDType": "Course",
+                "DVDLength": 117.6,
+                "publishDate": "2021-01-21T13:24:04.425699600",
+                "title": "Adibou à l'école",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "Silicon Valley",
+                    "siegeStreet": "85 show pimp street",
+                    "editorCountry": "USA",
+                    "editorCity": "Miami",
+                    "editorSiret": "9780230145"
+                },
+                "CDType": "Software",
+                "DVDLength": 0,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "Photoshop",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "destroy everything editions",
+                    "siegeStreet": "somewhere on Punk avenue",
+                    "editorCountry": "USA",
+                    "editorCity": "Los Angeles",
+                    "editorSiret": "00245896314"
+                },
+                "CDType": "Music",
+                "DVDLength": 58.2,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "The Offspring - Americana",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "Deus edition",
+                    "siegeStreet": "ruelle de la sérénité",
+                    "editorCountry": "Heaven",
+                    "editorCity": "Utopia",
+                    "editorSiret": "9999999999"
+                },
+                "CDType": "Ambiance",
+                "DVDLength": 999,
+                "publishDate": "2021-01-21T13:24:04.426697500",
+                "title": "Forest ambiance",
+                "borrowed": false
+            }
+        ],
+        "Magazines": [
+            {
+                "editor": {
+                    "editorName": "AutoMoto&Co",
+                    "siegeStreet": "rue du vroum",
+                    "editorCountry": "France",
+                    "editorCity": "Monaco",
+                    "editorSiret": "1547926875"
+                },
+                "magazineType": "Auto",
+                "numberOfPages": 50,
+                "author": "Les magazines qui roulent",
+                "publishDate": "2021-01-21T13:24:04.424703400",
+                "title": "Auto moto",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "ScienceEditor",
+                    "siegeStreet": "avenue des sciences",
+                    "editorCountry": "France",
+                    "editorCity": "Paris",
+                    "editorSiret": "5987621468"
+                },
+                "magazineType": "Science",
+                "numberOfPages": 75,
+                "author": "Les magazines de sciences",
+                "publishDate": "2021-01-21T13:24:04.425699600",
+                "title": "Science et vie",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "edition Jean Moulin",
+                    "siegeStreet": "boulevard de la resistance",
+                    "editorCountry": "France",
+                    "editorCity": "Grenoble",
+                    "editorSiret": "8943201547"
+                },
+                "magazineType": "Politic",
+                "numberOfPages": 12,
+                "author": "Journal du dauphiné",
+                "publishDate": "2021-01-21T13:24:04.425699600",
+                "title": "Le Dauphiné libéré",
+                "borrowed": false
+            },
+            {
+                "editor": {
+                    "editorName": "edition vieille",
+                    "siegeStreet": "ruelle du musée",
+                    "editorCountry": "France",
+                    "editorCity": "Orléans",
+                    "editorSiret": "9032105478"
+                },
+                "magazineType": "History",
+                "numberOfPages": 36,
+                "author": "Journal du musée",
+                "publishDate": "2021-01-21T13:24:04.425699600",
+                "title": "un magazine d'histoire",
+                "borrowed": false
+            }
+        ],
+        "Books": [
+            {
+                "editor": {
+                    "editorName": "un nom",
+                    "siegeStreet": "une rue",
+                    "editorCountry": "un pays",
+                    "editorCity": "une ville",
+                    "editorSiret": "un siret"
+                },
+                "traduct": true,
+                "numberOfPages": 300,
+                "author": "Eric Gamma",
+                "publishDate": "2021-01-21T13:24:04.422707700",
+                "title": "Design Pattern",
+                "borrowed": false,
+                "bookType": "Course"
+            },
+            {
+                "editor": {
+                    "editorName": "chez un editeur",
+                    "siegeStreet": "quelque part",
+                    "editorCountry": "en Europe",
+                    "editorCity": "dans une ville lointaine",
+                    "editorSiret": "qui n'avait pas de Siret"
+                },
+                "traduct": true,
+                "numberOfPages": 75,
+                "author": "Arthur Schöpenhauer",
+                "publishDate": "2021-01-21T13:24:04.424703400",
+                "title": "L'art d'avoir toujours raison",
+                "borrowed": false,
+                "bookType": "Philosophy"
+            },
+            {
+                "editor": {
+                    "editorName": "va savoir",
+                    "siegeStreet": "paumé",
+                    "editorCountry": "sur un continent",
+                    "editorCity": "j'en sais rien",
+                    "editorSiret": "qui sait?"
+                },
+                "traduct": true,
+                "numberOfPages": 2000,
+                "author": "Isaac Asimov",
+                "publishDate": "2021-01-21T13:24:04.424703400",
+                "title": "Le grands livre des robots",
+                "borrowed": false,
+                "bookType": "ScienceFiction"
+            },
+            {
+                "editor": {
+                    "editorName": "hippies&Co",
+                    "siegeStreet": "est ce important?",
+                    "editorCountry": "USA",
+                    "editorCity": "pas d'inspiration",
+                    "editorSiret": "nope"
+                },
+                "traduct": true,
+                "numberOfPages": 215,
+                "author": "Aldous Huxley",
+                "publishDate": "2021-01-21T13:24:04.424703400",
+                "title": "Les portes de la perception",
+                "borrowed": false,
+                "bookType": "Novel"
+            }
+        ]
+    }
+}
