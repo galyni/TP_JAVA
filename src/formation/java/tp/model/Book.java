@@ -27,10 +27,10 @@ public class Book extends ACollectible implements IDisplayable
         this.mIsTraduct     = pIsTraduct ;
     }
 
-    public Book(String pTitle, LocalDate pPublishDate, int pNumberOfPage, String pAuthor, eBookType pBookType, boolean pIsTraduct)
+    public Book(String pTitle, LocalDate pPublishDate, int pNumberOfPage, String pAuthor, eBookType pBookType, boolean pIsTraduct, boolean pBorrowed)
     {
         this.mPublishDate   = pPublishDate ;
-        this.mBorrowed      = false ;
+        this.mBorrowed      = pBorrowed;
         this.mBorrowable    = true ;
         this.mTitle         = pTitle ;
         this.mNumberOfPages = pNumberOfPage ;

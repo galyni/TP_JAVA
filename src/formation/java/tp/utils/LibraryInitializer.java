@@ -98,25 +98,25 @@ public class LibraryInitializer
                         new DVD("Matrix"
                                 , new Editor("proche du centre de la Terre", "Zion", "unknown", "last survivor editions", "0000000000", "38000")
                                 , LocalDate.now()
-                                , 137.5
+                                , "2:17:05"
                                 , eDVDType.Film
                                 , true),
                         new DVD("Witcher"
                                 , new Editor("dans un garage", "Wroclaw", "Pologne", "CD projekts", "9543186542", "38000")
                                 , LocalDate.now()
-                                , 6000
+                                , "1:12:14"
                                 , eDVDType.Software
                                 , false),
                         new DVD("La marche des empereurs"
                                 , new Editor("pôle Sud", "panguoria", "extreme South", "le manchot pas droit", "9831546785", "38000")
                                 , LocalDate.now()
-                                , 115.9
+                                , "14:05"
                                 , eDVDType.Documentary
                                 , true),
                         new DVD("Deftones - Live in Sydney"
                                 , new Editor("9 rue du skate park", "Portland", "USA", "skaterzz", "9012864856", "38000")
                                 , LocalDate.now()
-                                , 198.7
+                                , "11:11"
                                 , eDVDType.Concert
                                 , true)
                 } ;

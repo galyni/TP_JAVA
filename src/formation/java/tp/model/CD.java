@@ -25,6 +25,17 @@ public class CD extends ACollectible implements IDisplayable
         this.mNumberOfTracks = pNumberOfTracks;
     }
 
+    public CD(String pTitle, LocalDate pPublishDate, String pLength, eCDType pCDType, int pNumberOfTracks )
+    {
+        this.mPublishDate = pPublishDate ;
+        this.mBorrowed    = false ;
+        this.mBorrowable  = true ;
+        this.mTitle       = pTitle ;
+        this.mLength      = pLength ;
+        this.mCDType      = pCDType ;
+        this.mNumberOfTracks = pNumberOfTracks;
+    }
+
     public LocalDate getPublishDate() {return this.mPublishDate ;}
     public boolean isBorrowed()           {return this.mBorrowed ;}
     public boolean isBorrowable()           {return this.mBorrowable ;}
@@ -38,6 +49,9 @@ public class CD extends ACollectible implements IDisplayable
     }
     public int getCDTypeAsInt() {
         return this.mCDType.ordinal();
+    }
+    public void setEditor(Editor editeur){
+        this.mEditor = editeur;
     }
 
 

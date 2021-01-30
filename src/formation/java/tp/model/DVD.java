@@ -8,17 +8,28 @@ import java.time.LocalDate;
 
 public class DVD extends ACollectible implements IDisplayable
 {
-    private double   mLength;
+    private String mLength;
     private eDVDType mDVDType;
     private boolean  mIsAudioDescriptible;
 
     public DVD (){}
-    public DVD(String pTitle, Editor pEditor, LocalDate pPublishDate, double pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
+    public DVD(String pTitle, Editor pEditor, LocalDate pPublishDate, String pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
     {
         this.mPublishDate         = pPublishDate ;
         this.mBorrowed            = false ;
         this.mBorrowable          = true ;
         this.mEditor              = pEditor ;
+        this.mTitle               = pTitle ;
+        this.mLength              = pLength ;
+        this.mDVDType             = pDVDType ;
+        this.mIsAudioDescriptible = pIsAudioDescriptible ;
+    }
+
+    public DVD(String pTitle, LocalDate pPublishDate, String pLength, eDVDType pDVDType, boolean pIsAudioDescriptible )
+    {
+        this.mPublishDate         = pPublishDate ;
+        this.mBorrowed            = false ;
+        this.mBorrowable          = true ;
         this.mTitle               = pTitle ;
         this.mLength              = pLength ;
         this.mDVDType             = pDVDType ;
@@ -31,12 +42,15 @@ public class DVD extends ACollectible implements IDisplayable
     public void borrowDVD()               {this.mBorrowed = true ;}
     public Editor getEditor()             {return this.mEditor ;}
     public String getTitle()              {return this.mTitle ;}
-    public double getDVDLength()          {return this.mLength ;}
+    public String getDVDLength()          {return this.mLength ;}
     public eDVDType getDVDType()          {return this.mDVDType ;}
     public boolean isAudioDescriptible()  {return this.mIsAudioDescriptible ;}
     public int getDVDTypeAsInt() {
         return this.mDVDType.ordinal();
 }
+    public void setEditor(Editor editeur){
+        this.mEditor = editeur;
+    }
 
 
     @Override

@@ -28,6 +28,18 @@ public class Magazine extends ACollectible implements IDisplayable
         this.mFrequency     = pFrequency ;
     }
 
+    public Magazine (String pTitle, LocalDate pPublishDate, int pNumberOfPages, String pAuthor, eMagazineType pMagazineType, ePublishmentFrequency pFrequency )
+    {
+        this.mPublishDate   = pPublishDate ;
+        this.mBorrowed      = false ;
+        this.mBorrowable    = false ;
+        this.mTitle         = pTitle ;
+        this.mNumberOfPages = pNumberOfPages ;
+        this.mAuthor        = pAuthor ;
+        this.mMagType       = pMagazineType ;
+        this.mFrequency     = pFrequency ;
+    }
+
     public LocalDate getPublishDate()  {return this.mPublishDate ;}
     public boolean isBorrowed()            {return this.mBorrowed ;}
     public void borrowMagazine()           {this.mBorrowed = true ;}
@@ -42,6 +54,9 @@ public class Magazine extends ACollectible implements IDisplayable
     }
     public int getMagazineFrequencyAsInt() {
         return mFrequency.ordinal();
+    }
+    public void setEditor(Editor editeur){
+        this.mEditor = editeur;
     }
 
     @Override

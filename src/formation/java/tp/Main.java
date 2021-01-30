@@ -182,15 +182,27 @@ public class Main {
 //                }
                 try{
 
-                    Vector<Book> bookLibrary = null;
-
+//                    Vector<Book> bookLibrary = null;
+//                    Vector<Magazine> magazineLibrary = null;
+//                    Vector<CD> CDLibrary = null;
+//                    Vector<DVD> DVDLibrary = null;
+                    Library librairie2 = null;
                     DBToObjectExporter exporter = new DBToObjectExporter(connectionString);
-                    bookLibrary = exporter.GetBooksFromTable();
-
-
+//                    bookLibrary = exporter.GetBooksFromTable();
+//                    magazineLibrary = exporter.GetMagazinesFromTable();
+//                    CDLibrary = exporter.GetCDFromTable();
+//                    DVDLibrary = exporter.GetDVDFromTable();
+                    librairie2 = exporter.ExportDatabase();
                     exporter.CloseConnection();
 
+                    Serializer<Library> serializer = new Serializer<>("martin.txt", librairie2);
+                    serializer.Serialize();
 
+                    //TODO : test en dessous à supprimer
+                    Deserializer<Library> deserializer = new Deserializer<>("martin.txt");
+                    Library librairieDeserialisee = null;
+                    librairieDeserialisee = deserializer.Deserialize();
+                    int i = 0;
                 } catch(Exception e){
                     e.printStackTrace();
                 }

@@ -64,7 +64,7 @@ public class JsonConverter<T>
                     (int)lJsonEditor.get("editorID")
                     ),
                     LocalDate.parse( lJsonDVD.get("publishDate").toString() ),
-                    lJsonDVD.getDouble("DVDLength"),
+                    lJsonDVD.getString("DVDLength"),
                     lJsonDVD.getEnum( eDVDType.class,"DVDType"),
                     lJsonDVD.getBoolean("audioDescriptible")
             ) ;
