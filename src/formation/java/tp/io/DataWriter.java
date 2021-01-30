@@ -1,4 +1,4 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.io;
 
 import formation.java.tp.abstracts.AFileWriter;
 

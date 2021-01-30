@@ -1,28 +1,21 @@
 package formation.java.tp;
 
-import formation.java.tp.IOClasses.*;
+import formation.java.tp.io.*;
+import formation.java.tp.db.DBToJsonExporter;
+import formation.java.tp.db.DBToObjectExporter;
+import formation.java.tp.db.JsonToDBImporter;
+import formation.java.tp.db.ObjectToDBImporter;
 import formation.java.tp.model.*;
-import formation.java.tp.utils.LogWriter;
+import formation.java.tp.io.LogWriter;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
 
 // TODO: 22/01/2021 Liste de points qui restent à voir :
 /*
-1 - Les objets ont sans doute besoin d'un champ EditeurID, car nous n'avons pas d'ORM pour gérer pour nous le lien entre les objets.
-Pour les conversions Objets <-> Json, cela ne pose pas problème, mais pour les liens avec la base oui.
-Possibilité : convertisseur sans stockage de l'objet editeur dans les objets, juste de son ID, et stockage des éditeurs à part, avec leurs ID.
-Le problème se pose aussi pour le DatabaseSerialzer, qui perd les relations.
-Une fois ces problème réglés, le format sera preque le même que pour le passage DB <-> Json, donc tous les sens de conversion seront possible.
+1 - Vérifier qu'on clôt bien tout (lse Statement, PreparedStatement et ResultSet, les Stream, les Connection...)
 
-Seule différence : la librairie sérialisée crée un objet qui a une couche supplémentaire : { "Library" : {"Books":[...], ...}}
-alors que la Base donne tout simplement {"Books":[...], ...}
-
-2 - Ajouter le logger dans toutes les classes
-
+2 - Vérifier les pré-requis -> compléter le README.
 
  */
 
@@ -39,7 +32,6 @@ public class Main {
         String connectionString = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
-        String logsFilename = args[3];
         BufferedReader br = null;
 
         try{
@@ -60,11 +52,7 @@ public class Main {
             }
         }
 
-        Connection connexion = null;
-        Statement state = null;
-        PreparedStatement ps =  null;
-        ResultSet result = null;
-        BufferedWriter bw = null;
+        BufferedWriter bw;
 
 
         switch (args[0]) {
@@ -129,17 +117,18 @@ public class Main {
     //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
     {
-        System.out.println( "Usage : \n" +
-                "AppName need 4 args : \n" +
-                "\targ1 : \n" +
-                "\t\t[1] to import file with serialized Objects into database \n" +
-                "\t\t[2] to serialize database into file\n" +
-                "\t\t[3] to import JSON file into database\n" +
-                "\t\t[4] to serialize database into JSON file\n" +
-                "\targ2 : \".txt\" or \".json\" path to file to read/write\n" +
-                "\targ3 : \".properties\" path to properties file for database connection\n" +
-                "\targ4 : \".txt\" path to logs file\n" +
-                "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
+        System.out.println("""
+                Usage :\s
+                AppName need 4 args :\s
+                \targ1 :\s
+                \t\t[1] to import file with serialized Objects into database\s
+                \t\t[2] to serialize database into file
+                \t\t[3] to import JSON file into database
+                \t\t[4] to serialize database into JSON file
+                \targ2 : ".txt" or ".json" path to file to read/write
+                \targ3 : ".properties" path to properties file for database connection
+                \targ4 : ".txt" path to logs file
+                \texample : "AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"""");
     }
 
     private static boolean CheckArgs(String[] pArgs)
@@ -199,24 +188,10 @@ public class Main {
         databaseToJsonFile(4);
 
         private int        value ;
-        private static Map map = new HashMap<>() ;
 
-        private eOperation(int value)
+        eOperation(int value)
         {
             this.value = value ;
-        }
-
-        static
-        {
-            for ( eOperation pageType : eOperation.values() )
-            {
-                map.put(pageType.value, pageType) ;
-            }
-        }
-
-        public static eOperation valueOf(int pageType)
-        {
-            return (eOperation) map.get(pageType) ;
         }
 
         public int getValue()

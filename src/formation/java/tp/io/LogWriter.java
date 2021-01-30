@@ -1,9 +1,6 @@
-package formation.java.tp.utils;
-
-import formation.java.tp.IOClasses.DataWriter;
+package formation.java.tp.io;
 
 import java.util.Date;
-
 
 
 public class LogWriter extends DataWriter

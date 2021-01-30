@@ -1,7 +1,6 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.io;
 
 import formation.java.tp.abstracts.AFileWriter;
-import formation.java.tp.utils.LogWriter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
