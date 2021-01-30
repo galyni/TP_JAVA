@@ -38,7 +38,7 @@ public class DVD extends ACollectible implements IDisplayable
 
     public LocalDate getPublishDate() {return this.mPublishDate ;}
     public boolean isBorrowed()           {return this.mBorrowed ;}
-    public boolean isBorrowable()           {return this.mBorrowable ;}
+    public boolean isBorrowable()         {return this.mBorrowable ;}
     public void borrowDVD()               {this.mBorrowed = true ;}
     public Editor getEditor()             {return this.mEditor ;}
     public String getTitle()              {return this.mTitle ;}

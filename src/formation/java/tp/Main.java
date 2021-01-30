@@ -2,6 +2,7 @@ package formation.java.tp;
 
 import formation.java.tp.fileClasses.*;
 import formation.java.tp.model.*;
+import formation.java.tp.utils.LogWriter;
 import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONObject;
 import formation.java.tp.utils.LibraryInitializer;
@@ -46,9 +47,7 @@ public class Main {
             }
         }
 
-
-
-
+        LogWriter lLogWriter = new LogWriter(args[3]) ;
         String connectionString = null;
         String filenameProperties = args[1];
         String filenameDatabaseJSON = args[2];
@@ -85,7 +84,7 @@ public class Main {
                 try {
 // TODO: 30/01/2021 charger le fichier
 
-                    Deserializer<Library> deserializer = new Deserializer<>(args[2]);
+                    Deserializer<Library> deserializer = new Deserializer<>(args[2], lLogWriter);
                     Library librairie = deserializer.Deserialize();
 
                     ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);

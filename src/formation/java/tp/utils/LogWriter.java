@@ -41,9 +41,18 @@ public class LogWriter extends DataWriter
 
         WriteFile( lFormatedLog, true ) ;
     }
-    public void ErrorLog        ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.error ) ;}
     public void DbConnectionLog ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.dbConnection ) ;}
     public void CRUDOperationLog( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.CRUDOperation ) ;}
     public void FileReadingLog  ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.fileReading ) ;}
     public void FileWritingLog  ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.fileWriting) ;}
+    public void ErrorLog        ( String pLogMessage ){this.FormatLog( pLogMessage, eLogType.error ) ;}
+    public void ErrorLog        ( String pLogMessage, Exception pException )
+    {
+        String lLogMessage = pLogMessage + "\nError message : " + pException.getMessage() + "\n\tStack Trace : \n" ;
+        for ( StackTraceElement stackTrace : pException.getStackTrace() )
+        {
+            lLogMessage += ( "\t" + stackTrace.toString() + "\n" ) ;
+        }
+        this.FormatLog( lLogMessage, eLogType.error ) ;
+    }
 }

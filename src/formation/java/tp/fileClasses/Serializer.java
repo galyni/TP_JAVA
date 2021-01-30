@@ -2,6 +2,7 @@ package formation.java.tp.fileClasses;
 
 import formation.java.tp.abstracts.AFileWriter;
 import formation.java.tp.model.Library;
+import formation.java.tp.utils.LogWriter;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -12,14 +13,16 @@ import java.nio.file.StandardOpenOption;
 public class Serializer<T> extends AFileWriter
 {//TODO check all class implementation
     // TODO: 30/01/2021 passer les paramètres dans Serialize au lieu du constructeur 
-    ObjectOutputStream mOutput ;
-    T                  mObjectToSerialize ;
+    private ObjectOutputStream mOutput ;
+    private T                  mObjectToSerialize ;
+    private LogWriter          mLogWriter ;
 
     public Serializer(){}
     public Serializer(String pFilepath, T pObject)
     {
-        this.mFilePath     = pFilepath ;
-        mObjectToSerialize = pObject ;
+        this.mFilePath          = pFilepath ;
+        this.mObjectToSerialize = pObject ;
+        this.mLogWriter         = null ;
     }
 
     public void Serialize()
