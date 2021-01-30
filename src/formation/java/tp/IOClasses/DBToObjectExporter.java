@@ -1,4 +1,4 @@
-package formation.java.tp.fileClasses;
+package formation.java.tp.IOClasses;
 
 import formation.java.tp.model.*;
 import formation.java.tp.utils.*;

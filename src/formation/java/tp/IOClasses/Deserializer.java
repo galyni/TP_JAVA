@@ -1,7 +1,6 @@
-package formation.java.tp.fileClasses;
+package formation.java.tp.IOClasses;
 
 import formation.java.tp.abstracts.AFileReader;
-import formation.java.tp.model.Library;
 import formation.java.tp.utils.LogWriter;
 
 import java.io.IOException;
@@ -9,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.Vector;
 
 public class Deserializer<T> extends AFileReader
 {

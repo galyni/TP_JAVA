@@ -1,6 +1,6 @@
-package formation.java.tp.fileClasses;
+package formation.java.tp.IOClasses;
 
-import formation.java.tp.model.Editor;
+import formation.java.tp.model.meta.Table;
 import formation.java.tp.utils.LogWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;

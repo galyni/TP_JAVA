@@ -1,14 +1,7 @@
 package formation.java.tp.utils;
 
-import formation.java.tp.fileClasses.DataWriter;
+import formation.java.tp.IOClasses.DataWriter;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Date;
 
 

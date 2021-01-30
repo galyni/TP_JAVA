@@ -1,4 +1,4 @@
-package formation.java.tp.fileClasses;
+package formation.java.tp.IOClasses;
 
 import java.io.*;
 import java.util.Vector;
