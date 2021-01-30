@@ -2,7 +2,6 @@ package formation.java.tp;
 
 import formation.java.tp.fileClasses.*;
 import formation.java.tp.model.*;
-import formation.java.tp.utils.eBookType;
 import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONObject;
 import formation.java.tp.utils.LibraryInitializer;
@@ -12,7 +11,6 @@ import java.sql.*;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 // TODO: 22/01/2021 Liste de points qui restent à voir :
 /*
@@ -83,71 +81,19 @@ public class Main {
 
 
         switch (args[0]) {
-            case "4":
+            case "1":
                 try {
-                    connexion = DriverManager.getConnection(connectionString);
+                    Library librairie = new Library();
+                    new LibraryInitializer().initializeCollection(librairie);
 
-                    // Sérialisation de la base
-                    DBToJsonExporter dbSerializer = new DBToJsonExporter();
-                    JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
-                    // TODO : renvoyer un objet librairie à la place du JSON
+                    ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);
 
-                    // Ecriture du JSON dans un fichier
-                    bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
-                    bw.write(serializedDB.toString());
-                    bw.close();
-                } catch(Exception e) {
-                    System.out.println(e.getMessage());
-                } finally {
-                    try {
-                        if (result != null)
-                            result.close();
-                        if (state != null)
-                            state.close();
-                        if (connexion != null)
-                            connexion.close();
-                        if (bw != null)
-                            bw.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case "3":
-                try {
-
-                    //Lecture fichier vers base
-                    br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameDatabaseJSON)));
-
-                    StringBuilder sb = new StringBuilder();
-                    while(br.ready()){
-                        sb.append(br.readLine());
-                    }
-                    br.close();
-                    JSONObject databaseObject = new JSONObject(sb.toString());
-
-                    connexion = DriverManager.getConnection(connectionString);
-
-                    JsonToDBImporter databaseDeserializer = new JsonToDBImporter();
-                    databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
-
-
+                    importer.ImportLibrary(librairie);
+                    importer.CloseConnection();
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }  finally {
-                    try {
-                        if (connexion != null)
-                            connexion.close();
-                        if (ps != null)
-                            ps.close();
-                        if (br != null)
-                            br.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    e.printStackTrace();
                 }
                 break;
-            // TODO: 21/01/2021 temporaire, pour test le zipper
             case "2":
 //                try {
 //                    String database = "resources/database.json";
@@ -208,30 +154,73 @@ public class Main {
                 }
 
                 break;
-            case "1":
+            case "3":
                 try {
-                    Library librairie = new Library();
-                    new LibraryInitializer().initializeCollection(librairie);
 
-                    Editor editeur = librairie.mBookLibrary.firstElement().getEditor();
-                    Book livre = librairie.mBookLibrary.firstElement();
-                    Magazine magazine = librairie.mMagazineLibrary.firstElement();
-                    CD cd = librairie.mCDLibrary.firstElement();
-                    DVD dvd = librairie.mDVDLibrary.firstElement();
+                    //Lecture fichier vers base
+                    br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameDatabaseJSON)));
 
-                    ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);
-                    importer.InsertIntoEditors(editeur);
+                    StringBuilder sb = new StringBuilder();
+                    while(br.ready()){
+                        sb.append(br.readLine());
+                    }
+                    br.close();
+                    JSONObject databaseObject = new JSONObject(sb.toString());
 
-                    importer.InsertIntoBooks(livre, 2);
-                    importer.InsertIntoDVD(dvd, 2);
-                    importer.InsertIntoCD(cd, 1);
-                    importer.InsertIntoMagazines(magazine, 2);
+                    connexion = DriverManager.getConnection(connectionString);
 
-                    importer.CloseConnection();
+                    JsonToDBImporter databaseDeserializer = new JsonToDBImporter();
+                    databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
+
+
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }  finally {
+                    try {
+                        if (connexion != null)
+                            connexion.close();
+                        if (ps != null)
+                            ps.close();
+                        if (br != null)
+                            br.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
+            // TODO: 21/01/2021 temporaire, pour test le zipper
+
+            case "4":
+                try {
+                    connexion = DriverManager.getConnection(connectionString);
+
+                    // Sérialisation de la base
+                    DBToJsonExporter dbSerializer = new DBToJsonExporter();
+                    JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
+                    // TODO : renvoyer un objet librairie à la place du JSON
+
+                    // Ecriture du JSON dans un fichier
+                    bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
+                    bw.write(serializedDB.toString());
+                    bw.close();
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                } finally {
+                    try {
+                        if (result != null)
+                            result.close();
+                        if (state != null)
+                            state.close();
+                        if (connexion != null)
+                            connexion.close();
+                        if (bw != null)
+                            bw.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+
         }
 
 

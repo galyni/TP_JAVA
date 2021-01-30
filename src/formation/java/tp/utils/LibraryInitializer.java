@@ -17,22 +17,22 @@ public class LibraryInitializer
                         , "Eric Gamma"
                         , eBookType.Course
                         , true),
-                new Book("L'art d'avoir toujours raison"
-                        , new Editor("quelque part", "dans une ville lointaine", "en Europe", "chez un editeur", "qui n'avait pas de Siret", "38000")
+                new Book("L''art d''avoir toujours raison"
+                        , new Editor("quelque part", "dans une ville lointaine", "en Europe", "chez un editeur", "Siret", "38000")
                         , LocalDate.now()
                         , 75
                         , "Arthur Schöpenhauer"
                         , eBookType.Philosophy
                         , true),
                 new Book("Le grands livre des robots"
-                        , new Editor("paumé", "j'en sais rien", "sur un continent", "va savoir", "qui sait?", "38000")
+                        , new Editor("paumé", "j''en sais rien", "sur un continent", "va savoir", "qui sait?", "38000")
                         , LocalDate.now()
                         , 2000
                         , "Isaac Asimov"
                         ,eBookType.ScienceFiction
                         , true),
                 new Book("Les portes de la perception"
-                        , new Editor("est ce important?", "pas d'inspiration", "USA", "hippies&Co", "nope", "38000")
+                        , new Editor("est ce important?", "pas d''inspiration", "USA", "hippies&Co", "nope", "38000")
                         , LocalDate.now()
                         , 215
                         , "Aldous Huxley"
@@ -62,7 +62,7 @@ public class LibraryInitializer
                                      , "Journal du dauphiné"
                                      , eMagazineType.Politic
                                      , ePublishmentFrequency.Daily),
-                        new Magazine("un magazine d'histoire"
+                        new Magazine("un magazine d''histoire"
                                      , new Editor("ruelle du musée", "Orléans", "France", "edition vieille", "9032105478", "38000")
                                      , LocalDate.now()
                                      , 36
@@ -83,7 +83,7 @@ public class LibraryInitializer
                                 , "48:04"
                                 , eCDType.Software, 12),
                         new CD("The Offspring - Americana"
-                                , new Editor("somewhere on Punk avenue", "Los Angeles", "USA", "destroy everything editions", "00245896314", "38000")
+                                , new Editor("somewhere on Punk avenue", "Los Angeles", "USA", "destroy everything editions", "0024556314", "38000")
                                 , LocalDate.now()
                                 , "58:02"
                                 , eCDType.Music, 15),
