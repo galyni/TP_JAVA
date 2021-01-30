@@ -1,26 +1,48 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.db;
 
+import formation.java.tp.io.LogWriter;
 import formation.java.tp.model.*;
 import formation.java.tp.utils.*;
 
 import java.sql.*;
 import java.util.Vector;
 
+/**
+ * Exporte les données de la base Librairie en un objet Library, qui peut ensuite être sérialisé dans un fichier.
+ */
 public class DBToObjectExporter {
     // TODO: 30/01/2021 méthodes qui renvoient 1 objet ? ou filtrage ?
     private Connection connexion = null;
     private String connectionString;
     private LogWriter logWriter;
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     */
     public DBToObjectExporter(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     * @param logWriter L'objet LogWriter pour l'écriture des logs (opérations réussies, erreurs)
+     */
     public DBToObjectExporter(String connectionString, LogWriter logWriter) {
         this.connectionString = connectionString;
         this.logWriter = logWriter;
     }
 
+    /**
+     * Transforme l'intégralité de la base Librairie en un objet Library contenant toutes ses données.
+     *
+     * Chaque ligne devient un objet (Book, Magazine, DVD, CD, Editor.
+     * Chaque table devient un Vector<> contenant l'ensemble des objet du même type, sauf les Editor qui sont inclus dans les objets médias.
+     *
+     * Les liens représentés par des clés étrangères dans la base se traduisent par l'inclusion de l'objet lié.
+     * @return Un objet Library contenant toutes les données de la bas
+     */
     public Library ExportDatabase() {
         Library library = new Library();
         try {
@@ -44,13 +66,13 @@ public class DBToObjectExporter {
                     this.logWriter.ErrorLog(this.getClass().getName() + "Failed to close connexion \"" + connectionString + "\"", e);
                 System.out.println("error during database update... " + e.getMessage());
                 e.printStackTrace();
-                return null;
             }
         }
-        if(logWriter != null ) this.logWriter.CRUDOperationLog("Export of database succeeded."); ;
+        if(logWriter != null ) this.logWriter.CRUDOperationLog("Export of database succeeded.");
 
         return library;
     }
+
 
     private Vector<Book> GetBooksFromTable() throws SQLException {
         Vector<Book> bookLibrary = new Vector<>();
@@ -72,6 +94,8 @@ public class DBToObjectExporter {
             book.setEditor(editor);
             bookLibrary.add(book);
         }
+        resultSet.close();
+        statement.close();
 
         return bookLibrary;
     }
@@ -95,6 +119,8 @@ public class DBToObjectExporter {
             magazine.setEditor(editor);
             magazinesLibrary.add(magazine);
         }
+        resultSet.close();
+        statement.close();
 
         return magazinesLibrary;
     }
@@ -117,6 +143,8 @@ public class DBToObjectExporter {
             cd.setEditor(editor);
             CDLibrary.add(cd);
         }
+        resultSet.close();
+        statement.close();
 
         return CDLibrary;
     }
@@ -139,6 +167,8 @@ public class DBToObjectExporter {
             dvd.setEditor(editor);
             DVDLibrary.add(dvd);
         }
+        resultSet.close();
+        statement.close();
 
         return DVDLibrary;
     }
@@ -155,6 +185,8 @@ public class DBToObjectExporter {
                 resultSet.getString("SIRET"),
                 resultSet.getString("ZipCode")
         );
+        resultSet.close();
+        statement.close();
 
         return editor;
     }

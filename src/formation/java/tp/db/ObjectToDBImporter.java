@@ -1,12 +1,14 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.db;
 
 import formation.java.tp.model.*;
-import formation.java.tp.utils.LogWriter;
+import formation.java.tp.io.LogWriter;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 
-
+/**
+ * Permet l'importation de données dans une base Librairie à partir d'un objet Library.
+ */
 public class ObjectToDBImporter {
     // TODO: 30/01/2021 compteur de lignes insérées + logger
     private Connection connexion = null;
@@ -14,18 +16,30 @@ public class ObjectToDBImporter {
     private LogWriter logWriter;
     private int numberOfRows = 0;
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     */
     public ObjectToDBImporter(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     * @param logWriter L'objet LogWriter pour l'écriture des logs (opérations réussies, erreurs)
+     */
     public ObjectToDBImporter(String connectionString, LogWriter logWriter) {
         this.connectionString = connectionString;
         this.logWriter = logWriter;
     }
 
+    /**
+     *
+     * @param library L'objet Library dont les données doivent être insérées dans la base
+     */
     public void ImportLibrary(Library library) {
         try {
-            connexion = DriverManager.getConnection(connectionString);
             for (Book book : library.mBookLibrary) {
                 InsertIntoBooksTable(book);
             }
@@ -38,8 +52,7 @@ public class ObjectToDBImporter {
             for (CD cd : library.mCDLibrary) {
                 InsertIntoCDTable(cd);
             }
-            if(logWriter != null ) this.logWriter.CRUDOperationLog("Import into database succeeded. " + numberOfRows + " lines inserted."); ;
-            connexion.close();
+            if(logWriter != null ) this.logWriter.CRUDOperationLog("Import into database succeeded. " + numberOfRows + " lines inserted.");
         } catch (SQLException e) {
             if( logWriter != null ) this.logWriter.ErrorLog(this.getClass().getName() + "Failed to import into database ", e) ;
             System.out.println("error during database update... " + e.getMessage());
@@ -57,11 +70,11 @@ public class ObjectToDBImporter {
     }
 
     private void InsertIntoMagazinesTable(Magazine magazine) throws SQLException {
-
         Editor editeur = magazine.getEditor();
         int editorID = GetEditorID(editeur);
         String query = "INSERT INTO Magazines(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Frequency, Author) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+        connexion = DriverManager.getConnection(connectionString);
         PreparedStatement ps = connexion.prepareStatement(query);
 
         ps.setString(1, magazine.getTitle());
@@ -76,18 +89,17 @@ public class ObjectToDBImporter {
 
         ps.executeUpdate();
         numberOfRows += 1;
+
+        ps.close();
+        connexion.close();
     }
 
     private void InsertIntoBooksTable(Book book) throws SQLException {
-
-        var borrowed = book.isBorrowed() ? 1 : 0;
-        var borrowable = book.isBorrowable() ? 1 : 0;
-        var traduct = book.isTraduct() ? 1 : 0;
-
         Editor editeur = book.getEditor();
         int editorID = GetEditorID(editeur);
 
         String query = "INSERT INTO Books(Title, EditorsID, PublishDate, Borrowed, Borrowable, NumberOfPages, Type, Translated, Author) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        connexion = DriverManager.getConnection(connectionString);
 
         PreparedStatement ps = connexion.prepareStatement(query);
 
@@ -103,15 +115,17 @@ public class ObjectToDBImporter {
 
         ps.executeUpdate();
         numberOfRows += 1;
+
+        ps.close();
+        connexion.close();
     }
 
     private void InsertIntoCDTable(CD cd) throws SQLException {
-
-
         Editor editeur = cd.getEditor();
         int editorID = GetEditorID(editeur);
 
         String query = "INSERT INTO CDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, NumberOfTracks) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        connexion = DriverManager.getConnection(connectionString);
 
         PreparedStatement ps = connexion.prepareStatement(query);
 
@@ -126,18 +140,17 @@ public class ObjectToDBImporter {
 
         ps.executeUpdate();
         numberOfRows += 1;
+
+        ps.close();
+        connexion.close();
     }
 
     private void InsertIntoDVDTable(DVD dvd) throws SQLException {
-
-        var borrowed = dvd.isBorrowed() ? 1 : 0;
-        var borrowable = dvd.isBorrowable() ? 1 : 0;
-        var AudioDescripted = dvd.isAudioDescriptible() ? 1 : 0;
-
         Editor editeur = dvd.getEditor();
         int editorID = GetEditorID(editeur);
 
         String query = "INSERT INTO DVDs(Title, EditorsID, PublishDate, Borrowed, Borrowable, Length, Type, AudioDescription) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+        connexion = DriverManager.getConnection(connectionString);
 
         PreparedStatement ps = connexion.prepareStatement(query);
 
@@ -152,26 +165,33 @@ public class ObjectToDBImporter {
 
         ps.executeUpdate();
         numberOfRows += 1;
+
+        ps.close();
+        connexion.close();
     }
 
-
     private int GetEditorID(Editor editor) throws SQLException {
+        int editorID;
+
+        connexion = DriverManager.getConnection(connectionString);
         Statement statement = connexion.createStatement();
         String query = "SELECT TOP(1) ID FROM Editors " +
                 "WHERE NAME='" +
                 editor.getEditorName() + "' " +
                 "ORDER BY ID DESC";
 
-        int editorID;
 
         ResultSet resultSet = statement.executeQuery(query);
         if(resultSet.next()) {
             editorID = resultSet.getInt("ID");
-            return editorID;
         }
         else
-            return InsertIntoEditorsTable(editor);
+            editorID = InsertIntoEditorsTable(editor);
 
+        statement.close();
+        connexion.close();
+
+        return editorID;
     }
 
 
@@ -195,9 +215,8 @@ public class ObjectToDBImporter {
 
         ResultSet resultSet = statement.executeQuery(query);
         resultSet.next();
-        int editorID = resultSet.getInt("ID");
 
-        return editorID;
+        return resultSet.getInt("ID");
     }
 
 

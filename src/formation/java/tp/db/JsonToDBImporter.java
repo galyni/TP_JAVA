@@ -1,13 +1,16 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.db;
 
 import formation.java.tp.model.meta.Table;
-import formation.java.tp.utils.LogWriter;
+import formation.java.tp.io.LogWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ *  Permet l'importation de données d'une base Librairie à partir d'un fichier Json
+ */
 public class JsonToDBImporter {
 
     Table[] mediaTables = { new Table("Books", new String[] {"Title", "PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Translated", "Author"}),
@@ -15,34 +18,47 @@ public class JsonToDBImporter {
             new Table("DVDs", new String[] {"Title","PublishDate", "Borrowed", "Borrowable", "Length", "Type", "AudioDescription"}),
             new Table("Magazines", new String[] {"Title","PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Frequency", "Author"}),
     };
-    Table editorsTable = new Table("Editors", new String[] {"Name", "SIRET", "Country", "Street", "Zipcode", "City"});
 
     private String connectionString;
     private Connection connexion = null;
     private LogWriter logWriter;
     private int totalNumberOfRows = 0;
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     */
     public JsonToDBImporter(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     * @param logWriter L'objet LogWriter pour l'écriture des logs (opérations réussies, erreurs)
+     */
     public JsonToDBImporter(String connectionString, LogWriter logWriter) {
         this.connectionString = connectionString;
         this.logWriter = logWriter;
     }
 
-    public void DeserializeDatabase(JSONObject databaseJson){
+    /**
+     * Insère les données d'un objet de type Library contenues dans JSONObject au sein de la base Librairie.
+     * Affiche le nombre de lignes insérées dans chaque table.
+     *
+     * @param libraryJson LeJSONObject contenant les données à insérer dans la base
+     */
+    public void DeserializeDatabase(JSONObject libraryJson){
 
         try {
-
             for (String tableName : getTableNames()
             ) {
-                JSONArray tableData = databaseJson.getJSONArray(tableName);
+                JSONArray tableData = libraryJson.getJSONArray(tableName);
                 if (tableData.length() > 0)
                     DeserializeTable(tableData, tableName);
             }
 
-            if(logWriter != null ) this.logWriter.CRUDOperationLog("Import of database from Json succeeded."+ totalNumberOfRows + " lines inserted."); ;
+            if(logWriter != null ) this.logWriter.CRUDOperationLog("Import of database from Json succeeded."+ totalNumberOfRows + " lines inserted.");
         } catch (SQLException e) {
             if( logWriter != null ) this.logWriter.ErrorLog(this.getClass().getName() + "Failed to import database from Json ", e) ;
             System.out.println("error during database import... " + e.getMessage());
@@ -58,27 +74,26 @@ public class JsonToDBImporter {
                 e.printStackTrace();
             }
         }
-
     }
 
-    public void DeserializeTable(JSONArray tableData, String tableName) throws SQLException {
+    private void DeserializeTable(JSONArray tableData, String tableName) throws SQLException {
 
-        connexion = DriverManager.getConnection(connectionString);
         int nbRows = 0;
         JSONObject jsonObject;
         PreparedStatement ps;
+        ArrayList<String> rowData;
 
+        var columns = getColumnNames(tableName);
 
-        var columns = getColumns(tableName);
-
-        ArrayList<String> rowData = null;
+        // On construit la suite de '?' nécessaire  à la construction du PreparedStatement (le nombre varie en fonction du nombre de colonnes de la table)
         StringBuilder sb = new StringBuilder();
-        for(int i = 1; i < columns.length + 1; i++ ){
-            sb.append("?, ");
-        }
+        sb.append("?, ".repeat(columns.length));
         sb.append("?");
 
+        // Boucle d'insertion, chaque JSONObject donne une requête d'update de la base
         for(int i = 0; i < tableData.length(); i++){
+
+            // On remplit rowData avec les données sérialisées, de façon à pouvoir les insérer dans le PreparedStatement, en tenant compte des null
             jsonObject = tableData.getJSONObject(i);
             rowData = new ArrayList<String>();
             for (String column: columns
@@ -89,18 +104,19 @@ public class JsonToDBImporter {
                     rowData.add(null);
             }
 
+            connexion = DriverManager.getConnection(connectionString);
 
             ps = connexion.prepareStatement("INSERT INTO "+ tableName + "("+ String.join(", ", columns)  + ", EditorsID) VALUES(" + sb + ")");
-
             for(int j = 0; j < columns.length; j++){
                 ps.setString(j + 1, rowData.get(j));
             }
-
             JSONObject editorJson = jsonObject.getJSONObject("editor");
+            // On récupère l'ID de l'éditeur, qui est une foreign key. Si l'éditeur n'existe pas, il est créé avant l'objet qui le requiert.
             ps.setInt(columns.length + 1, GetEditorID(editorJson));
 
             nbRows += ps.executeUpdate();
 
+            ps.close();
         }
         System.out.println("Nombre de lignes insérées dans la table " + tableName + " : " + nbRows);
         totalNumberOfRows += nbRows;
@@ -109,30 +125,39 @@ public class JsonToDBImporter {
 
     // TODO: 30/01/2021 refactor le select top(1) en une méthode GetEditorIDByName et si -1(par exemple) appeler la méthode insert, qui retourne void
 
+    /**
+     * Cherche si l'éditeur correspondant au JSONObjet existe déjà dans la base.
+     * @param editorJson l'éditeur à chercher dans la base
+     * @return L'ID de l'éditeur récupéré ou créé
+     * @throws SQLException
+     */
     private int GetEditorID(JSONObject editorJson) throws SQLException {
-        Statement statement = connexion.createStatement();
-        String query = "SELECT TOP(1) ID FROM Editors " +
-                "WHERE NAME='" +
-                editorJson.getString("Name") + "' " +
-                "ORDER BY ID DESC";
-
         int editorID;
+        Statement statement = connexion.createStatement();
+        String query = "SELECT ID FROM Editors " +
+                "WHERE NAME='" +
+                editorJson.getString("Name") + "' ";
 
+        // Si la requête a renvoyé un résultat, on retourne l'ID de l'éditeur existant. Sinon, on le crée et on retourne son ID
         ResultSet resultSet = statement.executeQuery(query);
         if(resultSet.next()) {
             editorID = resultSet.getInt("ID");
-            return editorID;
+        } else {
+            editorID = DeserializeEditor(editorJson);
         }
-        else
-            return DeserializeEditor(editorJson);
 
+        resultSet.close();
+        statement.close();
+
+        return editorID;
     }
 
-    public int DeserializeEditor(JSONObject editorJson) throws SQLException {
+    private int DeserializeEditor(JSONObject editorJson) throws SQLException {
         Statement statement = connexion.createStatement();
+        String editorName = editorJson.getString("Name");
         String query = "INSERT INTO EDITORS(SIRET, Name, Street, ZipCode, City, Country) VALUES('" +
                 editorJson.getString("SIRET") + "', '" +
-                editorJson.getString("Name") + "', '" +
+                editorName + "', '" +
                 editorJson.getString("Street") + "', '" +
                 editorJson.getString("ZipCode") + "', '" +
                 editorJson.getString("City") + "', '" +
@@ -140,24 +165,27 @@ public class JsonToDBImporter {
         statement.executeUpdate(query);
         
         totalNumberOfRows += 1;
-        
+
+        // On récupère l'ID de l'éditeur créé. Si plusieurs ont le même nom, on prend celui dont l'ID est la plus élevée
         statement = connexion.createStatement();
         query = "SELECT TOP(1) ID FROM Editors " +
                 "WHERE NAME='" +
-                editorJson.getString("Name") + "' " +
+                editorName + "' " +
                 "ORDER BY ID DESC";
 
         ResultSet resultSet = statement.executeQuery(query);
         resultSet.next();
         int editorID = resultSet.getInt("ID");
 
+        resultSet.close();
+        statement.close();
+
         return editorID;
     }
 
-    private String[] getColumns(String tableName){
-        for (Table table: mediaTables
-             ) {
-            if(table.Name == tableName)
+    private String[] getColumnNames(String tableName){
+        for (Table table: mediaTables) {
+            if(table.Name.equals(tableName))
                 return table.Columns;
         }
         return null;

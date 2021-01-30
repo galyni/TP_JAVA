@@ -1,13 +1,17 @@
-package formation.java.tp.IOClasses;
+package formation.java.tp.db;
 
 import formation.java.tp.model.meta.Table;
-import formation.java.tp.utils.LogWriter;
+import formation.java.tp.io.LogWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.*;
 
-//TODO : stockage d'une Library dans un fichier en binaire
+/**
+ * Permet l'exportation de la base Librairie en format Json
+ *
+ *
+ */
 public class DBToJsonExporter {
 
     Table[] mediaTables = {new Table("Books", new String[] {"Title", "PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Translated", "Author" }),
@@ -22,39 +26,41 @@ public class DBToJsonExporter {
     private String connectionString;
     private LogWriter logWriter;
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     */
     public DBToJsonExporter(String connectionString) {
         this.connectionString = connectionString;
     }
 
+    /**
+     *
+     * @param connectionString La chaine de connexion à la base de donnée Librairie
+     * @param logWriter L'objet LogWriter pour l'écriture des logs (opérations réussies, erreurs)
+     */
     public DBToJsonExporter(String connectionString, LogWriter logWriter) {
         this.connectionString = connectionString;
         this.logWriter = logWriter;
     }
 
-    public DBToJsonExporter(Table[] tables) {
-        this.mediaTables = tables;
-    }
-
     /**
      * Sérialise la table Library en un JSONObject contenant toutes ses données.
+     *
+     * Chaque table est un JSONObject ayant un couple clé valeur : le nom de la table - l'ensemble de ses données sérialisées au sein d'un JSONArray
+     * Chaque ligne est un JSONObject composé de couples clés(nom de colonne dans la table) valeur (donnée pour cette colonne).
+     *
+     * Les liens représentés par des clés étrangères dans la base se traduisent par l'inclusion de l'objet lié.
      * @return JSONObject
      */
     public JSONObject SerialiseDatabase(){
-
         JSONObject dbSerialized = new JSONObject();
-        Statement state;
-        ResultSet result;
+
         try {
-            connexion = DriverManager.getConnection(connectionString);
-            for (Table table : mediaTables
-            ) {
-                state = connexion.createStatement();
-                result = state.executeQuery("select * from " + table.Name);
-                JSONArray tableJson = SerialiseTable(table, result);
+            for (Table table : mediaTables) {
+                JSONArray tableJson = SerialiseTable(table);
                 dbSerialized.put(table.Name, tableJson);
             }
-
-            connexion.close();
         } catch (SQLException e) {
             if( logWriter != null ) this.logWriter.ErrorLog(this.getClass().getName() + "Failed to export database ", e) ;
             System.out.println("error during database export... " + e.getMessage());
@@ -71,15 +77,22 @@ public class DBToJsonExporter {
                 return null;
             }
         }
-        if(logWriter != null ) this.logWriter.CRUDOperationLog("Export of database succeeded."); ;
+        if(logWriter != null ) this.logWriter.CRUDOperationLog("Export of database succeeded.");
         return dbSerialized;
     }
 
 
-    private JSONArray SerialiseTable(Table table, ResultSet result) throws SQLException {
-
+    private JSONArray SerialiseTable(Table table) throws SQLException {
+        Statement state;
+        ResultSet result;
         JSONArray tableSerialized = new JSONArray();
 
+        connexion = DriverManager.getConnection(connectionString);
+        state = connexion.createStatement();
+        result = state.executeQuery("select * from " + table.Name);
+
+        // Tant que la requête nous renvoie des lignes, on alimente le JSONArray avec les données renvoyées
+        // Chaque ligne est convertie en un JSONObject
         while(result.next()){
             JSONObject jsonObject = new JSONObject();
             String data;
@@ -92,6 +105,9 @@ public class DBToJsonExporter {
             jsonObject.put("editor", GetEditorObject(result.getInt("editorsID")));
             tableSerialized.put(jsonObject);
         }
+        result.close();
+        state.close();
+        connexion.close();
         return tableSerialized;
     }
 
@@ -106,6 +122,8 @@ public class DBToJsonExporter {
             data = resultSet.getString(column);
             editorJson.put(column, data);
         }
+        resultSet.close();
+        statement.close();
 
         return editorJson;
     }
