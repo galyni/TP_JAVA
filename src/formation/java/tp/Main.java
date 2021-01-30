@@ -1,24 +1,18 @@
 package formation.java.tp;
 
-import formation.java.tp.converters.JsonConverter;
 import formation.java.tp.fileClasses.*;
 import formation.java.tp.model.*;
+import formation.java.tp.utils.eBookType;
 import jdk.jshell.spi.ExecutionControl;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import formation.java.tp.utils.LibraryInitializer;
-import formation.java.tp.utils.eBookType;
-import org.json.JSONStringer;
-import org.json.JSONWriter;
 
 import java.io.*;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 // TODO: 22/01/2021 Liste de points qui restent à voir :
 /*
@@ -94,7 +88,7 @@ public class Main {
                     connexion = DriverManager.getConnection(connectionString);
 
                     // Sérialisation de la base
-                    DatabaseSerializer dbSerializer = new DatabaseSerializer();
+                    DBToJsonExporter dbSerializer = new DBToJsonExporter();
                     JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
                     // TODO : renvoyer un objet librairie à la place du JSON
 
@@ -134,7 +128,7 @@ public class Main {
 
                     connexion = DriverManager.getConnection(connectionString);
 
-                    DatabaseDeserializer databaseDeserializer = new DatabaseDeserializer();
+                    JsonToDBImporter databaseDeserializer = new JsonToDBImporter();
                     databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
 
 
@@ -164,28 +158,43 @@ public class Main {
 //                } catch (IOException e){
 //                    e.printStackTrace();
 //                }
-                try {
-                    Library librairie = new Library();
-                    new LibraryInitializer().initializeCollection(librairie);
-                    JsonConverter jo = new JsonConverter();
-                    String test = jo.ConvertIntoJson(librairie);
-                    System.out.println(test);
+//                try {
+//                    Library librairie = new Library();
+//                    new LibraryInitializer().initializeCollection(librairie);
+//                    JsonConverter jo = new JsonConverter();
+//                    String test = jo.ConvertIntoJson(librairie);
+//                    System.out.println(test);
+//
+//                    DataWriter martine = new DataWriter("LibrairieToJSON.json");
+//                    martine.WriteFile(test, false);
+//
+//                    DataReader martin = new DataReader("LibrairieToJSON.json");
+//                    test = martin.ReadWholeFile();
+//                    System.out.println(librairie.Stringify());
+//                    Library librairie2 = new Library();
+//                    librairie2 = jo.InstanciateLibraryFromJson(test);
+//
+//                    int i = 0;
+//                }catch(ExecutionControl.NotImplementedException e){
+//                    e.printStackTrace();
+//                }catch(FileNotFoundException e){
+//                    e.printStackTrace();
+//                }
+                try{
 
-                    DataWriter martine = new DataWriter("LibrairieToJSON.json");
-                    martine.WriteFile(test, false);
+                    Vector<Book> bookLibrary = null;
 
-                    DataReader martin = new DataReader("LibrairieToJSON.json");
-                    test = martin.ReadWholeFile();
-                    System.out.println(librairie.Stringify());
-                    Library librairie2 = new Library();
-                    librairie2 = jo.InstanciateLibraryFromJson(test);
+                    DBToObjectExporter exporter = new DBToObjectExporter(connectionString);
+                    bookLibrary = exporter.GetBooksFromTable();
 
-                    int i = 0;
-                }catch(ExecutionControl.NotImplementedException e){
-                    e.printStackTrace();
-                }catch(FileNotFoundException e){
+
+                    exporter.CloseConnection();
+
+
+                } catch(Exception e){
                     e.printStackTrace();
                 }
+
                 break;
             case "1":
                 try {
@@ -198,13 +207,15 @@ public class Main {
                     CD cd = librairie.mCDLibrary.firstElement();
                     DVD dvd = librairie.mDVDLibrary.firstElement();
 
-                    DatabaseImporter importer = new DatabaseImporter(connectionString);
+                    ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);
                     importer.InsertIntoEditors(editeur);
 
                     importer.InsertIntoBooks(livre, 2);
                     importer.InsertIntoDVD(dvd, 2);
                     importer.InsertIntoCD(cd, 1);
                     importer.InsertIntoMagazines(magazine, 2);
+
+                    importer.CloseConnection();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -7,11 +7,11 @@ import java.sql.*;
 import java.time.format.DateTimeFormatter;
 
 
-public class DatabaseImporter {
-
+public class ObjectToDBImporter {
+    // TODO: 30/01/2021 ajouter dans l'insertion des objets l'insertion de leur éditeur + transformer les requetes en requetes préparées
     Connection connexion = null;
 
-    public DatabaseImporter(String connectionString) throws SQLException {
+    public ObjectToDBImporter(String connectionString) throws SQLException {
         connexion = DriverManager.getConnection(connectionString);
     }
 
@@ -19,6 +19,8 @@ public class DatabaseImporter {
         connexion.close();
     }
     public void InsertIntoMagazines(Magazine magazine, int editorID) throws SQLException {
+
+
 
         var borrowed = magazine.isBorrowed() ? 1 : 0;
         var borrowable = magazine.isBorrowable() ? 1 : 0;

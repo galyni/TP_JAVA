@@ -4,8 +4,7 @@ import formation.java.tp.abstracts.ACollectible;
 import formation.java.tp.interfaces.IDisplayable;
 import formation.java.tp.utils.eCDType;
 
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class CD extends ACollectible implements IDisplayable
 {
@@ -14,7 +13,7 @@ public class CD extends ACollectible implements IDisplayable
     private int mNumberOfTracks;
 
     public CD(){}
-    public CD(String pTitle, Editor pEditor, LocalDateTime pPublishDate, String pLength, eCDType pCDType, int pNumberOfTracks )
+    public CD(String pTitle, Editor pEditor, LocalDate pPublishDate, String pLength, eCDType pCDType, int pNumberOfTracks )
     {
         this.mPublishDate = pPublishDate ;
         this.mBorrowed    = false ;
@@ -26,7 +25,7 @@ public class CD extends ACollectible implements IDisplayable
         this.mNumberOfTracks = pNumberOfTracks;
     }
 
-    public LocalDateTime getPublishDate() {return this.mPublishDate ;}
+    public LocalDate getPublishDate() {return this.mPublishDate ;}
     public boolean isBorrowed()           {return this.mBorrowed ;}
     public boolean isBorrowable()           {return this.mBorrowable ;}
     public void borrowDVD()               {this.mBorrowed = true ;}

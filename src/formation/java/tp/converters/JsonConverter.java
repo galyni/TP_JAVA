@@ -6,12 +6,9 @@ import jdk.jshell.spi.ExecutionControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
 
 public class JsonConverter<T>
 {
@@ -39,8 +36,7 @@ public class JsonConverter<T>
         }
         return lJsonifiedObject ;
     }
-    public Library InstanciateLibraryFromJson(String pJsonLibrary)
-    {
+    public Library InstanciateLibraryFromJson(String pJsonLibrary) throws ParseException {
         Library lLibrary             = new Library() ;
         JSONObject lJsonRoot         = new JSONObject(pJsonLibrary) ;
 //        JSONObject lJsonLibrary      = new JSONObject( lJsonRoot.get("Library").toString() ) ;
@@ -49,6 +45,7 @@ public class JsonConverter<T>
         JSONArray lJsonBookArray     = new JSONArray( lJsonRoot.getJSONArray("Books").toString() ) ;
         JSONArray lJsonMagazineArray = new JSONArray( lJsonRoot.getJSONArray("Magazines").toString() ) ;
         JSONObject lJsonEditor ;
+
 
         for(int i = 0; i < lJsonDVDArray.length(); ++i)
         {
@@ -66,7 +63,7 @@ public class JsonConverter<T>
                     lJsonEditor.get("editorZipcode").toString(),
                     (int)lJsonEditor.get("editorID")
                     ),
-                    LocalDateTime.parse( lJsonDVD.get("publishDate").toString() ),
+                    LocalDate.parse( lJsonDVD.get("publishDate").toString() ),
                     lJsonDVD.getDouble("DVDLength"),
                     lJsonDVD.getEnum( eDVDType.class,"DVDType"),
                     lJsonDVD.getBoolean("audioDescriptible")
@@ -90,7 +87,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
-                    LocalDateTime.parse(lJsonCD.get("publishDate").toString()),
+                    LocalDate.parse(lJsonCD.get("publishDate").toString()),
                     lJsonCD.get("DVDLength").toString(),
                     lJsonCD.getEnum(eCDType.class, "CDType"),
                     lJsonCD.getInt("CDNumberOfTracks")
@@ -113,7 +110,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
-                    LocalDateTime.parse( lJsonBook.get("publishDate").toString() ),
+                    LocalDate.parse( lJsonBook.get("publishDate").toString() ),
                     lJsonBook.getInt("numberOfPages"),
                     lJsonBook.get("author").toString(),
                     lJsonBook.getEnum( eBookType.class,"bookType"),
@@ -137,7 +134,7 @@ public class JsonConverter<T>
                             lJsonEditor.get("editorZipcode").toString(),
                             (int)lJsonEditor.get("editorID")
                     ),
-                    LocalDateTime.parse( lJsonMagazine.get("publishDate").toString() ),
+                    LocalDate.parse( lJsonMagazine.get("publishDate").toString() ),
                     lJsonMagazine.getInt("numberOfPages"),
                     lJsonMagazine.get("author").toString(),
                     lJsonMagazine.getEnum( eMagazineType.class,"magazineType"),

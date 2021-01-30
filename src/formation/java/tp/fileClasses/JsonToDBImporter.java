@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DatabaseDeserializer {
+public class JsonToDBImporter {
 
     Table[] tables = { new Table("Editors", new String[] {"Name", "SIRET", "Country", "Street", "Zipcode", "City"}),
             new Table("Books", new String[] {"Title", "EditorsID", "PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Translated", "Author" }),

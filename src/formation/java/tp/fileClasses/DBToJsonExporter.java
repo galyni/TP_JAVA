@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 //TODO : stockage d'une Library dans un fichier en binaire
-public class DatabaseSerializer {
+public class DBToJsonExporter {
 
     Table[] tables = { new Table("Editors", new String[] {"ID", "Name", "SIRET", "Country", "Street", "Zipcode", "City"}),
             new Table("Books", new String[] {"ID", "Title", "EditorsID", "PublishDate", "Borrowed", "Borrowable", "NumberOfPages", "Type", "Translated", "Author" }),
@@ -19,10 +19,10 @@ public class DatabaseSerializer {
 
     };
 
-    public DatabaseSerializer() {
+    public DBToJsonExporter() {
     }
 
-    public DatabaseSerializer(Table[] tables) {
+    public DBToJsonExporter(Table[] tables) {
         this.tables = tables;
     }
 
