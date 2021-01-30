@@ -36,7 +36,6 @@ public class Deserializer<T> extends AFileReader
         try
         {
             inputStream = new ObjectInputStream( Files.newInputStream( Paths.get( this.mFilePath ), StandardOpenOption.READ ) );
-            throw new IOException() ;
         }
         catch (IOException e)
         {
@@ -66,12 +65,11 @@ public class Deserializer<T> extends AFileReader
         }
         catch (IOException e)
         {
-            if(mLogWriter != null) this.mLogWriter.ErrorLog("Error during fileInputStream.close() ") ;
             if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Error during fileInputStream.close()", e) ;
             System.out.println("Unable to close file... " + e.getMessage());
             e.printStackTrace();
         }
-
+        if( mLogWriter != null ) this.mLogWriter.FileReadingLog("file : \"" + this.mFilePath + "\" has been deserialized") ;
         return mObjects ;
     }
 }

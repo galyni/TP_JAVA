@@ -103,8 +103,8 @@ public class Main {
                     Library librairie2 = exporter.ExportDatabase();
                     exporter.CloseConnection();
 
-                    Serializer<Library> serializer = new Serializer<>(args[2], librairie2);
-                    serializer.Serialize();
+                    Serializer serializer = new Serializer(args[2]);
+                    serializer.Serialize(librairie2);
 
                 } catch(Exception e){
                     e.printStackTrace();

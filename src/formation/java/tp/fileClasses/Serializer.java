@@ -10,22 +10,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-public class Serializer<T> extends AFileWriter
+public class Serializer extends AFileWriter
 {//TODO check all class implementation
     // TODO: 30/01/2021 passer les paramètres dans Serialize au lieu du constructeur 
     private ObjectOutputStream mOutput ;
-    private T                  mObjectToSerialize ;
     private LogWriter          mLogWriter ;
 
     public Serializer(){}
-    public Serializer(String pFilepath, T pObject)
+    public Serializer(String pFilepath)
     {
-        this.mFilePath          = pFilepath ;
-        this.mObjectToSerialize = pObject ;
-        this.mLogWriter         = null ;
+        this.mFilePath  = pFilepath ;
+        this.mLogWriter = null ;
+    }
+    public Serializer(String pFilepath, LogWriter pLogWriter)
+    {
+        this.mFilePath  = pFilepath ;
+        this.mLogWriter = pLogWriter ;
     }
 
-    public void Serialize()
+    public <T>void Serialize( T pObject )
     {
         try
         {
@@ -33,18 +36,30 @@ public class Serializer<T> extends AFileWriter
         }
         catch (IOException e)
         {
-            System.out.println("Unable to open file.." + e.getMessage());
-            e.printStackTrace();
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file", e) ;
+            System.out.println( "Unable to open file.." + e.getMessage() ) ;
+            e.printStackTrace() ;
         }
         try
         {
-            this.mOutput.writeObject(this.mObjectToSerialize);
-            this.mOutput.close();
+            this.mOutput.writeObject(pObject) ;
         }
         catch (IOException e)
         {
-            System.out.println("Unable to write into file.." + e.getMessage());
-            e.printStackTrace();
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to serialized into \"" + this.mFilePath + "\" file", e) ;
+            System.out.println( "Unable to write into file.." + e.getMessage() ) ;
+            e.printStackTrace() ;
         }
+        try
+        {
+            this.mOutput.close() ;
+        }
+        catch (IOException e)
+        {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Error during fileInputStream.close()", e) ;
+            System.out.println( "Unable to close file.." + e.getMessage() ) ;
+            e.printStackTrace() ;
+        }
+        mLogWriter.FileWritingLog(pObject.getClass().getName() + " has been serialized into \"" + this.mFilePath + "\" file" ) ;
     }
 }
