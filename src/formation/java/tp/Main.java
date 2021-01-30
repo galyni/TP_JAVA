@@ -30,21 +30,12 @@ alors que la Base donne tout simplement {"Books":[...], ...}
  */
 
 public class Main {
-//Args 0 :  (int)operation \ Args 1 : path to file to read/write \ Args 2 : path to properties file \ Arg 3 : path to Log file
-    public static void main(String[] args) throws ExecutionControl.NotImplementedException, ParseException {
-        //TODO don't forget to add LogWriter to every logic classes, to allow them to log their operations and errors into logFile
+    public static void main(String[] args) {
 
-
-        if (args.length != 4){
-            Usage();
-            return;
-        }
-        else
+        if(!CheckArgs(args))
         {
-            if( CheckArgs( args ) == -1 )
-            {
-                return ;
-            }
+            Usage() ;
+            return ;
         }
 
         LogWriter lLogWriter = new LogWriter(args[3]) ;
@@ -81,103 +72,58 @@ public class Main {
 
         switch (args[0]) {
             case "1":
-                try {
-// TODO: 30/01/2021 charger le fichier
+                Deserializer<Library> deserializer = new Deserializer<>(args[2], lLogWriter);
+                Library librairie = deserializer.Deserialize();
 
-                    Deserializer<Library> deserializer = new Deserializer<>(args[2], lLogWriter);
-                    Library librairie = deserializer.Deserialize();
+                ObjectToDBImporter importer = new ObjectToDBImporter(connectionString, lLogWriter);
 
-                    ObjectToDBImporter importer = new ObjectToDBImporter(connectionString);
+                importer.ImportLibrary(librairie);
 
-                    importer.ImportLibrary(librairie);
-
-                    importer.CloseConnection();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 break;
             case "2":
-                try{
-                    DBToObjectExporter exporter = new DBToObjectExporter(connectionString);
+                DBToObjectExporter exporter = new DBToObjectExporter(connectionString, lLogWriter);
 
-                    Library librairie2 = exporter.ExportDatabase();
-                    exporter.CloseConnection();
-
-                    Serializer serializer = new Serializer(args[2]);
+                Library librairie2 = exporter.ExportDatabase();
+                if(librairie2 != null) {
+                    Serializer serializer = new Serializer(args[2], lLogWriter);
                     serializer.Serialize(librairie2);
-
-                } catch(Exception e){
-                    e.printStackTrace();
                 }
-
                 break;
             case "3":
                 try {
-
                     //Lecture fichier vers base
                     br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameDatabaseJSON)));
 
                     StringBuilder sb = new StringBuilder();
-                    while(br.ready()){
+                    while (br.ready()) {
                         sb.append(br.readLine());
                     }
                     br.close();
                     JSONObject databaseObject = new JSONObject(sb.toString());
 
-                    connexion = DriverManager.getConnection(connectionString);
-
-                    JsonToDBImporter databaseDeserializer = new JsonToDBImporter();
-                    databaseDeserializer.DeserializeDatabase(connexion, databaseObject);
-
-
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }  finally {
-                    try {
-                        if (connexion != null)
-                            connexion.close();
-                        if (ps != null)
-                            ps.close();
-                        if (br != null)
-                            br.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    JsonToDBImporter databaseDeserializer = new JsonToDBImporter(connectionString, lLogWriter);
+                    databaseDeserializer.DeserializeDatabase(databaseObject);
+                }catch (IOException e){
+                    e.printStackTrace();
                 }
+
                 break;
             // TODO: 21/01/2021 temporaire, pour test le zipper
 
             case "4":
                 try {
-                    connexion = DriverManager.getConnection(connectionString);
-
                     // Sérialisation de la base
-                    DBToJsonExporter dbSerializer = new DBToJsonExporter();
-                    JSONObject serializedDB = dbSerializer.SerialiseDatabase(connexion);
-                    // TODO : renvoyer un objet librairie à la place du JSON
+                    DBToJsonExporter dbSerializer = new DBToJsonExporter(connectionString, lLogWriter);
+                    JSONObject serializedDB = dbSerializer.SerialiseDatabase();
 
                     // Ecriture du JSON dans un fichier
                     bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filenameDatabaseJSON)));
                     bw.write(serializedDB.toString());
                     bw.close();
-                } catch(Exception e) {
-                    System.out.println(e.getMessage());
-                } finally {
-                    try {
-                        if (result != null)
-                            result.close();
-                        if (state != null)
-                            state.close();
-                        if (connexion != null)
-                            connexion.close();
-                        if (bw != null)
-                            bw.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch(IOException e) {
+                    e.printStackTrace();
                 }
                 break;
-
         }
 
 
@@ -199,8 +145,11 @@ public class Main {
                 "\texample : \"AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"");
     }
 
-    private static int CheckArgs(String[] pArgs)
+    private static boolean CheckArgs(String[] pArgs)
     {
+        if (pArgs.length != 4){
+            return false;
+        }
         int lCheckArg0 ;
         try
         {
@@ -209,22 +158,19 @@ public class Main {
         catch (NumberFormatException e)
         {
             System.out.println("invalid operation format...") ;
-            Usage() ;
-            return -1 ;
+            return false ;
         }
         if(lCheckArg0 < 1 || lCheckArg0 >= 5)
         {
             System.out.println("Unknown operation requested...") ;
-            Usage() ;
-            return -1 ;
+            return false ;
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
             if( !pArgs[2].endsWith(".txt") )
             {
                 System.out.println("invalid file extensions...");
-                Usage() ;
-                return -1 ;
+                return false ;
             }
         }
         else
@@ -232,23 +178,20 @@ public class Main {
             if( !pArgs[2].endsWith(".json") )
             {
                 System.out.println("invalid file extensions...");
-                Usage() ;
-                return -1 ;
+                return false ;
             }
         }//at this point args[1] seem to be ok
         if( !pArgs[1].endsWith(".properties") )
         {
             System.out.println("invalid propertie file...") ;
-            Usage();
-            return -1 ;
+            return false ;
         }//at this point args[0] seem to be ok
         if( !pArgs[3].endsWith(".txt") )
         {
             System.out.println("invalid log file extensions...");
-            Usage() ;
-            return -1 ;
+            return false ;
         }//at this point all args are ok
-        return 0 ;
+        return true;
     }
 
     private enum eOperation

@@ -1,39 +1,62 @@
 package formation.java.tp.fileClasses;
 
 import formation.java.tp.model.*;
+import formation.java.tp.utils.LogWriter;
 
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 
 
 public class ObjectToDBImporter {
-    // TODO: 30/01/2021 ajouter dans l'insertion des objets l'insertion de leur éditeur + transformer les requetes en requetes préparées
-    Connection connexion = null;
+    // TODO: 30/01/2021 compteur de lignes insérées + logger
+    private Connection connexion = null;
+    private String connectionString;
+    private LogWriter logWriter;
+    private int numberOfRows = 0;
 
-    public ObjectToDBImporter(String connectionString) throws SQLException {
-        connexion = DriverManager.getConnection(connectionString);
+    public ObjectToDBImporter(String connectionString) {
+        this.connectionString = connectionString;
     }
 
-    public void CloseConnection() throws SQLException {
-        connexion.close();
+    public ObjectToDBImporter(String connectionString, LogWriter logWriter) {
+        this.connectionString = connectionString;
+        this.logWriter = logWriter;
     }
 
-    public void ImportLibrary(Library library) throws SQLException {
-        for(Book book : library.mBookLibrary){
-            InsertIntoBooksTable(book);
-        }
-        for(DVD dvd : library.mDVDLibrary){
-            InsertIntoDVDTable(dvd);
-        }
-        for(Magazine magazine : library.mMagazineLibrary){
-            InsertIntoMagazinesTable(magazine);
-        }
-        for(CD cd : library.mCDLibrary){
-            InsertIntoCDTable(cd);
+    public void ImportLibrary(Library library) {
+        try {
+            connexion = DriverManager.getConnection(connectionString);
+            for (Book book : library.mBookLibrary) {
+                InsertIntoBooksTable(book);
+            }
+            for (DVD dvd : library.mDVDLibrary) {
+                InsertIntoDVDTable(dvd);
+            }
+            for (Magazine magazine : library.mMagazineLibrary) {
+                InsertIntoMagazinesTable(magazine);
+            }
+            for (CD cd : library.mCDLibrary) {
+                InsertIntoCDTable(cd);
+            }
+            if(logWriter != null ) this.logWriter.CRUDOperationLog("Import into database succeeded. " + numberOfRows + " lines inserted."); ;
+            connexion.close();
+        } catch (SQLException e) {
+            if( logWriter != null ) this.logWriter.ErrorLog(this.getClass().getName() + "Failed to import into database ", e) ;
+            System.out.println("error during database update... " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if(connexion != null)
+                    connexion.close();
+            } catch(SQLException e) {
+                if( logWriter != null ) this.logWriter.ErrorLog(this.getClass().getName() + "Failed to close connexion \"" + connectionString + "\"", e) ;
+                System.out.println("error during database update... " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
-    public void InsertIntoMagazinesTable(Magazine magazine) throws SQLException {
+    private void InsertIntoMagazinesTable(Magazine magazine) throws SQLException {
 
         Editor editeur = magazine.getEditor();
         int editorID = GetEditorID(editeur);
@@ -52,10 +75,10 @@ public class ObjectToDBImporter {
         ps.setString(9, magazine.getAuthor());
 
         ps.executeUpdate();
-
+        numberOfRows += 1;
     }
 
-    public void InsertIntoBooksTable(Book book) throws SQLException {
+    private void InsertIntoBooksTable(Book book) throws SQLException {
 
         var borrowed = book.isBorrowed() ? 1 : 0;
         var borrowable = book.isBorrowable() ? 1 : 0;
@@ -79,13 +102,10 @@ public class ObjectToDBImporter {
         ps.setString(9, book.getAuthor());
 
         ps.executeUpdate();
-
-        int i =0;
-
-
+        numberOfRows += 1;
     }
 
-    public void InsertIntoCDTable(CD cd) throws SQLException {
+    private void InsertIntoCDTable(CD cd) throws SQLException {
 
 
         Editor editeur = cd.getEditor();
@@ -105,9 +125,10 @@ public class ObjectToDBImporter {
         ps.setInt(8, cd.getCDNumberOfTracks());
 
         ps.executeUpdate();
+        numberOfRows += 1;
     }
 
-    public void InsertIntoDVDTable(DVD dvd) throws SQLException {
+    private void InsertIntoDVDTable(DVD dvd) throws SQLException {
 
         var borrowed = dvd.isBorrowed() ? 1 : 0;
         var borrowable = dvd.isBorrowable() ? 1 : 0;
@@ -130,6 +151,7 @@ public class ObjectToDBImporter {
         ps.setBoolean(8, dvd.isAudioDescriptible());
 
         ps.executeUpdate();
+        numberOfRows += 1;
     }
 
 
@@ -153,7 +175,7 @@ public class ObjectToDBImporter {
     }
 
 
-    public int InsertIntoEditorsTable(Editor editeur) throws SQLException {
+    private int InsertIntoEditorsTable(Editor editeur) throws SQLException {
         Statement statement = connexion.createStatement();
         String query = "INSERT INTO EDITORS(SIRET, Name, Street, ZipCode, City, Country) VALUES('" +
                 editeur.getEditorSiret() + "', '" +
@@ -163,6 +185,7 @@ public class ObjectToDBImporter {
                 editeur.getEditorCity() + "', '" +
                 editeur.getEditorCountry() + "')";
         statement.executeUpdate(query);
+        numberOfRows += 1;
 
         statement = connexion.createStatement();
         query = "SELECT TOP(1) ID FROM Editors " +
@@ -175,7 +198,6 @@ public class ObjectToDBImporter {
         int editorID = resultSet.getInt("ID");
 
         return editorID;
-
     }
 
 
