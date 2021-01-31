@@ -28,11 +28,12 @@ public class Main {
             return ;
         }
 
-        LogWriter lLogWriter = new LogWriter(args[3]) ;
-        String connectionString = null;
-        String filenameProperties = args[1];
-        String filenameDatabaseJSON = args[2];
-        BufferedReader br = null;
+        LogWriter      lLogWriter           = new LogWriter(args[3]) ;
+        String         connectionString     = null;
+        String         filenameProperties   = args[1];
+        String         filenameDatabaseJSON = args[2];
+        BufferedReader br                   = null;
+        eOperation lOperation = eOperation.values()[ Integer.parseInt(args[0]) - 1 ] ;
 
         try{
             br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
@@ -55,8 +56,8 @@ public class Main {
         BufferedWriter bw;
 
 
-        switch (args[0]) {
-            case "1":
+        switch (lOperation) {
+            case objectFileToDatabase :
                 Deserializer<Library> deserializer = new Deserializer<>(args[2], lLogWriter);
                 Library librairie = deserializer.Deserialize();
 
@@ -65,7 +66,7 @@ public class Main {
                 importer.ImportLibrary(librairie);
 
                 break;
-            case "2":
+            case databaseToObjectFile :
                 DBToObjectExporter exporter = new DBToObjectExporter(connectionString, lLogWriter);
 
                 Library librairie2 = exporter.ExportDatabase();
@@ -74,7 +75,7 @@ public class Main {
                     serializer.Serialize(librairie2);
                 }
                 break;
-            case "3":
+            case jsonFileToDatabase :
                 try {
                     //Lecture fichier vers base
                     br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameDatabaseJSON)));
@@ -95,7 +96,7 @@ public class Main {
                 break;
             // TODO: 21/01/2021 temporaire, pour test le zipper
 
-            case "4":
+            case databaseToJsonFile :
                 try {
                     // Sérialisation de la base
                     DBToJsonExporter dbSerializer = new DBToJsonExporter(connectionString, lLogWriter);
@@ -109,6 +110,8 @@ public class Main {
                     e.printStackTrace();
                 }
                 break;
+            default :
+                break ;
         }
 
 
