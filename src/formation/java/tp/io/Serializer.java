@@ -9,8 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class Serializer extends AFileWriter
-{//TODO check all class implementation
-    // TODO: 30/01/2021 passer les paramètres dans Serialize au lieu du constructeur 
+{
     private ObjectOutputStream mOutput ;
     private LogWriter          mLogWriter ;
 

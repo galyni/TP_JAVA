@@ -7,6 +7,7 @@ import formation.java.tp.db.JsonToDBImporter;
 import formation.java.tp.db.ObjectToDBImporter;
 import formation.java.tp.model.*;
 import formation.java.tp.io.LogWriter;
+import formation.java.tp.utils.LibraryInitializer;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -60,20 +61,19 @@ public class Main {
         switch (lOperation) {
             case objectFileToDatabase :
                 Deserializer<Library> deserializer = new Deserializer<>(args[2], lLogWriter);
-                Library librairie = deserializer.Deserialize();
-
+                Library deserializedLibrary = deserializer.Deserialize();
                 ObjectToDBImporter importer = new ObjectToDBImporter(connectionString, lLogWriter);
 
-                importer.ImportLibrary(librairie);
+                importer.ImportLibrary(deserializedLibrary);
                 lLogWriter.FileReadingLog("Successfully deserialize bin file, and insert it into database");
                 break;
             case databaseToObjectFile :
                 DBToObjectExporter exporter = new DBToObjectExporter(connectionString, lLogWriter);
 
-                Library librairie2 = exporter.ExportDatabase();
-                if(librairie2 != null) {
+                Library serializedLibrary = exporter.ExportDatabase();
+                if(serializedLibrary != null) {
                     Serializer serializer = new Serializer(args[2], lLogWriter);
-                    serializer.Serialize(librairie2);
+                    serializer.Serialize(serializedLibrary);
                 }
                 lLogWriter.FileWritingLog("Successfully serialize database into bin file");
 
@@ -125,7 +125,6 @@ public class Main {
 
 
     }
-    //TODO A changer lorsque l'on modifiera les arguments
     private static void Usage()
     {
         System.out.println("""
@@ -164,7 +163,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
-            if( !pArgs[2].endsWith(".txt") || !pArgs[2].endsWith(".bin") )
+            if( !pArgs[2].endsWith(".txt") /*|| !pArgs[2].endsWith(".bin")*/ )
             {
                 System.out.println("invalid file extensions...");
                 return false ;
@@ -200,28 +199,29 @@ public class Main {
 
         do
         {
-            System.out.println("Do we make a zip ? (Y/N)\n") ;
+            System.out.println("Do you want to create a ZIP ? (Y/N)\n") ;
             lInput = lScanner.nextLine() ;
-        }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
+        }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
 
-        if(lInput.toUpperCase() == "Y" )
+        if(lInput.equalsIgnoreCase("Y") )
         {
-            lZipper  = new Zipper("resources/", pLogWriter, pArgs[2]) ;
+            lZipper  = new Zipper("resources/zip.zip", pLogWriter, pArgs[2]) ;
             System.out.println("Deserialized file will be into zip\n") ;
 
             do
             {
                 System.out.println("do you want to add logs file ? (Y/N)\n") ;
                 lInput = lScanner.nextLine() ;
-            }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
-            if( lInput == "Y" ) lZipper.AddNewFiles(pArgs[3]) ;
+            }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
+            if( lInput.equalsIgnoreCase("Y")) lZipper.AddNewFiles(pArgs[3]) ;
 
             do
             {
                 System.out.println("do you want to add properties file ? (Y/N)\n") ;
                 lInput = lScanner.nextLine() ;
-            }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
-            if( lInput == "Y" ) lZipper.AddNewFiles(pArgs[1]) ;
+            }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
+            if( lInput.equalsIgnoreCase("Y") ) lZipper.AddNewFiles(pArgs[1]) ;
+            lZipper.ZipFiles();
         }
     }
 
