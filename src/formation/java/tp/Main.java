@@ -64,7 +64,7 @@ public class Main {
                 ObjectToDBImporter importer = new ObjectToDBImporter(connectionString, lLogWriter);
 
                 importer.ImportLibrary(librairie);
-
+                lLogWriter.FileReadingLog("Successfully deserialize bin file, and insert it into database");
                 break;
             case databaseToObjectFile :
                 DBToObjectExporter exporter = new DBToObjectExporter(connectionString, lLogWriter);
@@ -74,6 +74,7 @@ public class Main {
                     Serializer serializer = new Serializer(args[2], lLogWriter);
                     serializer.Serialize(librairie2);
                 }
+                lLogWriter.FileWritingLog("Successfully serialize database into bin file");
                 break;
             case jsonFileToDatabase :
                 try {
@@ -92,7 +93,7 @@ public class Main {
                 }catch (IOException e){
                     e.printStackTrace();
                 }
-
+                lLogWriter.FileReadingLog("Successfully deserialize json file, and insert it into database");
                 break;
             // TODO: 21/01/2021 temporaire, pour test le zipper
 
@@ -109,9 +110,11 @@ public class Main {
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
+                lLogWriter.FileWritingLog("Successfully serialize database into json file");
                 break;
             default :
-                break ;
+                lLogWriter.ErrorLog("Unknown error from unhandled case") ;
+                return ;
         }
 
 
