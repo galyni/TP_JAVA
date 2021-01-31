@@ -13,11 +13,17 @@ public class Zipper
     private LogWriter      mLogWriter ;
 
     public Zipper(){}
+    public Zipper(String pOutputFilePath, LogWriter pLogWriter)
+    {
+        this.mOutputFilePath = pOutputFilePath ;
+        this.mLogWriter      = pLogWriter ;
+        mFilesPath           = new Vector<String>() ;
+    }
     public Zipper(String pOutputFilePath, LogWriter pLogWriter, String... pFilesPath)
     {
         this.mOutputFilePath = pOutputFilePath ;
         this.mLogWriter      = pLogWriter ;
-        mFilesPath = new Vector<String>(pFilesPath.length) ;
+        mFilesPath           = new Vector<String>(pFilesPath.length) ;
         for(String filePath : pFilesPath)
         {
             mFilesPath.add(filePath) ;

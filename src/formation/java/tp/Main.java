@@ -10,6 +10,7 @@ import formation.java.tp.io.LogWriter;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.util.Scanner;
 
 // TODO: 22/01/2021 Liste de points qui restent à voir :
 /*
@@ -33,7 +34,7 @@ public class Main {
         String         filenameProperties   = args[1];
         String         filenameDatabaseJSON = args[2];
         BufferedReader br                   = null;
-        eOperation lOperation = eOperation.values()[ Integer.parseInt(args[0]) - 1 ] ;
+        eOperation     lOperation           = eOperation.values()[ Integer.parseInt(args[0]) - 1 ] ;
 
         try{
             br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameProperties)));
@@ -75,6 +76,8 @@ public class Main {
                     serializer.Serialize(librairie2);
                 }
                 lLogWriter.FileWritingLog("Successfully serialize database into bin file");
+
+                MakeZip(lLogWriter, args) ;
                 break;
             case jsonFileToDatabase :
                 try {
@@ -111,6 +114,8 @@ public class Main {
                     e.printStackTrace();
                 }
                 lLogWriter.FileWritingLog("Successfully serialize database into json file");
+
+                MakeZip(lLogWriter, args) ;
                 break;
             default :
                 lLogWriter.ErrorLog("Unknown error from unhandled case") ;
@@ -131,7 +136,7 @@ public class Main {
                 \t\t[2] to serialize database into file
                 \t\t[3] to import JSON file into database
                 \t\t[4] to serialize database into JSON file
-                \targ2 : ".txt" or ".json" path to file to read/write
+                \targ2 : ".txt", ".bin" or ".json" path to file to read/write
                 \targ3 : ".properties" path to properties file for database connection
                 \targ4 : ".txt" path to logs file
                 \texample : "AppName [1/2/3/4] serializeFile.txt propertiesFile.json logFile.txt\"""");
@@ -159,7 +164,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
-            if( !pArgs[2].endsWith(".txt") )
+            if( !pArgs[2].endsWith(".txt") || !pArgs[2].endsWith(".bin") )
             {
                 System.out.println("invalid file extensions...");
                 return false ;
@@ -172,18 +177,52 @@ public class Main {
                 System.out.println("invalid file extensions...");
                 return false ;
             }
-        }//at this point args[1] seem to be ok
+        }//at this point args[2] seem to be ok
         if( !pArgs[1].endsWith(".properties") )
         {
             System.out.println("invalid propertie file...") ;
             return false ;
-        }//at this point args[0] seem to be ok
+        }//at this point args[1] seem to be ok
         if( !pArgs[3].endsWith(".txt") )
         {
             System.out.println("invalid log file extensions...");
             return false ;
         }//at this point all args are ok
         return true;
+    }
+
+    private static void MakeZip(LogWriter pLogWriter, String[] pArgs)
+    {
+        Scanner lScanner = new Scanner(System.in) ;
+        Zipper  lZipper ;
+
+        String  lInput ;
+
+        do
+        {
+            System.out.println("Do we make a zip ? (Y/N)\n") ;
+            lInput = lScanner.nextLine() ;
+        }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
+
+        if(lInput.toUpperCase() == "Y" )
+        {
+            lZipper  = new Zipper("resources/", pLogWriter, pArgs[2]) ;
+            System.out.println("Deserialized file will be into zip\n") ;
+
+            do
+            {
+                System.out.println("do you want to add logs file ? (Y/N)\n") ;
+                lInput = lScanner.nextLine() ;
+            }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
+            if( lInput == "Y" ) lZipper.AddNewFiles(pArgs[3]) ;
+
+            do
+            {
+                System.out.println("do you want to add properties file ? (Y/N)\n") ;
+                lInput = lScanner.nextLine() ;
+            }while( lInput.toUpperCase() != "Y" || lInput.toUpperCase() != "N" ) ;
+            if( lInput == "Y" ) lZipper.AddNewFiles(pArgs[1]) ;
+        }
     }
 
     private enum eOperation
