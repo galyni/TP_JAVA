@@ -7,12 +7,18 @@ import java.io.IOException;
 
 public class DataWriter extends AFileWriter
 {
-    protected FileWriter mWriter ;
+    private FileWriter mWriter ;
+    private LogWriter  mLogWriter ;
 
     public DataWriter(){}
     public DataWriter(String pFilePath)
     {
         this.mFilePath = pFilePath ;
+    }
+    public DataWriter(String pFilePath, LogWriter pLogWriter)
+    {
+        this.mFilePath  = pFilePath ;
+        this.mLogWriter = pLogWriter ;
     }
 
     public void SetFilePath( String pFilePath ){this.mFilePath = pFilePath ;}
@@ -26,8 +32,9 @@ public class DataWriter extends AFileWriter
         }
         catch (IOException e)
         {
-            System.out.println("Unable to open file.." + e.getMessage());
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to open \"" + this.mFilePath + "\" file", e ) ;
             e.printStackTrace();
+            System.out.println("Unable to open file");
         }
         try
         {
@@ -37,9 +44,11 @@ public class DataWriter extends AFileWriter
             }
             this.mWriter.write( pData ) ;
             this.mWriter.close() ;
+            if( mLogWriter != null ) this.mLogWriter.FileWritingLog(this.getClass().getName() + "Successfully write into \"" + this.mFilePath + "\" file" ) ;
         }
         catch (IOException e)
         {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to write into \"" + this.mFilePath + "\" file", e ) ;
             System.out.println("Unable to write into file.." + e.getMessage());
             e.printStackTrace();
         }
