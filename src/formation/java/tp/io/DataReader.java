@@ -46,83 +46,105 @@ public class DataReader extends AFileReader
                 return lData ;
             }
         }
+        if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file" ) ;
         return null ;
     }
-    //TODO logger to both next functions
-    public String ReadLastEntry() throws FileNotFoundException, NullPointerException
+    public String ReadLastEntry()
     {
         this.mFile = new File(this.mFilePath) ;
         if( this.mFile.exists() )
         {
             if( this.mFile.canRead() )
             {
-                String lData                       = "" ;
-                RandomAccessFile lRandomAccessFile = new RandomAccessFile(this.mFile, "r") ;
-                long lFileLength                   = this.mFile.length() ;
 
                 try
                 {
+                    String lData                       = "" ;
+                    RandomAccessFile lRandomAccessFile = new RandomAccessFile(this.mFile, "r") ;
+                    long lFileLength                   = this.mFile.length() ;
+
                     lRandomAccessFile.seek(lFileLength - 1) ;
-                } catch (IOException e)
+
+                    for (long i = lFileLength - 2; i >= 0; --i)
+                    {
+                        try
+                        {
+                            lRandomAccessFile.seek(i) ;
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                            throw new NullPointerException("File pointer out of bounds") ;
+                        }
+                        char lChar = ' ' ;
+                        try
+                        {
+                            lChar = (char)lRandomAccessFile.read() ;
+                        } catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                        if( lChar == '\n' )
+                        {
+                            break ;
+                        }
+                        lData += lChar ;
+                    }
+                    StringBuilder lStringBuilder = new StringBuilder(lData) ;
+                    lData = lStringBuilder.reverse().toString() ;
+
+                    if( mLogWriter != null ) this.mLogWriter.FileReadingLog(this.getClass().getName() + "Successfully read \"" + this.mFilePath + "\" file's last line" ); ;
+                    return lData ;
+                }
+                catch(FileNotFoundException e)
                 {
+                    if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to open \"" + this.mFilePath + "\" file", e ) ;
                     e.printStackTrace();
-                    throw new NullPointerException("File pointer out of bounds") ;
+                    System.out.println("Unable to open file");
                 }
-                for (long i = lFileLength - 2; i >= 0; --i)
+                catch (IOException e)
                 {
-                    try
-                    {
-                        lRandomAccessFile.seek(i) ;
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                        throw new NullPointerException("File pointer out of bounds") ;
-                    }
-                    char lChar = ' ' ;
-                    try
-                    {
-                        lChar = (char)lRandomAccessFile.read() ;
-                    } catch (IOException e)
-                    {
-                        e.printStackTrace();
-                    }
-                    if( lChar == '\n' )
-                    {
-                        break ;
-                    }
-                    lData += lChar ;
+                    if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Error during \"" + this.mFilePath + "\" file reading", e ) ;
+                    e.printStackTrace();
+                    System.out.println("File pointer out of bounds");
                 }
-                StringBuilder lStringBuilder = new StringBuilder(lData) ;
-                lData = lStringBuilder.reverse().toString() ;
-                return lData ;
             }
         }
-        else
-        {
-            throw new FileNotFoundException("Unable to open file to read") ;
-        }
+        if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file" ) ;
         return null ;
     }
-    public byte[] ReadAsByte() throws IOException
+    public byte[] ReadAsByte()
     {
-        FileInputStream lFileInputStream = new FileInputStream(this.mFilePath) ;
-        DataInputStream lDataInputStream = new DataInputStream(lFileInputStream) ;
-
-        int lContentSize = 0 ;
         try
         {
+            FileInputStream lFileInputStream = new FileInputStream(this.mFilePath) ;
+            DataInputStream lDataInputStream = new DataInputStream(lFileInputStream) ;
+
+            int lContentSize = 0 ;
+
             lContentSize = lDataInputStream.available() ;
-        } catch (IOException e)
-        {
-            e.printStackTrace() ;
-            throw new IOException("unable to find input file to zip") ;
+
+            byte lFileData [] = new byte[lContentSize] ;
+            lDataInputStream.read(lFileData) ;
+
+            lFileInputStream.close() ;
+            lDataInputStream.close() ;
+
+            if( mLogWriter != null ) this.mLogWriter.FileReadingLog(this.getClass().getName() + "Successfully read \"" + this.mFilePath + "\" file as byte" ); ;
+            return lFileData ;
         }
-        byte lFileData [] = new byte[lContentSize] ;
-        lDataInputStream.read(lFileData) ;
-
-        lFileInputStream.close() ;
-        lDataInputStream.close() ;
-
-        return lFileData ;
+        catch( FileNotFoundException e )
+        {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to open \"" + this.mFilePath + "\" file", e ) ;
+            e.printStackTrace();
+            System.out.println("Unable to open file");
+        }
+        catch( IOException e )
+        {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Error during \"" + this.mFilePath + "\" file reading", e ) ;
+            e.printStackTrace() ;
+            System.out.println("Error during file reading");
+        }
+        if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to open \"" + this.mFilePath + "\" file" ) ;
+        return null ;
     }
 }
