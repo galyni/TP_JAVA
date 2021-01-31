@@ -13,14 +13,6 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.Scanner;
 
-// TODO: 22/01/2021 Liste de points qui restent à voir :
-/*
-1 - Vérifier qu'on clôt bien tout (lse Statement, PreparedStatement et ResultSet, les Stream, les Connection...)
-
-2 - Vérifier les pré-requis -> compléter le README.
-
- */
-
 public class Main {
     public static void main(String[] args) {
 
@@ -98,7 +90,6 @@ public class Main {
                 }
                 lLogWriter.FileReadingLog("Successfully deserialize json file, and insert it into database");
                 break;
-            // TODO: 21/01/2021 temporaire, pour test le zipper
 
             case databaseToJsonFile :
                 try {
@@ -163,7 +154,7 @@ public class Main {
         }//at this point args[0] seem to be ok
         if( lCheckArg0 == eOperation.objectFileToDatabase.getValue() || lCheckArg0 == eOperation.databaseToObjectFile.getValue() )
         {
-            if( !pArgs[2].endsWith(".txt") /*|| !pArgs[2].endsWith(".bin")*/ )
+            if( !(pArgs[2].endsWith(".txt") || pArgs[2].endsWith(".bin")) )
             {
                 System.out.println("invalid file extensions...");
                 return false ;
@@ -199,25 +190,25 @@ public class Main {
 
         do
         {
-            System.out.println("Do you want to create a ZIP ? (Y/N)\n") ;
+            System.out.println("Do you want to create a ZIP? (Y/N)") ;
             lInput = lScanner.nextLine() ;
         }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
 
         if(lInput.equalsIgnoreCase("Y") )
         {
-            lZipper  = new Zipper("resources/zip.zip", pLogWriter, pArgs[2]) ;
-            System.out.println("Deserialized file will be into zip\n") ;
+            lZipper  = new Zipper("results/zip.zip", pLogWriter, pArgs[2]) ;
+            System.out.println("\nDeserialized file will be into zip") ;
 
             do
             {
-                System.out.println("do you want to add logs file ? (Y/N)\n") ;
+                System.out.println("\ndo you want to add logs file in the ZIP? (Y/N)") ;
                 lInput = lScanner.nextLine() ;
             }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
             if( lInput.equalsIgnoreCase("Y")) lZipper.AddNewFiles(pArgs[3]) ;
 
             do
             {
-                System.out.println("do you want to add properties file ? (Y/N)\n") ;
+                System.out.println("\ndo you want to add properties file into the ZIP? (Y/N)") ;
                 lInput = lScanner.nextLine() ;
             }while( !(lInput.equalsIgnoreCase("Y") || lInput.equalsIgnoreCase("N"))) ;
             if( lInput.equalsIgnoreCase("Y") ) lZipper.AddNewFiles(pArgs[1]) ;

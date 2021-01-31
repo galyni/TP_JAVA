@@ -4,3 +4,4 @@ resources/.properties
 *.zip
 /*.json
 /*.txt
+/*.bin

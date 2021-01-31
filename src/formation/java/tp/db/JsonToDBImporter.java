@@ -123,7 +123,6 @@ public class JsonToDBImporter {
         connexion.close();
     }
 
-    // TODO: 30/01/2021 refactor le select top(1) en une méthode GetEditorIDByName et si -1(par exemple) appeler la méthode insert, qui retourne void
 
     /**
      * Cherche si l'éditeur correspondant au JSONObjet existe déjà dans la base.

@@ -11,7 +11,6 @@ import java.util.Vector;
  * Exporte les données de la base Librairie en un objet Library, qui peut ensuite être sérialisé dans un fichier.
  */
 public class DBToObjectExporter {
-    // TODO: 30/01/2021 méthodes qui renvoient 1 objet ? ou filtrage ?
     private Connection connexion = null;
     private String connectionString;
     private LogWriter logWriter;

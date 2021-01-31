@@ -10,7 +10,6 @@ import java.time.format.DateTimeFormatter;
  * Permet l'importation de données dans une base Librairie à partir d'un objet Library.
  */
 public class ObjectToDBImporter {
-    // TODO: 30/01/2021 compteur de lignes insérées + logger
     private Connection connexion = null;
     private String connectionString;
     private LogWriter logWriter;
