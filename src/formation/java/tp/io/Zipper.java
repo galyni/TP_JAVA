@@ -10,11 +10,13 @@ public class Zipper
     private DataReader     mDataReader ;
     private Vector<String> mFilesPath ;
     private String         mOutputFilePath ;
+    private LogWriter      mLogWriter ;
 
     public Zipper(){}
-    public Zipper(String pOutputFilePath, String... pFilesPath)
+    public Zipper(String pOutputFilePath, LogWriter pLogWriter, String... pFilesPath)
     {
         this.mOutputFilePath = pOutputFilePath ;
+        this.mLogWriter      = pLogWriter ;
         mFilesPath = new Vector<String>(pFilesPath.length) ;
         for(String filePath : pFilesPath)
         {
@@ -39,31 +41,47 @@ public class Zipper
         }
     }
 
-    public void ZipFiles() throws IOException, FileNotFoundException
+    public void ZipFiles() //throws IOException, FileNotFoundException
     {
-        BufferedOutputStream lBufferedOutputStream = null ;
-        ZipOutputStream lZipOutputStream           = new ZipOutputStream(new FileOutputStream(this.mOutputFilePath)); ;
-
-        for (int i = 0; i < this.mFilesPath.size(); ++i)
+        try
         {
-            //this.mDataReader = new DataReader( this.mFilesPath.get(i) ) ;
-            //byte[] lByteFileContent = this.mDataReader.ReadAsByte() ;
+            BufferedOutputStream lBufferedOutputStream = null ;
+            ZipOutputStream lZipOutputStream           = new ZipOutputStream(new FileOutputStream(this.mOutputFilePath)); ;
 
-            //File lFile                 = new File( this.mFilesPath.get(i) ) ;
-            FileInputStream lInputFile = new FileInputStream(this.mFilesPath.get(i));
-            ZipEntry zipEntry          = new ZipEntry( this.mFilesPath.get(i) ) ;
-            lZipOutputStream.putNextEntry(zipEntry);
-
-            int lContentSize = lInputFile.available() ;
-            byte[] lByteFileContent = new byte[lContentSize] ;
-            int length ;
-            while ((length = lInputFile.read(lByteFileContent)) > 0)
+            for (int i = 0; i < this.mFilesPath.size(); ++i)
             {
-                lZipOutputStream.write(lByteFileContent, 0, length);
+                //this.mDataReader = new DataReader( this.mFilesPath.get(i) ) ;
+                //byte[] lByteFileContent = this.mDataReader.ReadAsByte() ;
+
+                //File lFile                 = new File( this.mFilesPath.get(i) ) ;
+                FileInputStream lInputFile = new FileInputStream(this.mFilesPath.get(i));
+                ZipEntry zipEntry          = new ZipEntry( this.mFilesPath.get(i) ) ;
+                lZipOutputStream.putNextEntry(zipEntry);
+
+                int lContentSize = lInputFile.available() ;
+                byte[] lByteFileContent = new byte[lContentSize] ;
+                int length ;
+                while ((length = lInputFile.read(lByteFileContent)) > 0)
+                {
+                    lZipOutputStream.write(lByteFileContent, 0, length);
+                }
+                lZipOutputStream.closeEntry() ;
+                lInputFile.close() ;
             }
-            lZipOutputStream.closeEntry() ;
-            lInputFile.close() ;
+            lZipOutputStream.close();
+            if( mLogWriter != null ) this.mLogWriter.FileWritingLog(this.getClass().getName() + "Successfully zip files" ); ;
         }
-        lZipOutputStream.close();
+        catch( FileNotFoundException e )
+        {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Unable to open file to zip", e ) ;
+            e.printStackTrace();
+            System.out.println("Unable to open file to zip");
+        }
+        catch( IOException e )
+        {
+            if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Error during zipping", e ) ;
+            e.printStackTrace();
+            System.out.println("Unable to open file");
+        }
     }
 }
