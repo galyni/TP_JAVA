@@ -26,7 +26,10 @@ public class Deserializer<T> extends AFileReader
         this.mLogWriter = pLogger ;
     }
 
-
+    /**
+     * Deserialize binary file to instance of known classes, it assume you already know content of binary file and you have a functionnal declaration of same classes into your project
+     * @return deserialized and instanciated classes
+     */
     public T Deserialize()
     {
         try

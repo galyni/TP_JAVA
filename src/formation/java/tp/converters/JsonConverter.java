@@ -14,6 +14,12 @@ public class JsonConverter<T>
 {
     public JsonConverter(){}
 
+    /**
+     * Convert instanciated classes into Json string
+     * @implNote for now only Library objects can be converted into Json
+     * @param pObjectToConvert is the object you want to convert
+     * @return converted object as String
+     */
     public String ConvertIntoJson(T pObjectToConvert) throws ExecutionControl.NotImplementedException
     {
         String lJsonifiedObject = "" ;
@@ -36,6 +42,11 @@ public class JsonConverter<T>
         }
         return lJsonifiedObject ;
     }
+    /**
+     * convert Json structure into objects
+     * @implNote this method handle only "Jsonify" Library classes for now
+     * @param pJsonLibrary is a String of a "Jsonify" Library
+     */
     public Library InstanciateLibraryFromJson(String pJsonLibrary) throws ParseException {
         Library lLibrary             = new Library() ;
         JSONObject lJsonRoot         = new JSONObject(pJsonLibrary) ;

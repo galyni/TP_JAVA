@@ -21,6 +21,10 @@ public class DataReader extends AFileReader
         this.mLogWriter = pLogWriter ;
     }
 
+    /**
+     * Read file and return content
+     * @return content as string
+    */
     public String ReadWholeFile()
     {
         this.mFile = new File(this.mFilePath) ;
@@ -49,6 +53,10 @@ public class DataReader extends AFileReader
         if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file" ) ;
         return null ;
     }
+    /**
+     * Read last line from a file and return it
+     * @return last line as string
+     */
     public String ReadLastEntry()
     {
         this.mFile = new File(this.mFilePath) ;
@@ -112,6 +120,10 @@ public class DataReader extends AFileReader
         if( mLogWriter != null ) this.mLogWriter.ErrorLog(this.getClass().getName() + "Failed to read \"" + this.mFilePath + "\" file" ) ;
         return null ;
     }
+    /**
+     * Read file and return content, used by Zipper class for now
+     * @return content as Byte
+     */
     public byte[] ReadAsByte()
     {
         try

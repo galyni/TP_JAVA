@@ -6,6 +6,10 @@ import java.time.LocalDate;
 
 public class LibraryInitializer
 {
+    /**
+     * used to initialize a Library object with some heterogeneous content, usefull for further tests
+     * @param pLibrary is an empty instanciated object from Library class
+     */
     public void initializeCollection(Library pLibrary)
     {
         Book lBooks[] = new Book[]

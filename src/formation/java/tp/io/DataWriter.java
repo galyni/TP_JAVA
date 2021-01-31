@@ -24,6 +24,11 @@ public class DataWriter extends AFileWriter
     public void SetFilePath( String pFilePath ){this.mFilePath = pFilePath ;}
     public String GetFilePath()                {return this.mFilePath ;}
 
+    /**
+     * Write into file
+     * @param pData to write as string
+     * @param pAppend if you to erase previous content or just add new
+    */
     public void WriteFile(String pData, boolean pAppend)
     {
         try

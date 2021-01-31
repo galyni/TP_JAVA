@@ -41,7 +41,10 @@ public class Zipper
         }
     }
 
-    public void ZipFiles() //throws IOException, FileNotFoundException
+    /**
+     * Create a zip with all previously file specified into constructor or throught "AddNewFiles" method, at path specified with c'tor
+     */
+    public void ZipFiles()
     {
         try
         {

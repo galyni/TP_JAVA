@@ -26,6 +26,10 @@ public class Serializer extends AFileWriter
         this.mLogWriter = pLogWriter ;
     }
 
+    /**
+     * Serialize any kind of object(s) into binary file
+     * @param pObject in an instance of what you want to serialize
+     */
     public <T>void Serialize( T pObject )
     {
         try
